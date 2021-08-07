@@ -1,0 +1,61 @@
+﻿function Set-ServiceDisabled {
+    <#
+    .SYNOPSIS
+    Stops and disables a service or list of services on the local system.
+
+    .DESCRIPTION
+    The script changes the startup type to "Disabled" for a list of services. Provide a custom list to the 'Name' parameter.
+
+    .NOTES   
+    Name       : Set-ServiceDisabled
+    Author     : Darren Hollinrake
+    Version    : 1.1
+    DateCreated: 2018-02-20
+    DateUpdated: 2021-08-04
+
+    #>
+    [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
+    param (
+        [Parameter(ValueFromPipeline,
+            ValueFromPipelineByPropertyName,
+            Mandatory)]
+        [string[]]$Name
+    )
+
+    begin {
+        $ServiceDisabled = @()
+        $ServiceAlreadyDisabled = @()
+        $ServiceNotExist = @()
+    }
+
+    process {
+        foreach ($NamedService in $Name) {
+            $ServiceObj = Get-Service -Name $NamedService -ErrorAction SilentlyContinue
+            if ($ServiceObj) {
+                if ($ServiceObj | Where-Object { $_.StartType -ne 'Disabled' }) {
+                    if ($PSCmdlet.ShouldProcess("$NamedService", "Set-ServiceDisabled")) {
+                        $ServiceObj | Stop-Service -PassThru | Set-Service -StartupType Disabled
+                        $ServiceDisabled += $NamedService
+                    }
+                }
+                else {
+                    Write-Verbose "Service is already disabled: $NamedService"
+                    $ServiceAlreadyDisabled += $NamedService
+                }
+            }
+            else {
+                Write-Verbose "The following service did not exist: $NamedService"
+                $ServiceNotExist += $NamedService
+            }
+        }
+        
+    }
+
+    end {
+        # Report which services were modified
+        Write-Verbose "Disbled the following service(s): $($ServiceDisabled -join ', ')"
+        Write-Verbose "The following service(s) were already disabled: $($ServiceAlreadyDisabled -join ', ')"
+        Write-Verbose "The following service(s) did not exist: $($ServiceNotExist -join ', ')"
+        
+    }
+}

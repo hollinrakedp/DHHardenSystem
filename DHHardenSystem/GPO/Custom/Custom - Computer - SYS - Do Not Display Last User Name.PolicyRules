@@ -1,0 +1,4 @@
+﻿<PolicyRules>
+<SecurityTemplate Section="Registry Values"><LineItem>MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\DontDisplayLastUserName=4,1</LineItem><SourceFile>C:\Export\GPO\Custom\Computer - SYS - Do Not Display Last User Name\{088CA9FB-EFAE-4F25-B78D-205E4CC7E7E6}\DomainSysvol\GPO\Machine\microsoft\windows nt\SecEdit\GptTmpl.inf</SourceFile><PolicyName>Computer - SYS - Do Not Display Last User Name</PolicyName></SecurityTemplate>
+<CSE-Machine><GUID>{827D319E-6EAC-11D2-A4EA-00C04F79F83A}</GUID><Name>Security</Name></CSE-Machine>
+</PolicyRules>
