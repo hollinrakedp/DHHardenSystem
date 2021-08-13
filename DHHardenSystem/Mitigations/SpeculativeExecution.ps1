@@ -2,7 +2,7 @@ function SpeculativeExecution{
     Write-Verbose "SpeculativeExecution"
     $ItemProperty =@{
         Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management'
-        Name = 'FeatureSettingOverride'
+        Name = 'FeatureSettingsOverride'
         Value = 72
         PropertyType = 'DWORD'
         Force = $true
@@ -14,7 +14,7 @@ function SpeculativeExecution{
 
     $ItemProperty =@{
         Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management'
-        Name = 'FeatureSettingOverrideMask'
+        Name = 'FeatureSettingsOverrideMask'
         Value = 3
         PropertyType = 'DWORD'
         Force = $true
