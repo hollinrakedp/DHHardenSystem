@@ -4,11 +4,11 @@
     This script will enable the specified event logs.
 
     .NOTES
-    Name        : Enable-EventLog.ps1
+    Name        : Enable-EventLog
     Author      : Darren Hollinrake
     Version     : 2.0
     DateCreated : 2018-08-15
-    DateUpdated : 2021-07-23
+    DateUpdated : 2021-08-12
 
     .DESCRIPTION
     This script will enable the Windows event log for each log name provided.
@@ -20,8 +20,7 @@
         [string[]]$LogName
     )
     begin {
-        $GetLogs = { Get-WinEvent -ListLog $LogName }
-        $Logs = & $GetLogs
+        $Logs = Get-WinEvent -ListLog $LogName
     }
     process {
         foreach ($Log in $Logs) {
