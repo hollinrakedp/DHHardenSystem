@@ -9,9 +9,9 @@
     .NOTES   
     Name       : Set-ServiceDisabled
     Author     : Darren Hollinrake
-    Version    : 1.1
+    Version    : 1.1.1
     DateCreated: 2018-02-20
-    DateUpdated: 2021-08-04
+    DateUpdated: 2021-08-31
 
     #>
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
@@ -53,7 +53,7 @@
 
     end {
         # Report which services were modified
-        Write-Verbose "Disbled the following service(s): $($ServiceDisabled -join ', ')"
+        Write-Verbose "Disabled the following service(s): $($ServiceDisabled -join ', ')"
         Write-Verbose "The following service(s) were already disabled: $($ServiceAlreadyDisabled -join ', ')"
         Write-Verbose "The following service(s) did not exist: $($ServiceNotExist -join ', ')"
         
