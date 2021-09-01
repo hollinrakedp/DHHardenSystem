@@ -75,11 +75,11 @@ This category includes additional settings that aren't set via GPO. These includ
 - Enables Event Logs
     - Allows the enablement of Windows Event Logs that may not be enabled by default. The user must supply the name of the logs to be enabled.
 - Remove UWP Applications
-    - Removes many of the Universal Windows Platform (UWP) applications included by default on the OS. Many of these are unnecessary and unwanted. Currently, this does not accept input for the applications that should be removed.
+    - Removes a user supplied list of UWP applications from the system.
 - Configures DEP
     - Allows the user to set the Data Execution Prevention policy on the system. The STIG requires at least 'OptOut'.
 - Disable Scheduled Tasks
-    - Disables a preset list of scheduled tasks on the system.
+    - Disables a user supplied list of scheduled tasks on the system.
 - Disable Services
     - Stops and disables the list of services provided.
 - Set Local User Passwords to Expire
@@ -105,10 +105,8 @@ This is useds to import a configuration file created with the 'Export-HardenSyst
 ## To-Do
 There are a few items I'm looking to possibly add to this module. This list is mainly to remind myself and there's no guarantees it'll be added at any point.
 - Invoke-LocalGPO: Copy the exploit protection file to a location on the local system. Update the reference to this location in the Win10 STIG before applying the GPO.
-- Invoke-LocalGPO: Check for the LGPO executable.
-- Invoke-LocalGPO: Allow import of custom PolicyFiles. 
-- Invoke-HardenSystem: Allow user-supplied values to 'RemoveWinApp' parameter
-- Invoke-HardenSystem: Allow user-supplied values to 'DisableScheduledTask' parameter
+- Invoke-LocalGPO: Check for the LGPO executable
+- Invoke-LocalGPO: Allow import of custom PolicyFiles
 - Invoke-HardenSystem: Add parameter to export the configuration being applied
 - Export of the current system configuration
 
