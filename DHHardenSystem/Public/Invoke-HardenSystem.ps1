@@ -8,10 +8,10 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.2
+    Version      - 0.3
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-08-06
+    Date Updated - 2021-08-31
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
@@ -38,7 +38,7 @@ function Invoke-HardenSystem {
     Enables the mitigation for the specified items.
 
     .PARAMETER RemoveWinApp
-    Removes a preset list of UWP Applications from the system.
+    Removes the supplied list of UWP Applications from the system.
 
     .EXAMPLE
     Invoke-HardenSystem -DEP OptOut
@@ -84,7 +84,7 @@ function Invoke-HardenSystem {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$Mitigation,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [switch]$RemoveWinApp
+        [string[]]$RemoveWinApp
     )
 
     switch ($PSBoundParameters.Keys) {
@@ -133,7 +133,7 @@ function Invoke-HardenSystem {
         }
         RemoveWinApp {
             Write-Verbose "Option Selected: RemoveWinApp"
-            Remove-WinApp -WhatIf:$WhatIfPreference
+            Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference
         }
     }
 }

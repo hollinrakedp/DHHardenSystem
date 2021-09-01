@@ -11,10 +11,10 @@ function Export-HardenSystemConfig {
 
     .NOTES
     Name         - Export-HardenSystemConfig
-    Version      - 0.2
+    Version      - 0.3
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-08-06
+    Date Updated - 2021-08-31
 
     .PARAMETER FilePath
     Specify the output location for the generated configuration file. If only a directory is specified, the filename will be automatically generated (HardenSystemConfig-yyyyMMdd.json). If the path specified does not exist, it will be created.
@@ -57,7 +57,7 @@ function Export-HardenSystemConfig {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$Mitigation,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [switch]$RemoveWinApp,
+        [string[]]$RemoveWinApp,
         [Parameter(
             ValueFromPipelineByPropertyName,
             Mandatory)]
