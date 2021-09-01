@@ -8,7 +8,7 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.4
+    Version      - 0.4.1
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2021-08-31
@@ -101,8 +101,8 @@ function Invoke-HardenSystem {
             Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference
         }
         DisablePoShV2 {
+            Write-Verbose "Option Selected: DisablePoshV2"
             if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
-                Write-Verbose "Option Selected: DisablePoshV2"
                 Disable-PoShV2 -WhatIf:$WhatIfPreference
             }
         }
