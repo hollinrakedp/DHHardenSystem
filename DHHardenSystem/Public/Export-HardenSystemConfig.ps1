@@ -11,7 +11,7 @@ function Export-HardenSystemConfig {
 
     .NOTES
     Name         - Export-HardenSystemConfig
-    Version      - 0.3
+    Version      - 0.4
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2021-08-31
@@ -65,14 +65,35 @@ function Export-HardenSystemConfig {
         [string]$FilePath
     )
 
-    $Config = [PSCustomObject]@{
-        ApplyGPO             = $ApplyGPO
-        DEP                  = $DEP
-        DisablePoshV2        = $DisablePoshV2.IsPresent
-        DisableScheduledTask = $DisableScheduledTask.IsPresent
-        DisableService       = $DisableService
-        EnableLog            = $EnableLog
-        Mitigation           = $Mitigation
+    $Hashtable = @{}
+    switch ($PSBoundParameters.Keys) {
+        ApplyGPO {
+            $Hashtable += @{ ApplyGPO = $ApplyGPO }
+        }
+        DEP {
+            $Hashtable += @{ DEP = $DEP }
+        }
+        DisablePoshV2 {
+            $Hashtable += @{ DisablePoshV2 = $DisablePoshV2.IsPresent }
+        }
+        DisableScheduledTask {
+            $Hashtable += @{ DisableScheduledTask = $DisableScheduledTask }
+        }
+        DisableService {
+            $Hashtable += @{ DisableService = $DisableService }
+        }
+        EnableLog {
+            $Hashtable += @{ EnableLog = $EnableLog }
+        }
+        LocalUserPasswordExpires {
+            $Hashtable += @{ LocalUserPasswordExpires = $LocalUserPasswordExpires.IsPresent }
+        }
+        Mitigation {
+            $Hashtable += @{ Mitigation = $Mitigation }
+        }
+        RemoveWinApp {
+            $Hashtable += @{ RemoveWinApp = $RemoveWinApp }
+        }
     }
     $JSON = $Config | ConvertTo-Json
 
