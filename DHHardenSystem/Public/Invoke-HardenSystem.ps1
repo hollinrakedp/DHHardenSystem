@@ -8,7 +8,7 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.3
+    Version      - 0.4
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2021-08-31
@@ -23,7 +23,7 @@ function Invoke-HardenSystem {
     Remove the Windows Feature PowerShell v2 if it is installed.
 
     .PARAMETER DisableScheduledTask
-    Disables a preset list of scheduled tasks that are unnecessary in most use cases.
+    Disables a user supplied list of scheduled tasks.
 
     .PARAMETER DisableService
     Disables a user supplied list of services. Provide the name of the service(s) (not the display name).
@@ -74,7 +74,7 @@ function Invoke-HardenSystem {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$DisablePoShV2,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [switch]$DisableScheduledTask,
+        [array]$DisableScheduledTask,
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$DisableService,
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -107,8 +107,10 @@ function Invoke-HardenSystem {
             }
         }
         DisableScheduledTask {
+            $ScheduledTask = @{}
+            ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
             Write-Verbose "Option Selected: DisableScheduledTasks"
-            Set-ScheduledTaskDisabled -WhatIf:$WhatIfPreference
+            Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference
         }
         DisableService {
             Write-Verbose "Option Selected: DisableServices"

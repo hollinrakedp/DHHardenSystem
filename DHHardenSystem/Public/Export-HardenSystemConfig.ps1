@@ -11,7 +11,7 @@ function Export-HardenSystemConfig {
 
     .NOTES
     Name         - Export-HardenSystemConfig
-    Version      - 0.4
+    Version      - 0.5
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2021-08-31
@@ -32,8 +32,15 @@ function Export-HardenSystemConfig {
     
     PS C:\>$EnableLog = 'Microsoft-Windows-PrintService/Operational', 'Microsoft-Windows-TaskScheduler/Operational'
     
-    PS C:\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TripleDES -RemoveWinApp -FilePath .\Default.json
+    PS C:\>$RemoveWinApp = "Microsoft.BingWeather", "Microsoft.GetHelp", "Microsoft.Getstarted", "Microsoft.Messaging", "Microsoft.Microsoft3DViewer", "Microsoft.MicrosoftOfficeHub", "Microsoft.MicrosoftSolitaireCollection", "Microsoft.MixedReality.Portal", "Microsoft.Office.OneNote", "Microsoft.OneConnect", "Microsoft.People", "Microsoft.Print3D", "Microsoft.SkypeApp", "Microsoft.StorePurchaseApp", "Microsoft.Wallet", "Microsoft.WindowsAlarms", "Microsoft.WindowsCamera", "microsoft.windowscommunicationsapps", "Microsoft.WindowsFeedbackHub", "Microsoft.WindowsMaps", "Microsoft.WindowsSoundRecorder", "Microsoft.Xbox.TCUI", "Microsoft.XboxApp", "Microsoft.XboxGameOverlay", "Microsoft.XboxGamingOverlay", "Microsoft.XboxIdentityProvider", "Microsoft.XboxSpeechToTextOverlay", "Microsoft.YourPhone", "Microsoft.ZuneMusic", "Microsoft.ZuneVideo"
 
+    PS C:\>$TaskName = "Adobe Acrobat Update Task", "Consolidator", "OneDrive Standalone Update Task v2", "XblGameSaveTask"
+
+    PS C:\>$TaskPath = "\Microsoft\Windows\Bluetooth\"
+
+    PS C:\>$DisableScheduledTask = @{TaskName = $TaskName; TaskPath = $TaskPath}
+
+    PS C:\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask $DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TripleDES -RemoveWinApp $RemoveWinApp -FilePath .\Default.json
     This set of commands creates the 'Default.json' file included with this module.
 
     #>
@@ -47,7 +54,7 @@ function Export-HardenSystemConfig {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$DisablePoshV2,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [switch]$DisableScheduledTask,
+        [hashtable[]]$DisableScheduledTask,
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$DisableService,
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -95,7 +102,9 @@ function Export-HardenSystemConfig {
             $Hashtable += @{ RemoveWinApp = $RemoveWinApp }
         }
     }
-    $JSON = $Config | ConvertTo-Json
+    $Config = [PSCustomObject]$Hashtable
+
+    $JSON = $Config | ConvertTo-Json -Depth 4
 
     if ((Test-Path -Path $FilePath -PathType Container)) {
         Write-Verbose "Only a directory was provided. Using automatic filename."
