@@ -35,7 +35,10 @@ function Invoke-LocalGPO {
     DISA STIG (v2r3) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
-    Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts) 
+    Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts)
+
+    .PARAMETER Edge
+    DISA STIG (v1r3) - Configures Edge (Chromium-based) in alighment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
     DISA STIG (v2r1) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -112,6 +115,8 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$DisplayLogonInfo,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Edge,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$IE11,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Firewall,
@@ -173,6 +178,12 @@ function Invoke-LocalGPO {
             if ($PSCmdlet.ShouldProcess("DisplayLogonInfo: $DisplayLogonInfo", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Disable Logon Info"
                 & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+            }
+        }
+        Edge {
+            if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
+                Write-Verbose "Applying GPO: Edge"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         IE11 {
