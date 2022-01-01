@@ -1,7 +1,20 @@
 function TripleDES{
+    <#
+    .SYNOPSIS
+    Disables TripleDES Cipher.
+
+    .NOTES
+    Name         - TripleDES
+    Version      - 1.0
+    Author       - Darren Hollinrake
+    Date Created - 2021-07-24
+    Date Updated - 2021-10-11
+
+    #>
+
     Write-Verbose "TripleDES"
     $ItemProperty =@{
-        Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\KeyExchangeAlgorithms\Triple DES 168'
+        Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168'
         Name = 'Enabled'
         Value = 0
         PropertyType = 'DWORD'
