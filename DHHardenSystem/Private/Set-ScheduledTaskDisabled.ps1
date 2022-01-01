@@ -3,16 +3,16 @@
     .SYNOPSIS
     Disables a list of scheudled tasks.
 
+    .DESCRIPTION
+    This script will disabled unnecessary scheduled tasks on the system it's ran. You can specify a list of task names, list of 
+    task paths, or both.
+
     .NOTES
     Name        : Set-ScheduledTaskDisabled
     Author      : Darren Hollinrake
     Version     : 0.8
     DateCreated : 2018-08-02
     DateUpdated : 2021-08-06
-
-    .DESCRIPTION
-    This script will disabled unnecessary scheduled tasks on the system it's ran. You can specify a list of task names, list of 
-    task paths, or both.
 
     .PARAMETER TaskName
     Name of the task to be disabled.
