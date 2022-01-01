@@ -1,7 +1,7 @@
 function Invoke-HardenSystem {
     <#
     .SYNOPSIS
-    Quickly hardens the local Windows installion system.
+    Quickly hardens the local Windows installation system.
 
     .DESCRIPTION
     This function allows for quickly hardening the local Windows system. Run the function without specifying any parameters to use the default hardening configuration which should be fine for most Windows 10 installations.
@@ -18,6 +18,9 @@ function Invoke-HardenSystem {
 
     .PARAMETER DEP
     Configures the Data Execution Prevention policy. Valid values are 'OptIn', 'OptOut', 'AlwaysOn', 'AlwaysOff'.
+    Note: Changes to DEP require a reboot.
+    
+    WARNING: This does not check to see if BitLocker is enabled on the system drive. If it is, be sure to suspend BitLocker before rebooting or it will prompt for a recovery key.
 
     .PARAMETER DisablePoShV2
     Remove the Windows Feature PowerShell v2 if it is installed.
