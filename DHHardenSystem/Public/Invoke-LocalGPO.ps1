@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 0.2
+    Version      - 0.3
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-08-06
+    Date Updated - 2022-01-01
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
