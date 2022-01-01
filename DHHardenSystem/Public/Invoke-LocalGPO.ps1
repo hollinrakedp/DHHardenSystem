@@ -6,10 +6,14 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    For the GPO's that configure applications, they will apply whether the application is currently installed or not. For the OS parameter, no check is made to ensure the GPO applied matches the installed OS.
+    The DISA GPOs included are based on the October 2021 GPO package.
 
-    Note: If the system is/will be joined to a domain, these local GPO's will not be processed if the following GPO setting is enabled:
-        Computer Configuration > Administrative Templates > System > Group Policy: Turn off Local Group Policy objects processing
+    Keep in mind the following:
+     - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
+     - For the GPO's that configure applications, no check is make to ensure the application is installed.
+     - If the GPO has admx/adml files that are not included with the base installation of Windows, they will show up as extra registry settings when viewed from gpedit.msc 
+     - If the system is/will be joined to a domain, these local GPO's will not be processed if the following GPO setting is enabled:
+          Computer Configuration > Administrative Templates > System > Group Policy: Turn off Local Group Policy objects processing
 
     .NOTES
     Name         - Invoke-LocalGPO
@@ -18,6 +22,9 @@ function Invoke-LocalGPO {
     Date Created - 2021-07-24
     Date Updated - 2021-08-06
 
+    .LINK
+    https://public.cyber.mil/stigs/gpo/
+
     .PARAMETER AppLocker
     Custom - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
@@ -25,13 +32,13 @@ function Invoke-LocalGPO {
     DISA STIG (v2r4) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
     
     .PARAMETER Defender
-    DISA STIG (v2r2) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r3) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
     Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts) 
 
     .PARAMETER IE11
-    DISA STIG (v1r19) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r1) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER Firewall
     DISA GPO (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -67,9 +74,9 @@ function Invoke-LocalGPO {
 
     .PARAMETER OS
     DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Server2016', and 'Server2019'.
-        Windows 10 - v2r2
-        Server 2016 - v2r2
-        Server 2019 - v2r2
+        Windows 10 - v2r3
+        Server 2016 - v2r3
+        Server 2019 - v2r3
 
     .EXAMPLE
     Invoke-LocalGPO -OS Win10
@@ -159,7 +166,7 @@ function Invoke-LocalGPO {
         Defender {
             if ($PSCmdlet.ShouldProcess("Defender: $Defender", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Defender"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         DisplayLogonInfo {
@@ -171,8 +178,8 @@ function Invoke-LocalGPO {
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
                 Write-Verbose "Applying GPO: IE11"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v1r19.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v1r19.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firewall {
@@ -254,18 +261,18 @@ function Invoke-LocalGPO {
                 switch ($OS) {
                     Win10 {
                         Write-Verbose "Applying GPO: Win10"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows 10 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows 10 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows 10 v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows 10 v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Server2016 {
                         Write-Verbose "Applying GPO: MS Server 2016"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Server2019 {
                         Write-Verbose "Applying GPO: Server 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
