@@ -17,36 +17,7 @@ function Remove-WinApp {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$App = @("Microsoft.BingWeather",
-            "Microsoft.GetHelp",
-            "Microsoft.Getstarted",
-            "Microsoft.Messaging",
-            "Microsoft.Microsoft3DViewer",
-            "Microsoft.MicrosoftOfficeHub",
-            "Microsoft.MicrosoftSolitaireCollection",
-            "Microsoft.MixedReality.Portal",
-            "Microsoft.Office.OneNote",
-            "Microsoft.OneConnect",
-            "Microsoft.People",
-            "Microsoft.Print3D",
-            "Microsoft.SkypeApp",
-            "Microsoft.StorePurchaseApp",
-            "Microsoft.Wallet",
-            "Microsoft.WindowsAlarms",
-            "Microsoft.WindowsCamera",
-            "microsoft.windowscommunicationsapps",
-            "Microsoft.WindowsFeedbackHub",
-            "Microsoft.WindowsMaps",
-            "Microsoft.WindowsSoundRecorder",
-            "Microsoft.Xbox.TCUI",
-            "Microsoft.XboxApp",
-            "Microsoft.XboxGameOverlay",
-            "Microsoft.XboxGamingOverlay",
-            "Microsoft.XboxIdentityProvider",
-            "Microsoft.XboxSpeechToTextOverlay",
-            "Microsoft.YourPhone",
-            "Microsoft.ZuneMusic",
-            "Microsoft.ZuneVideo")
+        [string[]]$App
     )
 
     ForEach ($AppName in $App) {
