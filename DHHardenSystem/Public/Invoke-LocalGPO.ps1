@@ -160,7 +160,7 @@ function Invoke-LocalGPO {
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Chrome"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r4" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Defender {
