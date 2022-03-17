@@ -54,7 +54,7 @@ function Invoke-LocalGPO {
 
     .PARAMETER Office
     DISA GPO - Configures MS Office using the specified Office STIG. Valid values are '2016', and '2019'. This applies both User and Computer settings.
-    For Office 2016, the following STIGs are applied:
+    Office 2016, the following STIGs are applied:
         Computer - Skype for Business 2016 - v1r1
         Computer - OneDrive for Business 2016 - v2r1
         Computer - Office System 2016 - v2r1
@@ -68,6 +68,7 @@ function Invoke-LocalGPO {
         User - Publisher 2016 - v1r3
         User - Visio 2016 - v1r1
         User - Word 2016 - v1r1
+    Office 2019 (v2r4)
 
     .PARAMETER ReaderDC
     DISA GPO (v2r1) Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -248,7 +249,7 @@ function Invoke-LocalGPO {
                     '2019' {
                         Write-Verbose "Applying GPO: Office 2019"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
