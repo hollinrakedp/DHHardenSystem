@@ -1,4 +1,15 @@
 # DHHardSystem Change Log
+## v0.10.0 (2022-03-17)
+Fixes
+
+Changes
+* STIG - Google Chrome - Updated to v2r5
+* STIG - Microsoft Edge - Updated to v1r4
+* SITG - Office 2019 - Updated to v2r4
+* STIG - Added Firefox v6r1
+
+Other
+* Cleanup of typos/misspellings
 ## v0.9.2 (2021-08-31)
 Fixes
 * Fixed configuration export where not all values were available
