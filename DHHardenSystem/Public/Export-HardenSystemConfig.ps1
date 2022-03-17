@@ -4,7 +4,7 @@ function Export-HardenSystemConfig {
     Saves a configuration file that can be used with the function: Invoke-HardenSystem.
 
     .DESCRIPTION
-    This script accepts input for the same parameters as can be used with 'Invoke-HardenSytem'. The inputs are then saved as a JSON configuration file. This configuration can then be imported using 'Import-HardenSystemConfig'.
+    This script accepts input for the same parameters as can be used with 'Invoke-HardenSystem'. The inputs are then saved as a JSON configuration file. This configuration can then be imported using 'Import-HardenSystemConfig'.
 
     Specify the parameters the same as you would for 'Invoke-HardenSystem'. For parameters that are included within the configuration file, see 'Invoke-HardenSystem' for details.
 

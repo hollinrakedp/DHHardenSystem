@@ -38,7 +38,7 @@ function Invoke-LocalGPO {
     Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts)
 
     .PARAMETER Edge
-    DISA STIG (v1r4) - Configures Edge (Chromium-based) in alighment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v1r4) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Firefox
     DISA STIG (v6r1) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
