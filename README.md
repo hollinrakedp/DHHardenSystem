@@ -13,15 +13,15 @@ This module has a single outside dependency.
 ## Quick Start
 For a Windows 10 system, you can follow the following steps:
 1. Download this module
-2. Download LGPO.zip (https://www.microsoft.com/en-us/download/details.aspx?id=55319)
-3. Extract 'LGPO.exe' from LGPO.zip and place it within the LGPO folder
-    - DHHardenSystem/LGPO
-4. Copy the module to the system to be hardened
+1. Copy the module to the system to be hardened
     - Module Location: C:\Temp\DHHardenSystem
-5. Run PowerShell as Administrator
-6. Import the module
+1. Download LGPO.zip (https://www.microsoft.com/en-us/download/details.aspx?id=55319)
+1. Extract 'LGPO.exe' from LGPO.zip and place it within the LGPO folder
+    - DHHardenSystem/LGPO
+1. Run PowerShell as Administrator
+1. Import the module
     - Import-Module C:\Temp\DHHardenSystem\DHHardenSystem.psd1
-7. Harden the system with the default configuration file
+1. Harden the system with the default configuration file
     - Import-HardenSystemConfig -FilePath "C:\Temp\DHHardenSystem\Default.json" | Invoke-HardenSystem -Confirm:$false
 
 
@@ -29,11 +29,14 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the the January 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+
 The list of currently available GPO's in this module:
 - DISA
     - Application - Adobe Reader DC
     - Application - Google Chrome
     - Application - Internet Explorer 11
+    - Application - Firefox
     - Application - Office 2016
     - Application - Office 2019
     - Application - Windows Defender Antivirus
