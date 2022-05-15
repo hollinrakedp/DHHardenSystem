@@ -1,4 +1,13 @@
 # DHHardSystem Change Log
+## v0.11.0 (2022-05-15)
+Updated to the latest GPO Release (April 2022) for the STIGs used within this module.
+
+### Fixes
+### Changes
+* STIG - Google Chrome - Updated to v2r6
+* SITG - Office 2019 - Updated to v2r5
+* SITG - Office 2016 - Updated combined policies (2022-04)
+### Other
 ## v0.10.0 (2022-03-17)
 Fixes
 
