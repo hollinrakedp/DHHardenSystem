@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 0.4
+    Version      - 0.5
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2022-03-17
+    Date Updated - 2022-05-15
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -29,7 +29,7 @@ function Invoke-LocalGPO {
     Custom - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
     .PARAMETER Chrome
-    DISA STIG (v2r5) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r6) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
     
     .PARAMETER Defender
     DISA STIG (v2r3) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -59,19 +59,19 @@ function Invoke-LocalGPO {
     DISA GPO - Configures MS Office using the specified Office STIG. Valid values are '2016', and '2019'. This applies both User and Computer settings.
     Office 2016, the following STIGs are applied:
         Computer - Skype for Business 2016 - v1r1
-        Computer - OneDrive for Business 2016 - v2r1
-        Computer - Office System 2016 - v2r1
+        Computer - OneDrive for Business 2016 - v2r2
+        Computer - Office System 2016 - v2r2
         User - Access 2016 - v1r1
         User - Excel 2016 - v1r2
         User - Office System 2016 - v2r1
-        User - OneDrive for Business - v2r1
-        User - Outlook 2016 - v2r1
+        User - OneDrive for Business - v2r2
+        User - Outlook 2016 - v2r3
         User - PowerPoint 2016 - v1r1
         User - Project 2016 - v1r1
         User - Publisher 2016 - v1r3
         User - Visio 2016 - v1r1
         User - Word 2016 - v1r1
-    Office 2019 (v2r4)
+    Office 2019 (v2r5)
 
     .PARAMETER ReaderDC
     DISA GPO (v2r1) Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -171,7 +171,7 @@ function Invoke-LocalGPO {
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Chrome"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Defender {
@@ -259,8 +259,8 @@ function Invoke-LocalGPO {
                     }
                     '2019' {
                         Write-Verbose "Applying GPO: Office 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
