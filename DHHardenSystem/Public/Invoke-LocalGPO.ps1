@@ -29,7 +29,7 @@ function Invoke-LocalGPO {
     Custom - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
     .PARAMETER Chrome
-    DISA STIG (v2r5) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r6) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
     
     .PARAMETER Defender
     DISA STIG (v2r3) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -171,7 +171,7 @@ function Invoke-LocalGPO {
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Chrome"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Defender {
