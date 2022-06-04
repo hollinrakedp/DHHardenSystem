@@ -41,7 +41,7 @@ function Invoke-LocalGPO {
     DISA STIG (v1r4) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Firefox
-    DISA STIG (v6r1) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v6r2) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
     DISA STIG (v2r1) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -195,7 +195,7 @@ function Invoke-LocalGPO {
         Firefox {
             if ($PSCmdlet.ShouldProcess("Edge: $Firefox", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Edge"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         IE11 {
