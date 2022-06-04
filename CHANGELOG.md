@@ -1,4 +1,17 @@
 # DHHardSystem Change Log
+## v0.12.0 (2022-06-04)
+Updated to the latest GPO Release (May 2022) for the STIGs used within this module.
+
+### Fixes
+
+### Changes
+* STIG - Defender - Updated to v2r4
+* SITG - Firefox - Updated to v6r1
+* SITG - Windows 10 - Updated to v2r4
+* SITG - Server 2016 - Updated to v2r4
+* SITG - Server 2019 - Updated to v2r4
+### Other
+- Invoke-LocalGPO - Corrected statements for Firefox STIG
 ## v0.11.0 (2022-05-15)
 Updated to the latest GPO Release (April 2022) for the STIGs used within this module.
 
