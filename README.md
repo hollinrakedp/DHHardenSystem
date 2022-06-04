@@ -29,7 +29,7 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the the January 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the May 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
