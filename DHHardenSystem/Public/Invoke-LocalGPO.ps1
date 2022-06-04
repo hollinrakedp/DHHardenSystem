@@ -6,7 +6,7 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    The DISA GPOs included are based on the January 2022 GPO package.
+    The DISA GPOs included are based on the May 2022 GPO package.
 
     Keep in mind the following:
      - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
