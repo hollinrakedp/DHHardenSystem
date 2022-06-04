@@ -1,0 +1,4 @@
+﻿<PolicyRules>
+<UserConfig><Key>Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</Key><Value>NoReadingPane</Value><RegType>REG_DWORD</RegType><RegData>1</RegData><SourceFile>C:\Export\GPO\DoD\DoD Windows Server 2019 MS and DC V2R4\GPOs\{311B2498-EA08-4F76-BF1D-E2412328A084}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD Windows Server 2019 Member Server STIG User v2r4</PolicyName></UserConfig>
+<UserConfig><Key>Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</Key><Value>NoPreviewPane</Value><RegType>REG_DWORD</RegType><RegData>1</RegData><SourceFile>C:\Export\GPO\DoD\DoD Windows Server 2019 MS and DC V2R4\GPOs\{311B2498-EA08-4F76-BF1D-E2412328A084}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD Windows Server 2019 Member Server STIG User v2r4</PolicyName></UserConfig>
+</PolicyRules>

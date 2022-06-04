@@ -83,7 +83,7 @@ function Invoke-LocalGPO {
     DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Server2016', and 'Server2019'.
         Windows 10 - v2r4
         Server 2016 - v2r4
-        Server 2019 - v2r3
+        Server 2019 - v2r4
 
     .EXAMPLE
     Invoke-LocalGPO -OS Win10
@@ -294,8 +294,8 @@ function Invoke-LocalGPO {
                     }
                     Server2019 {
                         Write-Verbose "Applying GPO: Server 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
