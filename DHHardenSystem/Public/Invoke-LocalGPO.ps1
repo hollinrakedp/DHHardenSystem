@@ -32,7 +32,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r6) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
     
     .PARAMETER Defender
-    DISA STIG (v2r3) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
     Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts)
@@ -177,7 +177,7 @@ function Invoke-LocalGPO {
         Defender {
             if ($PSCmdlet.ShouldProcess("Defender: $Defender", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Defender"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         DisplayLogonInfo {
