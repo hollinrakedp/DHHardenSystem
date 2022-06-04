@@ -193,8 +193,8 @@ function Invoke-LocalGPO {
             }
         }
         Firefox {
-            if ($PSCmdlet.ShouldProcess("Edge: $Firefox", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Edge"
+            if ($PSCmdlet.ShouldProcess("Firefox: $Firefox", "Apply GPO")) {
+                Write-Verbose "Applying GPO: Firefox"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
