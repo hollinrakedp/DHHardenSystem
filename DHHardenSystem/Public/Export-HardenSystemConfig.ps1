@@ -40,7 +40,7 @@ function Export-HardenSystemConfig {
 
     PS C:\>$DisableScheduledTask = @{TaskName = $TaskName; TaskPath = $TaskPath}
 
-    PS C:\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask $DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TripleDES -RemoveWinApp $RemoveWinApp -FilePath .\Default.json
+    PS C:\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask $DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TLS11Server, TripleDES -RemoveWinApp $RemoveWinApp -FilePath .\Default.json
     This set of commands creates the 'Default.json' file included with this module.
 
     #>
