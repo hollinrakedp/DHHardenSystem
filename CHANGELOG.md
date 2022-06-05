@@ -1,4 +1,16 @@
 # DHHardSystem Change Log
+## v0.13.0 (2022-06-04)
+Adding the mitigations for disabling TLS 1.1 on the systems
+
+### Fixes
+
+### Changes
+* Added mitigation (TLS11Client) for disabling TLS 1.1 Client
+* Added mitigation (TLS11Server) for disabling TLS 1.1 Server
+* Updated Default.json to include the TLS11Server mitigation
+
+### Other
+
 ## v0.12.0 (2022-06-04)
 Updated to the latest GPO Release (May 2022) for the STIGs used within this module.
 
