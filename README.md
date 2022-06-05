@@ -68,6 +68,10 @@ The items included in this category are typically found via a vulnerability scan
     - Disables the TLS 1.0 client protocol on the system
 - TLS1Server
     - Disables the TLS 1.0 server protocol on the system
+- TLS11Client
+    - Disables the TLS 1.1 client protocol on the system
+- TLS11Server
+    - Disables the TLS 1.1 server protocol on the system
 - TripleDES
     - Disables the TripleDES algorithm (SWEET32)
 
