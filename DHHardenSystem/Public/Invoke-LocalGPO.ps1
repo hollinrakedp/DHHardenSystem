@@ -148,6 +148,10 @@ function Invoke-LocalGPO {
         Write-Error "No parameter was specified." -ErrorAction Stop
     }
 
+    if (!(Get-Command lgpo.exe -ErrorAction SilentlyContinue)) {
+        Write-Error "Unable to find 'LGPO.exe'. Ensure it has been downloaded and added to 'PATH'." -ErrorAction Stop
+    }
+
     $ModulePath = $($(Get-Module $($(Get-Command Invoke-HardenSystem).Source)).ModuleBase)
     $CustomGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\Custom"
     $DoDGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\DoD"
