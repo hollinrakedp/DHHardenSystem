@@ -38,7 +38,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
-    Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Faild logon attempts)
+    Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
 
     .PARAMETER Edge
     DISA STIG (v1r5) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -50,7 +50,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r2) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER Firewall
-    DISA GPO (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER NetBanner
     Configures the Microsoft NetBanner application. Valid values are 'FOUO', 'Secret', 'SecretNoForn', 'TopSecret', 'Unclass', and 'Test'.
@@ -77,7 +77,7 @@ function Invoke-LocalGPO {
     Office 2019 (v2r6)
 
     .PARAMETER ReaderDC
-    DISA GPO (v2r1) Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r1) - Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER RequireCtrlAltDel
     Custom - Configures the requirement for the user to press Ctrl + Alt + Del on the lock screen to bring up the login prompt.
@@ -283,7 +283,7 @@ function Invoke-LocalGPO {
         }
         ReaderDC {
             if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
-                Write-Verbose "Applying GPO: RequireCtrlAltDel"
+                Write-Verbose "Applying GPO: Adobe Reader DC"
                 & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             } 
