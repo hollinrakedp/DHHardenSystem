@@ -7,7 +7,7 @@ This module uses a few different methods for hardening a system. The primary met
 This module has a single outside dependency.
 - LGPO.exe
     - This is provided by Microsoft as part of the Secuirty Compliance Toolkit (SCT). See the 'Resources' section for a link to the download.
-    - It is expected that 'LGPO.exe' is available from your system's PATH. The module will automatically add the 'LGPO' folder within the module to this location when it is loaded. So long as you add the file to this location, no addtional configuration is needed.
+    - It is expected that 'LGPO.exe' is available from your system's PATH. The module will automatically add the 'LGPO' folder within the module to this location when it is loaded. So long as you add the file to this location, no additional configuration is needed.
 
 
 ## Quick Start
@@ -29,7 +29,7 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the May 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the July 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
@@ -108,11 +108,12 @@ This is used to create a configuration file that can then be imported and passed
 ### Import-HardenSystemConfig
 This is useds to import a configuration file created with the 'Export-HardenSystemConfig' command. It can be piped directly to 'Invoke-HardenSystem'.
 
+### Export-LocalGPO
+This is used to export the system's current Local Group Policy configuration.
 
 ## To-Do
 There are a few items I'm looking to possibly add to this module. This list is mainly to remind myself and there's no guarantees it'll be added at any point.
 - Invoke-LocalGPO: Copy the exploit protection file to a location on the local system. Update the reference to this location in the Win10 STIG before applying the GPO.
-- Invoke-LocalGPO: Check for the LGPO executable
 - Invoke-LocalGPO: Allow import of custom PolicyFiles
 - Invoke-HardenSystem: Add parameter to export the configuration being applied
 - Export of the current system configuration
