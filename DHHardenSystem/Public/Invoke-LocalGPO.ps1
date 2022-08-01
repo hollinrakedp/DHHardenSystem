@@ -44,7 +44,7 @@ function Invoke-LocalGPO {
     DISA STIG (v6r2) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
-    DISA STIG (v2r1) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r2) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER Firewall
     DISA GPO (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -205,8 +205,8 @@ function Invoke-LocalGPO {
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
                 Write-Verbose "Applying GPO: IE11"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firewall {
