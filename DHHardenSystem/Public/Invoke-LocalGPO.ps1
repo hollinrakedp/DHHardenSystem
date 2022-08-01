@@ -25,6 +25,9 @@ function Invoke-LocalGPO {
     .LINK
     https://public.cyber.mil/stigs/gpo/
 
+    .PARAMETER AcrobatProDC
+    DISA STIG (v2r1) - Configured Adobe Acrobat Pro (DC) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+
     .PARAMETER AppLocker
     Custom - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
@@ -110,6 +113,8 @@ function Invoke-LocalGPO {
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$AcrobatProDC,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('Audit', 'Enforce')]
         [string]$AppLocker,
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -157,6 +162,13 @@ function Invoke-LocalGPO {
     $DoDGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\DoD"
 
     switch ($PSBoundParameters.Keys) {
+        AcrobatProDC {
+            if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
+                Write-Verbose "Applying GPO: Adobe Acrobat Pro DC"
+                & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+            } 
+        }
         Applocker {
             if ($PSCmdlet.ShouldProcess("AppLocker: $AppLocker", "Apply GPO")) {
                 Write-Verbose "Applocker was specified"
