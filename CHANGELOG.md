@@ -1,4 +1,20 @@
 # DHHardSystem Change Log
+## v0.14.0 (2022-08-01)
+Updated to the latest GPO Release (July 2022) for the STIGs used within this module. Added a function to backup the current local group policy of the system.
+
+### Fixes
+* Invoke-LocalGPO: Exits if the LGPO executable is not found
+### Changes
+* Invoke-LocalGPO: Added the Acrobat Pro DC STIG (Parameter: AcrobatProDC)
+* Export-LocalGPO: New function added. Backup the local group policy of the system.
+* SITG - Internet Exporer 11 - Updated to v2r2
+* SITG - Edge - Updated to v1r5
+* SITG - Firefox - Updated to v6r3
+* SITG - Office 2019/365 - Updated to v2r6
+
+### Other
+* Cleanup of spelling, punctuation, and formatting
+
 ## v0.13.0 (2022-06-04)
 Adding the mitigations for disabling TLS 1.1 on the systems
 
