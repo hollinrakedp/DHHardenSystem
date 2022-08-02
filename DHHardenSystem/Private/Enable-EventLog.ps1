@@ -17,7 +17,9 @@
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$LogName
+        [string[]]$LogName,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
     begin {
         $Logs = Get-WinEvent -ListLog $LogName
@@ -26,10 +28,10 @@
         foreach ($Log in $Logs) {
             if ($PSCmdlet.ShouldProcess("$($Log.LogName)")) {
                 if ($Log.IsEnabled) {
-                    Write-Verbose "The log `"$($Log.LogName)`" is already enabled."
+                    Write-LogEntry -Tee:$Tee -LogMessage "The log `"$($Log.LogName)`" is already enabled."
                 }
                 else {
-                    Write-Verbose "Enable Log: $($Log.LogName)"
+                    Write-LogEntry -Tee:$Tee -LogMessage "Enable Log: $($Log.LogName)"
                     $Log.set_IsEnabled($true)
                     $Log.SaveChanges()
                 }

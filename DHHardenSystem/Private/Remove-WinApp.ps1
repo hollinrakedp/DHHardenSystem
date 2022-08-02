@@ -17,7 +17,9 @@ function Remove-WinApp {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$App
+        [string[]]$App,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
 
     ForEach ($AppName in $App) {
@@ -26,24 +28,24 @@ function Remove-WinApp {
  
         if ($PackageFullName) {
             if ($PSCmdlet.ShouldProcess("$PackageFullName", "Remove-AppxPackage")) {
-                Write-Verbose "Removing Package: $AppName"
+                Write-LogEntry -Tee:$Tee -LogMessage "Removing Package: $AppName"
                 Remove-AppxPackage -Package $PackageFullName
             }
         }
  
         else {
-            Write-Verbose "Unable To Find Package: $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Package: $AppName"
         }
  
         if ($ProPackageFullName) {
             if ($PSCmdlet.ShouldProcess("$ProPackageFullName", "Remove-AppxProvisionedPackage")) {
-                Write-Verbose "Removing Provisioned Package: $ProPackageFullName"
+                Write-LogEntry -Tee:$Tee -LogMessage "Removing Provisioned Package: $ProPackageFullName"
                 Remove-AppxProvisionedPackage -Online -PackageName $ProPackageFullName
             }
         }
  
         else {
-            Write-Verbose "Unable To Find Provisioned Package: $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Provisioned Package: $AppName"
         }
     }
 }

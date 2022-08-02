@@ -30,7 +30,9 @@
     Param(
         [Parameter()]
         [string[]]$TaskName = @("Adobe Acrobat Update Task", "Consolidator", "OneDrive Standalone Update Task v2", "XblGameSaveTask"),
-        [string[]]$TaskPath = @("\Microsoft\Windows\Bluetooth\")
+        [string[]]$TaskPath = @("\Microsoft\Windows\Bluetooth\"),
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
 
     begin {
@@ -42,6 +44,7 @@
         foreach ($Name in $TaskName) {
             If (($AllScheduledTasks.TaskName) -contains $Name) {
                 if ($PSCmdlet.ShouldProcess("$Name")) {
+                    Write-LogEntry -Tee:$Tee -LogMessage "Disabling Task Name: $Name"
                     Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask
                 }
             }
@@ -50,6 +53,7 @@
         Foreach ($Path in $TaskPath) {
             If (($AllScheduledTasks.TaskPath) -contains $Path) {
                 if ($PSCmdlet.ShouldProcess("$Path")) {
+                    Write-LogEntry -Tee:$Tee -LogMessage "Disabling Task Path: $Path"
                     Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask
                 }
             }

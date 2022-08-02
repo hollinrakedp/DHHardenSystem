@@ -1,4 +1,14 @@
 # DHHardSystem Change Log
+## v0.15.0 (2022-08-01)
+This is the initial release with the capability to log to a file.
+
+### Fixes
+
+### Changes
+* Added log file output. The log file is located in 'C:\temp\logs' named 'PowerShell-yyyyMMdd.log'.
+
+### Other
+
 ## v0.14.0 (2022-08-01)
 Updated to the latest GPO Release (July 2022) for the STIGs used within this module. Added a function to backup the current local group policy of the system.
 
