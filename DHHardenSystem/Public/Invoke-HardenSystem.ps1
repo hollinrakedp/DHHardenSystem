@@ -43,6 +43,9 @@ function Invoke-HardenSystem {
     .PARAMETER RemoveWinApp
     Removes the supplied list of UWP Applications from the system.
 
+    .PARAMETER Tee
+    Displays the log output to the console.
+
     .EXAMPLE
     Invoke-HardenSystem -DEP OptOut
     Confirm
@@ -87,58 +90,62 @@ function Invoke-HardenSystem {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$Mitigation,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string[]]$RemoveWinApp
+        [string[]]$RemoveWinApp,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
 
+    Write-LogEntry -StartLog
     switch ($PSBoundParameters.Keys) {
         ApplyGPO {
             $GPO = @{}
             ($ApplyGPO | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $GPO[$_.Name] = $_.Value }
             $GPOString = $(foreach ($kvp in $GPO.GetEnumerator()) { $kvp.Key + ':' + $kvp.Value }) -join ', '
-            Write-Verbose "Option Selected: ApplyGPO"
-            Write-Verbose "Passing GPOs: $GPOString"
-            Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: ApplyGPO"
+            Write-LogEntry -Tee:$Tee -LogMessage "Passing GPOs: $GPOString"
+            Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         DEP {
-            Write-Verbose "Option Selected: DEP"
-            Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DEP"
+            Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         DisablePoShV2 {
-            Write-Verbose "Option Selected: DisablePoshV2"
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisablePoshV2"
             if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
-                Disable-PoShV2 -WhatIf:$WhatIfPreference
+                Disable-PoShV2 -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         DisableScheduledTask {
             $ScheduledTask = @{}
             ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
-            Write-Verbose "Option Selected: DisableScheduledTasks"
-            Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableScheduledTasks"
+            Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         DisableService {
-            Write-Verbose "Option Selected: DisableServices"
-            Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableServices"
+            Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         EnableLog {
-            Write-Verbose "Option Selected: EnableLog"
-            Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: EnableLog"
+            Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         LocalUserPasswordExpires {
-            Write-Verbose "Option Selected: LocalUserPasswordExpires"
-            Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: LocalUserPasswordExpires"
+            Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference -Tee:$Tee
         }
         Mitigation {
-            Write-Verbose "Option Selected: Mitigation"
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: Mitigation"
             foreach ($Mitigate in $Mitigation) {
                 if ($PSCmdlet.ShouldProcess("$Mitigate", "Mitigate")) {
-                    Write-Verbose "Enabling Mitigation: $Mitigate"
+                    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: $Mitigate"
                     & $Mitigate
                 }
             }
         }
         RemoveWinApp {
-            Write-Verbose "Option Selected: RemoveWinApp"
-            Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference
+            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: RemoveWinApp"
+            Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
         }
     }
+    Write-LogEntry -StopLog
 }

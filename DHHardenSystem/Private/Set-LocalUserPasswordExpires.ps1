@@ -18,11 +18,14 @@ function Set-LocalUserPasswordExpires {
         ConfirmImpact = 'High',
         SupportsShouldProcess)]
     param (
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
     $Users = Get-LocalUser | Where-Object { ($_.Enabled -eq $true) -and ($null -eq $_.PasswordExpires) }
     
     foreach ($User in $Users) {
         if ($PSCmdlet.ShouldProcess("$User")) {
+            Write-LogEntry -Tee:$Tee -LogMessage "Setting password to expire for user: $User"
             $User | Set-LocalUser -PasswordNeverExpires:$false
         }
     }

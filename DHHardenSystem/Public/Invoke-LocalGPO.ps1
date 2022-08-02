@@ -88,6 +88,9 @@ function Invoke-LocalGPO {
         Server 2016 - v2r4
         Server 2019 - v2r4
 
+    .PARAMETER Tee
+    Displays the log output to the console.
+
     .EXAMPLE
     Invoke-LocalGPO -OS Win10
     Confirm
@@ -146,7 +149,9 @@ function Invoke-LocalGPO {
         [switch]$RequireCtrlAltDel,
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('Win10', 'Server2016', 'Server2019')]
-        [string]$OS
+        [string]$OS,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
 
     if ($PSBoundParameters.Keys.Count -eq 0) {
@@ -157,6 +162,7 @@ function Invoke-LocalGPO {
         Write-Error "Unable to find 'LGPO.exe'. Ensure it has been downloaded and added to 'PATH'." -ErrorAction Stop
     }
 
+    Write-LogEntry -StartLog
     $ModulePath = $($(Get-Module $($(Get-Command Invoke-HardenSystem).Source)).ModuleBase)
     $CustomGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\Custom"
     $DoDGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\DoD"
@@ -164,21 +170,21 @@ function Invoke-LocalGPO {
     switch ($PSBoundParameters.Keys) {
         AcrobatProDC {
             if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Adobe Acrobat Pro DC"
+                Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
                 & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             } 
         }
         Applocker {
             if ($PSCmdlet.ShouldProcess("AppLocker: $AppLocker", "Apply GPO")) {
-                Write-Verbose "Applocker was specified"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applocker was specified"
                 switch ($AppLocker) {
                     Audit {
-                        Write-Verbose "Applying GPO: AppLockerAudit"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerAudit"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Enforce {
-                        Write-Verbose "Applying GPO: AppLockerEnforce"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerEnforce"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
@@ -186,73 +192,73 @@ function Invoke-LocalGPO {
         }
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Chrome"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Chrome"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Defender {
             if ($PSCmdlet.ShouldProcess("Defender: $Defender", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Defender"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Defender"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         DisplayLogonInfo {
             if ($PSCmdlet.ShouldProcess("DisplayLogonInfo: $DisplayLogonInfo", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Disable Logon Info"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Disable Logon Info"
                 & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Edge {
             if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Edge"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Edge"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firefox {
             if ($PSCmdlet.ShouldProcess("Firefox: $Firefox", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Firefox"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firefox"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
-                Write-Verbose "Applying GPO: IE11"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: IE11"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firewall {
             if ($PSCmdlet.ShouldProcess("Firewall: $Firewall", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Firewall"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firewall"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Firewall v1r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         NetBanner {
             if ($PSCmdlet.ShouldProcess("NetBanner: $Netbanner", "Apply GPO")) {
-                Write-Verbose "NetBanner was specified"
+                Write-LogEntry -Tee:$Tee -LogMessage "NetBanner was specified"
                 switch ($Netbanner) {
                     FOUO {
-                        Write-Verbose "Applying GPO: NetbannerFOUO"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Secret {
-                        Write-Verbose "Applying GPO: NetbannerSecret"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecret"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     SecretNoForn {
-                        Write-Verbose "Applying GPO: NetbannerSecretNoForn"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecretNoForn"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Test {
-                        Write-Verbose "Applying GPO: NetbannerTest"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTest"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     TopSecret {
-                        Write-Verbose "Applying GPO: NetbannerTopSecret"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTopSecret"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Unclass {
-                        Write-Verbose "Applying GPO: NetbannerUnclass"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerUnclass"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$($env:COMPUTERNAME)_lgpor.log"
                     }
                 }
@@ -260,21 +266,21 @@ function Invoke-LocalGPO {
         }
         NoPreviousUser {
             if ($PSCmdlet.ShouldProcess("NoPreviousUser: $NoPreviousUser", "Apply GPO")) {
-                Write-Verbose "Applying GPO: NoPreviousUser"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NoPreviousUser"
                 & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Office {
             if ($PSCmdlet.ShouldProcess("Office: $Office", "Apply GPO")) {
-                Write-Verbose "Office was specified"
+                Write-LogEntry -Tee:$Tee -LogMessage "Office was specified"
                 switch ($Office) {
                     '2016' {
-                        Write-Verbose "Applying GPO: Office2016"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Office2016"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2016 - Combined.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2016 - Combined.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     '2019' {
-                        Write-Verbose "Applying GPO: Office 2019"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Office 2019"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
@@ -290,32 +296,32 @@ function Invoke-LocalGPO {
         }
         RequireCtrlAltDel {
             if ($PSCmdlet.ShouldProcess("RequireCtrlAltDel: $RequireCtrlAltDel", "Apply GPO")) {
-                Write-Verbose "Applying GPO: RequireCtrlAltDel"
+                Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: RequireCtrlAltDel"
                 & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             } 
         }
         OS {
             if ($PSCmdlet.ShouldProcess("OS: $OS", "Apply GPO")) {
-                Write-Verbose "OS was specified"
+                Write-LogEntry -Tee:$Tee -LogMessage "OS was specified"
                 switch ($OS) {
                     Win10 {
-                        Write-Verbose "Applying GPO: Win10"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Win10"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows 10 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows 10 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Server2016 {
-                        Write-Verbose "Applying GPO: MS Server 2016"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: MS Server 2016"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Server2019 {
-                        Write-Verbose "Applying GPO: Server 2019"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2019"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
         }
-
     }
+    Write-LogEntry -StopLog
 }

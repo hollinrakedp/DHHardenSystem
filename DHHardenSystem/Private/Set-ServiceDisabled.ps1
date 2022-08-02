@@ -19,7 +19,9 @@
         [Parameter(ValueFromPipeline,
             ValueFromPipelineByPropertyName,
             Mandatory)]
-        [string[]]$Name
+        [string[]]$Name,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
 
     begin {
@@ -39,23 +41,21 @@
                     }
                 }
                 else {
-                    Write-Verbose "Service is already disabled: $NamedService"
+                    Write-LogEntry -Tee:$Tee -LogMessage "Service is already disabled: $NamedService"
                     $ServiceAlreadyDisabled += $NamedService
                 }
             }
             else {
-                Write-Verbose "The following service did not exist: $NamedService"
+                Write-LogEntry -Tee:$Tee -LogMessage "The following service did not exist: $NamedService"
                 $ServiceNotExist += $NamedService
             }
         }
-        
     }
 
     end {
         # Report which services were modified
-        Write-Verbose "Disabled the following service(s): $($ServiceDisabled -join ', ')"
-        Write-Verbose "The following service(s) were already disabled: $($ServiceAlreadyDisabled -join ', ')"
-        Write-Verbose "The following service(s) did not exist: $($ServiceNotExist -join ', ')"
-        
+        Write-LogEntry -Tee:$Tee -LogMessage "Disabled the following service(s): $($ServiceDisabled -join ', ')"
+        Write-LogEntry -Tee:$Tee -LogMessage "The following service(s) were already disabled: $($ServiceAlreadyDisabled -join ', ')"
+        Write-LogEntry -Tee:$Tee -LogMessage "The following service(s) did not exist: $($ServiceNotExist -join ', ')"
     }
 }

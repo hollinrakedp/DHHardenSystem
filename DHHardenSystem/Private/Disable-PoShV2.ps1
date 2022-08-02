@@ -16,13 +16,15 @@
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
     if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
         if ((Get-WindowsOptionalFeature -Online -FeatureName MicrosoftWindowsPowerShellV2Root).State -eq "Disabled") {
-            Write-Host "Feature is already removed. Nothing to do..."
+            Write-LogEntry -Tee:$Tee -LogMessage "PowerShell v2 Feature is already removed. Nothing to do..."
         }
         else {
-            Write-Host "Removing Feature: $((Get-WindowsOptionalFeature -Online -FeatureName MicrosoftWindowsPowerShellV2Root).DisplayName)"
+            Write-LogEntry -Tee:$Tee -LogMessage "Removing Feature: $((Get-WindowsOptionalFeature -Online -FeatureName MicrosoftWindowsPowerShellV2Root).DisplayName)"
             Disable-WindowsOptionalFeature -Online -FeatureName MicrosoftWindowsPowerShellV2Root -Verbose
         }
     }
