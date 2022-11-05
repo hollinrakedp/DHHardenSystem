@@ -6,21 +6,21 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    The DISA GPOs included are based on the May 2022 GPO package.
+    The DISA GPOs included are based on the October 2022 GPO package.
 
     Keep in mind the following:
      - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
      - For the GPO's that configure applications, no check is make to ensure the application is installed.
-     - If the GPO has admx/adml files that are not included with the base installation of Windows, they will show up as extra registry settings when viewed from gpedit.msc 
+     - If the GPO has admx/adml files that are not included with the base installation of Windows, they will show up as extra registry settings when viewed from gpedit.msc
      - If the system is/will be joined to a domain, these local GPO's will not be processed if the following GPO setting is enabled:
           Computer Configuration > Administrative Templates > System > Group Policy: Turn off Local Group Policy objects processing
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 0.6
+    Version      - 1.0
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2022-06-04
+    Date Updated - 2022-11-05
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
