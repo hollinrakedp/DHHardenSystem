@@ -1,5 +1,5 @@
 # DHHardSystem Change Log
-## v0.16.0 (2022-11-05)
+## v1.0.0 (2022-11-05)
 ### Added
 * Added the Windows 11 STIG (v1r2)
 * Added the Server 2022 STIG (v1r1)
