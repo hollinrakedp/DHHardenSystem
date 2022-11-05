@@ -74,7 +74,7 @@ function Invoke-LocalGPO {
         User - Publisher 2016 - v1r3
         User - Visio 2016 - v1r1
         User - Word 2016 - v1r1
-    Office 2019 (v2r6)
+    Office 2019/365 (v2r7)
 
     .PARAMETER ReaderDC
     DISA STIG (v2r1) - Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -281,8 +281,8 @@ function Invoke-LocalGPO {
                     }
                     '2019' {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Office 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v2r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v2r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
