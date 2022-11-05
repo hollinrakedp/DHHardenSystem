@@ -83,11 +83,12 @@ function Invoke-LocalGPO {
     Custom - Configures the requirement for the user to press Ctrl + Alt + Del on the lock screen to bring up the login prompt.
 
     .PARAMETER OS
-    DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Win11', 'Server2016', and 'Server2019'.
+    DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Win11', 'Server2016', 'Server2019', and 'Server2022'. This applies both User and Computer settings.
         Windows 10 - v2r5
         Windows 11 - v1r2
         Server 2016 - v2r5
         Server 2019 - v2r5
+        Server 2022 - v1r1 (Computer Settings Only)
 
     .PARAMETER Tee
     Displays the log output to the console.
@@ -324,6 +325,10 @@ function Invoke-LocalGPO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2019"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2019 Member Server v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                    }
+                    Server2022 {
+                        Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2022"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v1r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
