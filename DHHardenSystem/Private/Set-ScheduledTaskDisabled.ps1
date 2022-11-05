@@ -4,7 +4,7 @@
     Disables a list of scheudled tasks.
 
     .DESCRIPTION
-    This script will disabled unnecessary scheduled tasks on the system it's ran. You can specify a list of task names, list of 
+    This script will disabled unnecessary scheduled tasks on the system it's ran. You can specify a list of task names, list of
     task paths, or both.
 
     .NOTES

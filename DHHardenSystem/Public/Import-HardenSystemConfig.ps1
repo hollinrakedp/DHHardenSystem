@@ -12,7 +12,7 @@ function Import-HardenSystemConfig {
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2021-08-06
-    
+
     .PARAMETER FilePath
     Provide the file path for the configuration file to import.
 

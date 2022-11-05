@@ -25,25 +25,25 @@ function Remove-WinApp {
     ForEach ($AppName in $App) {
         $PackageFullName = (Get-AppxPackage $AppName).PackageFullName
         $ProPackageFullName = (Get-AppxProvisionedPackage -Online | Where-Object { $_.Displayname -eq $AppName }).PackageName
- 
+
         if ($PackageFullName) {
             if ($PSCmdlet.ShouldProcess("$PackageFullName", "Remove-AppxPackage")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Removing Package: $AppName"
                 Remove-AppxPackage -Package $PackageFullName
             }
         }
- 
+
         else {
             Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Package: $AppName"
         }
- 
+
         if ($ProPackageFullName) {
             if ($PSCmdlet.ShouldProcess("$ProPackageFullName", "Remove-AppxProvisionedPackage")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Removing Provisioned Package: $ProPackageFullName"
                 Remove-AppxProvisionedPackage -Online -PackageName $ProPackageFullName
             }
         }
- 
+
         else {
             Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Provisioned Package: $AppName"
         }

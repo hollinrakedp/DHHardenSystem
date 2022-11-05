@@ -34,7 +34,7 @@ function Write-LogEntry {
         [Parameter()]
         [switch]$Tee
     )
-    
+
     begin {
         if (!$PSBoundParameters.ContainsKey('ErrorAction')) {
             $ErrorActionPreference = $PSCmdlet.GetVariableValue('ErrorActionPreference')
@@ -67,7 +67,7 @@ function Write-LogEntry {
             }
         }
     }
-    
+
     process {
         switch ($PSCmdlet.ParameterSetName) {
             'LogMessage' {
@@ -97,6 +97,6 @@ function Write-LogEntry {
             }
         }
     }
-    
+
     end {}
 }

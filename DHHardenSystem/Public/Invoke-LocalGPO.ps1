@@ -33,7 +33,7 @@ function Invoke-LocalGPO {
 
     .PARAMETER Chrome
     DISA STIG (v2r7) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
-    
+
     .PARAMETER Defender
     DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
@@ -175,7 +175,7 @@ function Invoke-LocalGPO {
                 Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
                 & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-            } 
+            }
         }
         Applocker {
             if ($PSCmdlet.ShouldProcess("AppLocker: $AppLocker", "Apply GPO")) {
@@ -294,13 +294,13 @@ function Invoke-LocalGPO {
                 Write-Verbose "Applying GPO: Adobe Reader DC"
                 & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-            } 
+            }
         }
         RequireCtrlAltDel {
             if ($PSCmdlet.ShouldProcess("RequireCtrlAltDel: $RequireCtrlAltDel", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: RequireCtrlAltDel"
                 & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-            } 
+            }
         }
         OS {
             if ($PSCmdlet.ShouldProcess("OS: $OS", "Apply GPO")) {

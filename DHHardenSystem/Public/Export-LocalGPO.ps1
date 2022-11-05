@@ -11,7 +11,7 @@ function Export-LocalGPO {
     Version      - 0.1
     Author       - Darren Hollinrake
     Date Created - 2022-08-01
-    Date Updated - 
+    Date Updated -
 
     #>
     [CmdletBinding()]

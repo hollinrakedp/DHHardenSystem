@@ -6,7 +6,7 @@
     .DESCRIPTION
     The script changes the startup type to "Disabled" for a list of services. Provide a custom list to the 'Name' parameter.
 
-    .NOTES   
+    .NOTES
     Name       : Set-ServiceDisabled
     Author     : Darren Hollinrake
     Version    : 1.1.1
