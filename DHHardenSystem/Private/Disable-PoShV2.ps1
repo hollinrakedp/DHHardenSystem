@@ -6,7 +6,7 @@
     .DESCRIPTION
     The script removes the Windows feature for PowerShell V2.
 
-    .NOTES   
+    .NOTES
     Name       : Disable-PoShV2
     Author     : Darren Hollinrake
     Version    : 1.0

@@ -29,7 +29,7 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the July 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the October 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
@@ -42,8 +42,10 @@ The list of currently available GPO's in this module:
     - Application - Windows Defender Antivirus
     - Application - Windows Firewall
     - OS - Windows 10
+    - OS - Windows 11
     - OS - Server 2016
     - OS - Server 2019
+    - OS - Server 2022
 - Custom
     - AppLocker Audit
     - AppLocker Enforce
@@ -113,7 +115,6 @@ This is used to export the system's current Local Group Policy configuration.
 
 ## To-Do
 There are a few items I'm looking to possibly add to this module. This list is mainly to remind myself and there's no guarantees it'll be added at any point.
-- Invoke-LocalGPO: Copy the exploit protection file to a location on the local system. Update the reference to this location in the Win10 STIG before applying the GPO.
 - Invoke-LocalGPO: Allow import of custom PolicyFiles
 - Invoke-HardenSystem: Add parameter to export the configuration being applied
 - Export of the current system configuration

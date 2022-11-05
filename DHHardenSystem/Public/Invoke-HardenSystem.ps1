@@ -19,7 +19,7 @@ function Invoke-HardenSystem {
     .PARAMETER DEP
     Configures the Data Execution Prevention policy. Valid values are 'OptIn', 'OptOut', 'AlwaysOn', 'AlwaysOff'.
     Note: Changes to DEP require a reboot.
-    
+
     WARNING: This does not check to see if BitLocker is enabled on the system drive. If it is, be sure to suspend BitLocker before rebooting or it will prompt for a recovery key.
 
     .PARAMETER DisablePoShV2
@@ -52,7 +52,7 @@ function Invoke-HardenSystem {
     Are you sure you want to perform this action?
     Performing the operation "Set-DEP OptOut" on target "localhost".
     [Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"):
-    
+
     This example will set DEP on the system to 'OptOut'. Because the impact to the system is high, confirmation is required before each action will run.
 
     .EXAMPLE
