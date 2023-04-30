@@ -1,0 +1,4 @@
+﻿<PolicyRules>
+<UserConfig><Key>Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</Key><Value>NoReadingPane</Value><RegType>REG_DWORD</RegType><RegData>1</RegData><SourceFile>C:\Export\GPO\DoD\DoD WinSvr 2016 MS and DC V2R6\GPOs\{5C65611E-77B9-4D41-B190-548354A0BF4C}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD WinSvr 2016 MS STIG User v2r6</PolicyName></UserConfig>
+<UserConfig><Key>Software\Microsoft\Windows\CurrentVersion\Policies\Explorer</Key><Value>NoPreviewPane</Value><RegType>REG_DWORD</RegType><RegData>1</RegData><SourceFile>C:\Export\GPO\DoD\DoD WinSvr 2016 MS and DC V2R6\GPOs\{5C65611E-77B9-4D41-B190-548354A0BF4C}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD WinSvr 2016 MS STIG User v2r6</PolicyName></UserConfig>
+</PolicyRules>

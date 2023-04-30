@@ -1,5 +1,5 @@
 # DHHardenSystem
-The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10 (or Server 2016/2019). Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
+The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, and Server 2022. Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
 
 This module uses a few different methods for hardening a system. The primary method is the application of GPOs against the local group policy. The GPO's provided include DISA STIG GPOs and custom GPOs. There are also additional configuration items that can be set which are not controlled via GPO. Finally, there are mitigations that can be applied for items such as disabling old and insecure ciphers and protocols.
 
@@ -29,23 +29,23 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the October 2022 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the April 2023 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
-    - Application - Adobe Reader DC
-    - Application - Google Chrome
-    - Application - Internet Explorer 11
-    - Application - Firefox
-    - Application - Office 2016
-    - Application - Office 2019
-    - Application - Windows Defender Antivirus
-    - Application - Windows Firewall
-    - OS - Windows 10
-    - OS - Windows 11
-    - OS - Server 2016
-    - OS - Server 2019
-    - OS - Server 2022
+    - Application - Adobe Reader DC - v2r1
+    - Application - Google Chrome - v2r8
+    - Application - Internet Explorer 11 - v2r4
+    - Application - Firefox - v6r4
+    - Application - Office 2016 - Various
+    - Application - Office 2019/M365 - v2r8
+    - Application - Windows Defender Antivirus - v2r4
+    - Application - Windows Firewall - v1r7
+    - OS - Windows 10 - v2r6
+    - OS - Windows 11 - v1r3
+    - OS - Server 2016 - v2r6
+    - OS - Server 2019 - v2r6
+    - OS - Server 2022 - v1r2
 - Custom
     - AppLocker Audit
     - AppLocker Enforce
