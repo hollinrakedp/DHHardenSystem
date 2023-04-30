@@ -150,7 +150,7 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$RequireCtrlAltDel,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateSet('Win10', 'Server2016', 'Server2019')]
+        [ValidateSet('Win10','Win11', 'Server2016', 'Server2019', 'Server2022')]
         [string]$OS,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
