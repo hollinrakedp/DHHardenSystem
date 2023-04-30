@@ -1,9 +1,28 @@
 # DHHardSystem Change Log
+## v1.1.0 (2023-04-29)
+### Added
+* STIG versions added to README
+
+### Changed
+* Updated GPO STIGs to to April 2023 release
+    * Windows 10 v2r6
+    * Windows 11 v1r3
+    * Server 2016 v2r6
+    * Server 2019 v2r6
+    * Server 2022 v1r2
+    * Google Chrome v2r8
+    * Internet Explorer v2r4
+    * Office 2019/365 v2r8
+
+### Fixed
+* Invoke-LocalGPO: Added OS Options 'Win11' & 'Server2022'
+
 ## v1.0.0 (2022-11-05)
 ### Added
 * Added the Windows 11 STIG (v1r2)
 * Added the Server 2022 STIG (v1r1)
 * Added Markdown documentation
+
 ### Changed
 * Update GPO STIGs to to Oct 2022 release
     * Windows 10 v2r5
@@ -15,6 +34,7 @@
     * Office 2019/365 v2r7
 * Cleaned up formatting in CHANGELOG.md
 * Removed trailing whitespaces
+
 ### Fixed
 
 ### v0.15.0 (2022-08-01)
