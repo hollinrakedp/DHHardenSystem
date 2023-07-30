@@ -60,14 +60,14 @@ function Invoke-LocalGPO {
 
     .PARAMETER Office
     DISA GPO - Configures MS Office using the specified Office STIG. Valid values are '2016', and '2019'. This applies both User and Computer settings.
-    Office 2016, the following STIGs are applied:
+    For Office 2016, the following STIGs are applied:
         Computer - Skype for Business 2016 - v1r1
-        Computer - OneDrive for Business 2016 - v2r2
+        Computer - OneDrive for Business 2016 - v2r3
         Computer - Office System 2016 - v2r2
         User - Access 2016 - v1r1
         User - Excel 2016 - v1r2
-        User - Office System 2016 - v2r1
-        User - OneDrive for Business - v2r2
+        User - Office System 2016 - v2r2
+        User - OneDrive for Business - v2r3
         User - Outlook 2016 - v2r3
         User - PowerPoint 2016 - v1r1
         User - Project 2016 - v1r1
