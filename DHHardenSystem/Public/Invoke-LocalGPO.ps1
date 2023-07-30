@@ -6,7 +6,7 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    The DISA GPOs included are based on the April 2023 GPO package.
+    The DISA GPOs included are based on the July 2023 GPO package.
 
     Keep in mind the following:
      - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.1
+    Version      - 1.2
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2023-04-29
+    Date Updated - 2023-07-30
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -41,10 +41,10 @@ function Invoke-LocalGPO {
     Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
 
     .PARAMETER Edge
-    DISA STIG (v1r6) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v1r7) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Firefox
-    DISA STIG (v6r4) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v6r5) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
     DISA STIG (v2r4) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -60,14 +60,14 @@ function Invoke-LocalGPO {
 
     .PARAMETER Office
     DISA GPO - Configures MS Office using the specified Office STIG. Valid values are '2016', and '2019'. This applies both User and Computer settings.
-    Office 2016, the following STIGs are applied:
+    For Office 2016, the following STIGs are applied:
         Computer - Skype for Business 2016 - v1r1
-        Computer - OneDrive for Business 2016 - v2r2
+        Computer - OneDrive for Business 2016 - v2r3
         Computer - Office System 2016 - v2r2
         User - Access 2016 - v1r1
         User - Excel 2016 - v1r2
-        User - Office System 2016 - v2r1
-        User - OneDrive for Business - v2r2
+        User - Office System 2016 - v2r2
+        User - OneDrive for Business - v2r3
         User - Outlook 2016 - v2r3
         User - PowerPoint 2016 - v1r1
         User - Project 2016 - v1r1
@@ -88,7 +88,7 @@ function Invoke-LocalGPO {
         Windows 11 - v1r3
         Server 2016 - v2r6
         Server 2019 - v2r6
-        Server 2022 - v1r2 (Computer Settings Only)
+        Server 2022 - v1r3 (Computer Settings Only)
 
     .PARAMETER Tee
     Displays the log output to the console.
@@ -213,13 +213,13 @@ function Invoke-LocalGPO {
         Edge {
             if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Edge"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firefox {
             if ($PSCmdlet.ShouldProcess("Firefox: $Firefox", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firefox"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         IE11 {
@@ -328,7 +328,7 @@ function Invoke-LocalGPO {
                     }
                     Server2022 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2022"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v1r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v1r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
