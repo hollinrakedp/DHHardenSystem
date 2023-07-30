@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.1
+    Version      - 1.2
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2023-04-29
+    Date Updated - 2023-07-30
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -41,7 +41,7 @@ function Invoke-LocalGPO {
     Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
 
     .PARAMETER Edge
-    DISA STIG (v1r6) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v1r7) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Firefox
     DISA STIG (v6r4) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -213,7 +213,7 @@ function Invoke-LocalGPO {
         Edge {
             if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Edge"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r6.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v1r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firefox {
