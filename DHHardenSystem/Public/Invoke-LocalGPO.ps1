@@ -88,7 +88,7 @@ function Invoke-LocalGPO {
         Windows 11 - v1r3
         Server 2016 - v2r6
         Server 2019 - v2r6
-        Server 2022 - v1r2 (Computer Settings Only)
+        Server 2022 - v1r3 (Computer Settings Only)
 
     .PARAMETER Tee
     Displays the log output to the console.
@@ -328,7 +328,7 @@ function Invoke-LocalGPO {
                     }
                     Server2022 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2022"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v1r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v1r3.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
