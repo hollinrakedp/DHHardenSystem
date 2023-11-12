@@ -1,9 +1,23 @@
 # DHHardSystem Change Log
+## v1.3.0 (2023-11-12)
+### Added
+
+### Changed
+* Updated GPO STIGs to the October 2023 release
+    * Server 2016 v2r7
+    * Server 2019 v2r8
+    * Server 2022 v1r4
+    * Windows 10 v2r8
+    * Windows 11 v1r5
+    * Office 2019/365 v2r11
+
+### Fixed
+
 ## v1.2.0 (2023-07-30)
 ### Added
 
 ### Changed
-* Updated GPO STIGs to to July 2023 release
+* Updated GPO STIGs to the July 2023 release
     * Server 2022 v1r3
     * Edge v1r7
     * Firefox v6r5
