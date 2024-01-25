@@ -8,10 +8,10 @@ function Import-HardenSystemConfig {
 
     .NOTES
     Name         - Import-HardenSystemConfig
-    Version      - 0.1
+    Version      - 0.2
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-08-06
+    Date Updated - 2024-01-24
 
     .PARAMETER FilePath
     Provide the file path for the configuration file to import.
@@ -33,12 +33,17 @@ function Import-HardenSystemConfig {
         [Alias('Path')]
         [string]$FilePath
     )
-    if ((Test-Path $FilePath) -and ($FilePath -match '^*\.json')) {
-        $HardenSystemConfigObj = Get-Content "$FilePath" | ConvertFrom-Json
+    try {
+        if ((Test-Path $FilePath) -and ($FilePath -match '^*\.json')) {
+            $HardenSystemConfigObj = Get-Content "$FilePath" -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+        }
+        else {
+            Write-Warning "The specified path is not valid. Please provide a valid config file path to import."
+            return
+        }
+        $HardenSystemConfigObj
     }
-    else {
-        Write-Warning "The specified path is not valid. Please provide a valid config file path to import."
-        return
+    catch {
+        throw "Error during configuration file import: $_"
     }
-    $HardenSystemConfigObj
 }
