@@ -15,7 +15,7 @@ function Write-LogEntry {
         [string]$LogPath = "C:\temp\Logs",
 
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$LogFile = "PowerShell-$(Get-Date -Format yyyyMMdd).log",
+        [string]$LogFile = "DHHardenSystem-$(Get-Date -Format yyyyMMdd).log",
 
         [Parameter(ParameterSetName = 'LogMessage',
             ValueFromPipelineByPropertyName)]
