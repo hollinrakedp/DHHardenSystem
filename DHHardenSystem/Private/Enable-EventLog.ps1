@@ -6,9 +6,9 @@
     .NOTES
     Name        : Enable-EventLog
     Author      : Darren Hollinrake
-    Version     : 2.0
+    Version     : 2.1
     DateCreated : 2018-08-15
-    DateUpdated : 2024-01-15
+    DateUpdated : 2024-01-20
 
     .DESCRIPTION
     This script will enable the Windows event log for each log name provided.
@@ -27,15 +27,20 @@
     }
     process {
         foreach ($Log in $Logs) {
-            if ($PSCmdlet.ShouldProcess("$($Log.LogName)")) {
-                if ($Log.IsEnabled) {
-                    Write-LogEntry -Tee:$Tee -LogMessage "The log `"$($Log.LogName)`" is already enabled."
+            try {
+                if ($PSCmdlet.ShouldProcess("$($Log.LogName)")) {
+                    if ($Log.IsEnabled) {
+                        Write-LogEntry -Tee:$Tee -LogMessage "Event Log: Enable: Log Name: $($Log.LogName)`" - Is Already Enabled"
+                    }
+                    else {
+                        Write-LogEntry -Tee:$Tee -LogMessage "Event Log: Enable: Log Name: $($Log.LogName) - Enabling"
+                        $Log.set_IsEnabled($true)
+                        $Log.SaveChanges()
+                    }
                 }
-                else {
-                    Write-LogEntry -Tee:$Tee -LogMessage "Enable Log: $($Log.LogName)"
-                    $Log.set_IsEnabled($true)
-                    $Log.SaveChanges()
-                }
+            }
+            catch {
+                Write-LogEntry -Tee:$Tee -LogLevel ERROR -LogMessage "Event Log: Enable: Log Name: $($Log.LogName) Error: $_"
             }
         }
     }
