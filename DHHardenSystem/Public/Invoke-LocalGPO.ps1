@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.2
+    Version      - 1.3
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2023-11-12
+    Date Updated - 2024-01-24
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -155,6 +155,10 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
+
+    if (! (Test-IsAdmin)) {
+        Write-Error "Administrator privileges are required to apply GPOs." -ErrorAction Stop
+    }
 
     if ($PSBoundParameters.Keys.Count -eq 0) {
         Write-Error "No parameter was specified." -ErrorAction Stop
