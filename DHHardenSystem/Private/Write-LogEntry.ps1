@@ -74,7 +74,7 @@ function Write-LogEntry {
                 Write-Verbose "Log File Location: $LogFullPath"
                 if (!(Test-Path $LogFullPath)) {
                     Write-Verbose "Creating Log File"
-                    New-Item -Path $LogFullPath -Force -ItemType File | Out-Null
+                    New-Item -Path $LogFullPath -Force -ItemType File -WhatIf:$WhatIfPreference | Out-Null
                 }
                 $LogEntry = "$TimeStamp $($LogLevel.ToUpper())`: $LogMessage"
                 $LogEntry | Add-Content -Path $LogFullPath
