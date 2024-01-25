@@ -82,9 +82,9 @@ function Write-LogEntry {
                     Write-Host $LogEntry
                 }
                 switch ($LogLevel) {
-                    'Error' { Write-Error "$LogMessage" }
-                    'Warn' { Write-Warning "$LogMessage" }
-                    'Info' { Write-Verbose "$LogMessage" }
+                    'ERROR' { Write-Error "$LogMessage" }
+                    'WARN' { Write-Warning "$LogMessage" }
+                    'INFO' { Write-Verbose "$LogMessage" }
                 }
             }
             'StartLog' {
