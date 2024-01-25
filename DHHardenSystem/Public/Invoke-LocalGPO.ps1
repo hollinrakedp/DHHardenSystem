@@ -240,9 +240,9 @@ function Invoke-LocalGPO {
             }
         }
         NetBanner {
-            if ($PSCmdlet.ShouldProcess("NetBanner: $Netbanner", "Apply GPO")) {
+            if ($PSCmdlet.ShouldProcess("NetBanner: $NetBanner", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "NetBanner was specified"
-                switch ($Netbanner) {
+                switch ($NetBanner) {
                     FOUO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
