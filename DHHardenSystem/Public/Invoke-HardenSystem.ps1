@@ -8,10 +8,10 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.4.1
+    Version      - 0.5
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-08-31
+    Date Updated - 2024-01-24
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
@@ -94,58 +94,65 @@ function Invoke-HardenSystem {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
+    begin {
+        Write-LogEntry -StartLog
+    }
 
-    Write-LogEntry -StartLog
-    switch ($PSBoundParameters.Keys) {
-        ApplyGPO {
-            $GPO = @{}
+    process {
+        switch ($PSBoundParameters.Keys) {
+            ApplyGPO {
+                $GPO = @{}
             ($ApplyGPO | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $GPO[$_.Name] = $_.Value }
-            $GPOString = $(foreach ($kvp in $GPO.GetEnumerator()) { $kvp.Key + ':' + $kvp.Value }) -join ', '
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: ApplyGPO"
-            Write-LogEntry -Tee:$Tee -LogMessage "Passing GPOs: $GPOString"
-            Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        DEP {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DEP"
-            Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        DisablePoShV2 {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisablePoshV2"
-            if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
-                Disable-PoShV2 -WhatIf:$WhatIfPreference -Tee:$Tee
+                $GPOString = $(foreach ($kvp in $GPO.GetEnumerator()) { $kvp.Key + ':' + $kvp.Value }) -join ', '
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: ApplyGPO"
+                Write-LogEntry -Tee:$Tee -LogMessage "Passing GPOs: $GPOString"
+                Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference -Tee:$Tee
             }
-        }
-        DisableScheduledTask {
-            $ScheduledTask = @{}
-            ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableScheduledTasks"
-            Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        DisableService {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableServices"
-            Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        EnableLog {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: EnableLog"
-            Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        LocalUserPasswordExpires {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: LocalUserPasswordExpires"
-            Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference -Tee:$Tee
-        }
-        Mitigation {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: Mitigation"
-            foreach ($Mitigate in $Mitigation) {
-                if ($PSCmdlet.ShouldProcess("$Mitigate", "Mitigate")) {
-                    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: $Mitigate"
-                    & $Mitigate
+            DEP {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DEP"
+                Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            DisablePoShV2 {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisablePoshV2"
+                if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
+                    Disable-PoShV2 -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
             }
-        }
-        RemoveWinApp {
-            Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: RemoveWinApp"
-            Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
+            DisableScheduledTask {
+                $ScheduledTask = @{}
+            ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableScheduledTasks"
+                Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            DisableService {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: DisableServices"
+                Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            EnableLog {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: EnableLog"
+                Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            LocalUserPasswordExpires {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: LocalUserPasswordExpires"
+                Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            Mitigation {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: Mitigation"
+                foreach ($Mitigate in $Mitigation) {
+                    if ($PSCmdlet.ShouldProcess("$Mitigate", "Mitigate")) {
+                        Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: $Mitigate"
+                        & $Mitigate
+                    }
+                }
+            }
+            RemoveWinApp {
+                Write-LogEntry -Tee:$Tee -LogMessage "Option Selected: RemoveWinApp"
+                Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
         }
     }
-    Write-LogEntry -StopLog
+    
+    end {
+        Write-LogEntry -StopLog
+    }
 }
