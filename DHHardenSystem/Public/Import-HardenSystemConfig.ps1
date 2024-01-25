@@ -16,6 +16,14 @@ function Import-HardenSystemConfig {
     .PARAMETER FilePath
     Provide the file path for the configuration file to import.
 
+    .EXAMPLE
+    Import-HardenSystemConfig -FilePath "C:\Path\To\Config.json"
+    Imports the configuration file located at the specified path.
+
+    .EXAMPLE
+    Import-HardenSystemConfig -FilePath "C:\Path\To\Config.json" | Invoke-HardenSystem
+    This will perform the hardening operations specified in the configuration file.
+
     #>
     [CmdletBinding()]
     param (

@@ -1,10 +1,11 @@
 ﻿function Set-ServiceDisabled {
     <#
     .SYNOPSIS
-    Stops and disables a service or list of services on the local system.
+    Sets the startup type of specified services to 'Disabled'.
 
     .DESCRIPTION
-    The script changes the startup type to "Disabled" for a list of services. Provide a custom list to the 'Name' parameter.
+    This function is designed to set the startup type to disabled of the specified services.
+
 
     .NOTES
     Name       : Set-ServiceDisabled
@@ -12,6 +13,12 @@
     Version    : 1.1.1
     DateCreated: 2018-02-20
     DateUpdated: 2021-08-31
+
+    .PARAMETER Name
+    Specifies an array of service names for which the startup type should be set to 'Disabled'. This parameter is mandatory and can be taken from the pipeline by property name.
+
+    .PARAMETER Tee
+    Switch parameter that, when specified, enables logging to both the console and a log file.
 
     #>
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
