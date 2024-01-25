@@ -1,10 +1,10 @@
 function Invoke-HardenSystem {
     <#
     .SYNOPSIS
-    Quickly hardens the local Windows installation system.
+    Quickly harden the local Windows system with various security configurations.
 
     .DESCRIPTION
-    This function allows for quickly hardening the local Windows system. Run the function without specifying any parameters to use the default hardening configuration which should be fine for most Windows 10 installations.
+    The Invoke-HardenSystem function allows you to quickly apply security configurations to the local Windows system. It supports various options to enhance system security, such as applying Group Policy settings, configuring Data Execution Prevention (DEP), disabling PowerShell v2, managing scheduled tasks and services, enabling event logs, setting local user password expiration, applying mitigations, and removing UWP applications.
 
     .NOTES
     Name         - Invoke-HardenSystem
@@ -26,13 +26,13 @@ function Invoke-HardenSystem {
     Remove the Windows Feature PowerShell v2 if it is installed.
 
     .PARAMETER DisableScheduledTask
-    Disables a user supplied list of scheduled tasks.
+    Disables a user supplied list of scheduled tasks. This can include both individual scheduled tasks and those residing in a specific path.
 
     .PARAMETER DisableService
     Disables a user supplied list of services. Provide the name of the service(s) (not the display name).
 
     .PARAMETER EnableLog
-    Enables the Windows event log for each log name provided.
+    Enables the Windows event log for each specified log name.
 
     .PARAMETER LocalUserPasswordExpires
     Enables password expiration for any local accounts that are enabled and do not have a password expiration.
@@ -44,7 +44,7 @@ function Invoke-HardenSystem {
     Removes the supplied list of UWP Applications from the system.
 
     .PARAMETER Tee
-    Displays the log output to the console.
+    Switch parameter that, when specified, enables logging to both the console and a log file.
 
     .EXAMPLE
     Invoke-HardenSystem -DEP OptOut
