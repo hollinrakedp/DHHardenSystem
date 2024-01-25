@@ -1,15 +1,33 @@
-# DHHardSystem Change Log
+# DHHardenSystem Change Log
+## v1.4.0 (2024-01-24)
+### Added
+* Added additional error handling to multiple functions
+* Added parameter validation
+   * Enable-EventLog
+* Added a check for admin rights when calling 'Invoke-LocalGPO'
+
+### Changed
+* Log name now defaults to 'DHHardenSystem-yyyyMMdd.log'
+* Updated comment-based help
+* Updated GPO STIGs to the January 2024 release
+   * Internet Explorer 11 v2r5
+   * Windows Firewall v2r2
+
+### Fixed
+* When running a command with '-WhatIf' support, the logging function will no longer create the log file
+* Fixed instances where variables had different variations in case
+
 ## v1.3.0 (2023-11-12)
 ### Added
 
 ### Changed
 * Updated GPO STIGs to the October 2023 release
-    * Server 2016 v2r7
-    * Server 2019 v2r8
-    * Server 2022 v1r4
-    * Windows 10 v2r8
-    * Windows 11 v1r5
-    * Office 2019/365 v2r11
+   * Server 2016 v2r7
+   * Server 2019 v2r8
+   * Server 2022 v1r4
+   * Windows 10 v2r8
+   * Windows 11 v1r5
+   * Office 2019/365 v2r11
 
 ### Fixed
 
@@ -18,10 +36,10 @@
 
 ### Changed
 * Updated GPO STIGs to the July 2023 release
-    * Server 2022 v1r3
-    * Edge v1r7
-    * Firefox v6r5
-    * Office 2016 Various
+   * Server 2022 v1r3
+   * Edge v1r7
+   * Firefox v6r5
+   * Office 2016 Various
 
 ### Fixed
 
@@ -31,14 +49,14 @@
 
 ### Changed
 * Updated GPO STIGs to to April 2023 release
-    * Windows 10 v2r6
-    * Windows 11 v1r3
-    * Server 2016 v2r6
-    * Server 2019 v2r6
-    * Server 2022 v1r2
-    * Google Chrome v2r8
-    * Internet Explorer v2r4
-    * Office 2019/365 v2r8
+   * Windows 10 v2r6
+   * Windows 11 v1r3
+   * Server 2016 v2r6
+   * Server 2019 v2r6
+   * Server 2022 v1r2
+   * Google Chrome v2r8
+   * Internet Explorer v2r4
+   * Office 2019/365 v2r8
 
 ### Fixed
 * Invoke-LocalGPO: Added OS Options 'Win11' & 'Server2022'
@@ -51,13 +69,13 @@
 
 ### Changed
 * Update GPO STIGs to to Oct 2022 release
-    * Windows 10 v2r5
-    * Server 2016 v2r5
-    * Server 2019 v2r5
-    * Edge v1r6
-    * Internet Explorer 11 v2r3
-    * Google Chrome v2r7
-    * Office 2019/365 v2r7
+   * Windows 10 v2r5
+   * Server 2016 v2r5
+   * Server 2019 v2r5
+   * Edge v1r6
+   * Internet Explorer 11 v2r3
+   * Google Chrome v2r7
+   * Office 2019/365 v2r7
 * Cleaned up formatting in CHANGELOG.md
 * Removed trailing whitespaces
 
