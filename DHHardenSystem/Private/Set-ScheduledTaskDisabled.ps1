@@ -10,9 +10,9 @@
     .NOTES
     Name        : Set-ScheduledTaskDisabled
     Author      : Darren Hollinrake
-    Version     : 0.8
+    Version     : 1.0
     DateCreated : 2018-08-02
-    DateUpdated : 2021-08-06
+    DateUpdated : 2024-01-20
 
     .PARAMETER TaskName
     Name of the task to be disabled.
@@ -36,26 +36,41 @@
     )
 
     begin {
+        $SplatLogEntry = @{
+            Tee     = $Tee
+            WhatIf  = $WhatIfPreference
+        }
         $AllScheduledTasks = Get-ScheduledTask
     }
 
     process {
-        #Disable Task by Name
+        # Disable Task by Name
+        Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: Count: $($TaskName.Count)"
         foreach ($Name in $TaskName) {
-            If (($AllScheduledTasks.TaskName) -contains $Name) {
+            if (($AllScheduledTasks.TaskName) -contains $Name) {
                 if ($PSCmdlet.ShouldProcess("$Name")) {
-                    Write-LogEntry -Tee:$Tee -LogMessage "Disabling Task Name: $Name"
+                    Write-Progress -Activity "Disabling Tasks (By Name)" -Status "Processing $Name" -PercentComplete (($TaskName.IndexOf($Name) + 1) / $TaskName.Count * 100)
                     Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask
+                    Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: $Name - Task Disabled"
                 }
             }
+            else {
+                Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: $Name - Does Not Exists"
+            }
         }
-        #Disable Task by Path
-        Foreach ($Path in $TaskPath) {
-            If (($AllScheduledTasks.TaskPath) -contains $Path) {
+
+        # Disable Task by Path
+        Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Path: Count: $($TaskPath.Count)"
+        foreach ($Path in $TaskPath) {
+            if (($AllScheduledTasks.TaskPath) -contains $Path) {
                 if ($PSCmdlet.ShouldProcess("$Path")) {
-                    Write-LogEntry -Tee:$Tee -LogMessage "Disabling Task Path: $Path"
+                    Write-Progress -Activity "Disabling Tasks (By Path)" -Status "Processing $Path" -PercentComplete (($TaskPath.IndexOf($Path) + 1) / $TaskPath.Count * 100)
                     Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask
+                    Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Path: $Path - Path Disabled"
                 }
+            }
+            else {
+                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Task Path: $Path - Does Not Exists"
             }
         }
     }
