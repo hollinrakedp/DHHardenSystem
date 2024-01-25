@@ -29,19 +29,19 @@ For a Windows 10 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the July 2023 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the January 2024 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
     - Application - Adobe Reader DC - v2r1
     - Application - Google Chrome - v2r8
-    - Application - Internet Explorer 11 - v2r4
+    - Application - Internet Explorer 11 - v2r5
     - Application - Edge - v1r7
     - Application - Firefox - v6r5
     - Application - Office 2016 - Various
     - Application - Office 2019/M365 - v2r11
     - Application - Windows Defender Antivirus - v2r4
-    - Application - Windows Firewall - v1r7
+    - Application - Windows Firewall - v2r2
     - OS - Windows 10 - v2r8
     - OS - Windows 11 - v1r5
     - OS - Server 2016 - v2r7

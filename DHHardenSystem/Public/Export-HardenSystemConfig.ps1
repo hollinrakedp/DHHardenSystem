@@ -16,6 +16,33 @@ function Export-HardenSystemConfig {
     Date Created - 2021-07-24
     Date Updated - 2021-08-31
 
+    .PARAMETER ApplyGPO
+    Specifies an array of hash tables containing GPO settings to be applied.
+
+    .PARAMETER DEP
+    Specifies the Data Execution Prevention (DEP) setting. Valid values are 'AlwaysOff', 'AlwaysOn', 'OptIn', or 'OptOut'.
+
+    .PARAMETER DisablePoshV2
+    Switch parameter to disable PowerShell version 2.
+
+    .PARAMETER DisableScheduledTask
+    Specifies an array of hash tables containing scheduled tasks to be disabled.
+
+    .PARAMETER DisableService
+    Specifies an array of service names to be disabled.
+
+    .PARAMETER EnableLog
+    Specifies an array of log names to be enabled.
+
+    .PARAMETER LocalUserPasswordExpires
+    Switch parameter to configure local user password expiration.
+
+    .PARAMETER Mitigation
+    Specifies an array of mitigations to be applied.
+
+    .PARAMETER RemoveWinApp
+    Specifies an array of Windows apps to be removed.
+
     .PARAMETER FilePath
     Specify the output location for the generated configuration file. If only a directory is specified, the filename will be automatically generated (HardenSystemConfig-yyyyMMdd.json). If the path specified does not exist, it will be created.
 

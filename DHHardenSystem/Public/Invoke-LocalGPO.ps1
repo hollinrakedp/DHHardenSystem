@@ -6,7 +6,7 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    The DISA GPOs included are based on the July 2023 GPO package.
+    The DISA GPOs included are based on the January 2024 GPO package.
 
     Keep in mind the following:
      - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.2
+    Version      - 1.4
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2023-11-12
+    Date Updated - 2024-01-24
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -47,10 +47,10 @@ function Invoke-LocalGPO {
     DISA STIG (v6r5) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
-    DISA STIG (v2r4) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r5) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER Firewall
-    DISA STIG (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r2) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER NetBanner
     Configures the Microsoft NetBanner application. Valid values are 'FOUO', 'Secret', 'SecretNoForn', 'TopSecret', 'Unclass', and 'Test'.
@@ -156,6 +156,10 @@ function Invoke-LocalGPO {
         [switch]$Tee
     )
 
+    if (! (Test-IsAdmin)) {
+        Write-Error "Administrator privileges are required to apply GPOs." -ErrorAction Stop
+    }
+
     if ($PSBoundParameters.Keys.Count -eq 0) {
         Write-Error "No parameter was specified." -ErrorAction Stop
     }
@@ -225,20 +229,20 @@ function Invoke-LocalGPO {
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: IE11"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r4.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Firewall {
             if ($PSCmdlet.ShouldProcess("Firewall: $Firewall", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firewall"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Firewall v1r7.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Firewall v2r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         NetBanner {
-            if ($PSCmdlet.ShouldProcess("NetBanner: $Netbanner", "Apply GPO")) {
+            if ($PSCmdlet.ShouldProcess("NetBanner: $NetBanner", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "NetBanner was specified"
-                switch ($Netbanner) {
+                switch ($NetBanner) {
                     FOUO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
                         & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
