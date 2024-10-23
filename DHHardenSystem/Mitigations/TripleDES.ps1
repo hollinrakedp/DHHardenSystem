@@ -10,8 +10,14 @@ function TripleDES{
     Date Created - 2021-07-24
     Date Updated - 2021-10-11
 
-    #>
+    .DESCRIPTION
+    This function disables the TripleDES cipher by setting the 'Enabled' registry property to 0 in the SCHANNEL settings.
 
+    .EXAMPLE
+    TripleDES
+    This command disables the TripleDES cipher in the SCHANNEL settings.
+
+    #>
     Write-Verbose "TripleDES"
     $ItemProperty =@{
         Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168'
