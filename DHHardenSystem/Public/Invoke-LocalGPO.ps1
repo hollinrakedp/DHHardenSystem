@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.4
+    Version      - 1.5
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2024-01-24
+    Date Updated - 2024-11-03
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -309,6 +309,10 @@ function Invoke-LocalGPO {
         OS {
             if ($PSCmdlet.ShouldProcess("OS: $OS", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "OS was specified"
+                $ActualOS = (Get-CimInstance Win32_OperatingSystem).Caption
+                if ($ActualOS -notlike "$($OS -replace '(\D+)(\d+)', '*$1*$2*')") {
+                    Write-LogEntry -Tee:$Tee -LogLevel WARN -LogMessage "The OS selected does not match the detected OS."
+                }
                 switch ($OS) {
                     Win10 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Win10"
