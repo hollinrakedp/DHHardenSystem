@@ -139,14 +139,14 @@ function Write-LogEntry {
         if (!$PSBoundParameters.ContainsKey('LogFile')) {
             $CallingLogFile = $PSCmdlet.GetVariableValue('LogFile')
             if (![string]::IsNullOrEmpty($CallingLogFile)) {
-                Write-Verbose "Using `$LogFile variable found in another scope"
+                Write-Debug "Using `$LogFile variable found in another scope"
                 $LogFile = $CallingLogFile
             }
         }
         if (!$PSBoundParameters.ContainsKey('LogPath')) {
             $CallingLogPath = $PSCmdlet.GetVariableValue('LogPath')
             if (![string]::IsNullOrEmpty($CallingLogPath)) {
-                Write-Verbose "Using `$LogFile variable found in another scope"
+                Write-Debug "Using `$LogFile variable found in another scope"
                 $LogPath = $CallingLogPath
             }
         }
@@ -165,7 +165,7 @@ function Write-LogEntry {
     process {
         switch ($PSCmdlet.ParameterSetName) {
             'LogMessage' {
-                Write-Verbose "Log File Location: $LogFullPath"
+                Write-Debug "Log File Location: $LogFullPath"
                 if (!(Test-Path $LogFullPath)) {
                     Write-Verbose "Creating Log File"
                     New-Item -Path $LogFullPath -Force -ItemType File -WhatIf:$WhatIfPreference | Out-Null

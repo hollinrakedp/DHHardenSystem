@@ -11,13 +11,13 @@ function Export-LocalGPO {
     Version      - 0.1
     Author       - Darren Hollinrake
     Date Created - 2022-08-01
-    Date Updated -
+    Date Updated - 2024-10-22
 
     .PARAMETER Path
-    Specifies the path where the exported GPO settings will be saved.
+    Specifies the path where the exported GPO settings will be saved. The path must be a valid directory.
 
     .PARAMETER GPODisplayName
-    Specifies the display name for the exported GPO.
+    Specifies the display name for the exported GPO. The default display name is the computer name and the current date (yyyyMMdd).
 
     .EXAMPLE
     Export-LocalGPO -Path "C:\GPOBackup"
@@ -29,11 +29,18 @@ function Export-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]$Path,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$GPODisplayName = "$env:ComputerName $(Get-Date -Format 'yyyyMMdd')"
+        [string]$GPODisplayName = "$env:ComputerName $(Get-Date -Format 'yyyyMMdd')",
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
     )
+    if (! (Test-IsAdmin)) {
+        Write-Error "Administrator privileges are required to create a backup." -ErrorAction Stop
+    }
+
     if (!(Get-Command lgpo.exe -ErrorAction SilentlyContinue)) {
         Write-Error "Unable to find 'LGPO.exe'. Ensure it has been downloaded and added to 'PATH'." -ErrorAction Stop
     }
 
+    Write-LogEntry -Tee:$Tee "Creating backup: Display Name: $GPODisplayName Path: $Path"
     & LGPO.exe /b "$Path" /n "$GPODisplayName"
 }
