@@ -9,7 +9,7 @@ function Invoke-LocalGPO {
     The DISA GPOs included are based on the October 2024 GPO package.
 
     Keep in mind the following:
-     - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
+     - For the GPOs that configure the OS, a warning will be displayed if the OS is mismatched but it will apply the selected GPO.
      - For the GPO's that configure applications, no check is make to ensure the application is installed.
      - If the GPO has admx/adml files that are not included with the base installation of Windows, they will show up as extra registry settings when viewed from gpedit.msc
      - If the system is/will be joined to a domain, these local GPO's will not be processed if the following GPO setting is enabled:

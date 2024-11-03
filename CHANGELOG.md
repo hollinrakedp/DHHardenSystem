@@ -1,4 +1,34 @@
-# DHHardenSystem Change Log
+# Change Log - DHHardenSystem
+## v2.0.0 (2024-11-03)
+### Added
+* Added new functions
+   * Get-LGPO - Downloads the LGPO.exe file
+   * Clear-LocalGroupPolicy - Clears the local group policy on the system
+
+### Changed
+* Updated GPO STIGs to the October 2024 release
+   * Google Chrome v2r10
+   * Microsoft Edge v2r2
+   * Office 2019/365 v3r1
+   * Windows 10 v3r2
+   * Windows 11 v2r2
+   * Server 2016 v2r9
+   * Server 2019 v3r2
+      * User settings removed
+   * Server 2022 v2r2
+* Invoke-LocalGPO
+   * Added a warning when applying an OS STIG that does not match the detected OS. It does not stop the OS STIG from applying.
+* Updated the default configuration
+   * Win11 is now the default OS
+* Export-LocalGPO
+   * Added admin check; updated documentation
+* Mitigations
+   * Refactored internal functions
+   * Added documentation
+
+### Fixed
+* Cleaned up logging function output during 'WhatIf' operations
+
 ## v1.4.0 (2024-01-24)
 ### Added
 * Added additional error handling to multiple functions
