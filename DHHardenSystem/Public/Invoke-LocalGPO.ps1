@@ -188,11 +188,11 @@ function Invoke-LocalGPO {
                 switch ($AppLocker) {
                     Audit {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerAudit"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Enforce {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerEnforce"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
@@ -212,7 +212,7 @@ function Invoke-LocalGPO {
         DisplayLogonInfo {
             if ($PSCmdlet.ShouldProcess("DisplayLogonInfo: $DisplayLogonInfo", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Disable Logon Info"
-                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Edge {
@@ -246,27 +246,27 @@ function Invoke-LocalGPO {
                 switch ($NetBanner) {
                     FOUO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Secret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecret"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     SecretNoForn {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecretNoForn"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Test {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTest"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     TopSecret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTopSecret"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Unclass {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerUnclass"
-                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$($env:COMPUTERNAME)_lgpor.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$($env:COMPUTERNAME)_lgpor.log"
                     }
                 }
             }
@@ -274,7 +274,7 @@ function Invoke-LocalGPO {
         NoPreviousUser {
             if ($PSCmdlet.ShouldProcess("NoPreviousUser: $NoPreviousUser", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NoPreviousUser"
-                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Office {
@@ -304,7 +304,7 @@ function Invoke-LocalGPO {
         RequireCtrlAltDel {
             if ($PSCmdlet.ShouldProcess("RequireCtrlAltDel: $RequireCtrlAltDel", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: RequireCtrlAltDel"
-                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         OS {
