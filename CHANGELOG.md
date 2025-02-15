@@ -1,4 +1,16 @@
 # Change Log - DHHardenSystem
+## v2.1.0 (2025-02-15)
+### Added
+
+### Changed
+* Updated GPO STIGs to the January 2025 release
+   * Office 2019/365 v3r2
+   * Server 2022 v2r3
+   * Windows 10 v3r3
+
+### Fixed
+* The RC4 mitigation was creating additional sub-keys due to the interpretation of the forward slash as being a path separator. Reverted to use the older 'reg' command to eliminate the issue and create they entire path correctly.
+
 ## v2.0.0 (2024-11-03)
 ### Added
 * Added new functions
