@@ -17,7 +17,7 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.7
+    Version      - 1.8
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2025-02-15
@@ -29,7 +29,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r1) - Configured Adobe Acrobat Pro (DC) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER AppLocker
-    Custom - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
+    Module Provided - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
     .PARAMETER Chrome
     DISA STIG (v2r10) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -38,7 +38,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
-    Custom - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
+    Module Provided - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
 
     .PARAMETER Edge
     DISA STIG (v2r2) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -56,7 +56,7 @@ function Invoke-LocalGPO {
     Configures the Microsoft NetBanner application. Valid values are 'FOUO', 'Secret', 'SecretNoForn', 'TopSecret', 'Unclass', and 'Test'.
 
     .PARAMETER NoPreviousUser
-    Custom - Does not display the currently logged on user on the lock screen.
+    Module Provided - Does not display the currently logged on user on the lock screen.
 
     .PARAMETER Office
     DISA GPO - Configures MS Office using the specified Office STIG. Valid values are '2016', and '2019'. This applies both User and Computer settings.
@@ -80,7 +80,7 @@ function Invoke-LocalGPO {
     DISA STIG (v2r1) - Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER RequireCtrlAltDel
-    Custom - Configures the requirement for the user to press Ctrl + Alt + Del on the lock screen to bring up the login prompt.
+    Module Provided - Configures the requirement for the user to press Ctrl + Alt + Del on the lock screen to bring up the login prompt.
 
     .PARAMETER OS
     DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Win11', 'Server2016', 'Server2019', and 'Server2022'. This applies both User and Computer settings.
@@ -172,13 +172,14 @@ function Invoke-LocalGPO {
     $ModulePath = $($(Get-Module $($(Get-Command Invoke-HardenSystem).Source)).ModuleBase)
     $CustomGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\Custom"
     $DoDGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\DoD"
+    $ModuleGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\Module"
 
     switch ($PSBoundParameters.Keys) {
         AcrobatProDC {
             if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
-                & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Applocker {
@@ -187,11 +188,11 @@ function Invoke-LocalGPO {
                 switch ($AppLocker) {
                     Audit {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerAudit"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Enforce {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerEnforce"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
             }
@@ -211,7 +212,7 @@ function Invoke-LocalGPO {
         DisplayLogonInfo {
             if ($PSCmdlet.ShouldProcess("DisplayLogonInfo: $DisplayLogonInfo", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Disable Logon Info"
-                & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Edge {
@@ -245,27 +246,27 @@ function Invoke-LocalGPO {
                 switch ($NetBanner) {
                     FOUO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Secret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecret"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     SecretNoForn {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecretNoForn"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Test {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTest"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     TopSecret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTopSecret"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                     Unclass {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerUnclass"
-                        & LGPO.exe /p "$CustomGPOPath\Custom - Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$($env:COMPUTERNAME)_lgpor.log"
+                        & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$($env:COMPUTERNAME)_lgpor.log"
                     }
                 }
             }
@@ -273,7 +274,7 @@ function Invoke-LocalGPO {
         NoPreviousUser {
             if ($PSCmdlet.ShouldProcess("NoPreviousUser: $NoPreviousUser", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NoPreviousUser"
-                & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Office {
@@ -296,14 +297,14 @@ function Invoke-LocalGPO {
         ReaderDC {
             if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Adobe Reader DC"
-                & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         RequireCtrlAltDel {
             if ($PSCmdlet.ShouldProcess("RequireCtrlAltDel: $RequireCtrlAltDel", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: RequireCtrlAltDel"
-                & LGPO.exe /p "$CustomGPOPath\Custom - Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$ModuleGPOPath\Custom - Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         OS {
