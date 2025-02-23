@@ -90,6 +90,9 @@ function Invoke-LocalGPO {
         Server 2019 - v3r2 (Computer Settings Only)
         Server 2022 - v2r3 (Computer Settings Only)
 
+    .PARAMETER CustomGPO
+    Imports any custom Policy Analyzer .PolicyRules files located in the 'GPO\Custom' folder. These files are applied to the system in alphabetical order after all other items have been applied.
+
     .PARAMETER Tee
     Displays the log output to the console.
 
@@ -150,8 +153,10 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$RequireCtrlAltDel,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [ValidateSet('Win10','Win11', 'Server2016', 'Server2019', 'Server2022')]
+        [ValidateSet('Win10', 'Win11', 'Server2016', 'Server2019', 'Server2022')]
         [string]$OS,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$CustomGPO,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
@@ -340,6 +345,21 @@ function Invoke-LocalGPO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2022"
                         & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r3.PolicyRules" /v >> "$GPOFullLogPath"
                     }
+                }
+            }
+        }
+    }
+    if ($CustomGPO) {
+        Write-LogEntry -Tee:$Tee -LogMessage "Importing custom GPOs"
+        $CustomGPOFiles = Get-ChildItem -Path $CustomGPOPath -Filter *.PolicyRules | Sort-Object Name
+        if ($CustomGPOFiles.Count -eq 0) {
+            Write-LogEntry -Tee:$Tee -LogLevel WARN -LogMessage "No custom GPO files were found. Skipping..."
+        }
+        else {
+            foreach ($GPOFile in $CustomGPOFiles) {
+                if ($PSCmdlet.ShouldProcess("CustomGPO: $($GPOFile.Name)", "Apply GPO")) {
+                    Write-LogEntry -Tee:$Tee -LogMessage "Applying custom GPO: $($GPOFile.Name)"
+                    & LGPO.exe /p "$($GPOFile.FullName)" /v >> "$GPOFullLogPath"
                 }
             }
         }
