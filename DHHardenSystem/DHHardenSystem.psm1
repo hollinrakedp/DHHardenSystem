@@ -11,6 +11,9 @@ foreach ($script in @($Public + $Private + $Mitigation)) {
     }
 }
 
+# Set default log path for the module
+$Script:LogPath = "C:\temp\Logs"
+
 $LGPOPath = "$PSScriptRoot\LGPO"
 $EnvPath = $Env:Path -split ';'
 if (!($EnvPath -contains "$LGPOPath")) {
