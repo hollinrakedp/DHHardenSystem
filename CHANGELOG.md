@@ -6,8 +6,7 @@
 * License updated to reflect current year
 
 ### Fixed
-* The paramater for applying the DoD Adobe Acrobat Reader DC GPO was missing. Added the parameter and corresponding help.
-* The paths used for the DoD Adobe Acrobat Pro DC GPO were pointed to the Custom GPO directory. Corrected the paths to point to the DoD directory.
+* The parameter for applying the DoD Adobe Acrobat Reader DC GPO was missing. Added the parameter and corresponding help.
 * The paths used for the DoD Adobe Acrobat Reader DC GPO were pointed to the Custom GPO directory. Corrected the paths to point to the DoD directory.
 
 ## v2.1.0 (2025-02-15)
