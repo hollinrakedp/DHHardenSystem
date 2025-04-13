@@ -33,7 +33,8 @@ There are two type of GPOs available: DISA and Custom. The DISA GPO's are based 
 
 The list of currently available GPO's in this module:
 - DISA
-    - Application - Adobe Reader DC - v2r1
+    - Application - Adobe Acrobat DC - v2r1
+    - Application - Adobe Acrobat Reader DC - v2r1
     - Application - Google Chrome - v2r10
     - Application - Internet Explorer 11 - v2r5
     - Application - Edge - v2r2
@@ -43,7 +44,7 @@ The list of currently available GPO's in this module:
     - Application - Windows Defender Antivirus - v2r4
     - Application - Windows Firewall - v2r2
     - OS - Windows 10 - v3r3
-    - OS - Windows 11 - v2r2
+    - OS - Windows 11 - v2r5
     - OS - Server 2016 - v2r9
     - OS - Server 2019 - v3r2
     - OS - Server 2022 - v2r3
