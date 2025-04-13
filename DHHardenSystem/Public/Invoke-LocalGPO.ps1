@@ -120,6 +120,8 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$AcrobatProDC,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$AcrobatReaderDC,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('Audit', 'Enforce')]
         [string]$AppLocker,
         [Parameter(ValueFromPipelineByPropertyName)]
@@ -179,6 +181,13 @@ function Invoke-LocalGPO {
                 Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
                 & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                 & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+            }
+        }
+        AcrobatReaderDC {
+            if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
+                Write-Verbose "Applying GPO: Adobe Reader DC"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Applocker {
@@ -291,13 +300,6 @@ function Invoke-LocalGPO {
                         & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v3r2.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
                     }
                 }
-            }
-        }
-        ReaderDC {
-            if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
-                Write-Verbose "Applying GPO: Adobe Reader DC"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         RequireCtrlAltDel {
