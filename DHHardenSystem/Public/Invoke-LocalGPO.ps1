@@ -20,7 +20,7 @@ function Invoke-LocalGPO {
     Version      - 1.7
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2025-02-15
+    Date Updated - 2025-04-13
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -177,8 +177,8 @@ function Invoke-LocalGPO {
         AcrobatProDC {
             if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
-                & LGPO.exe /p "$CustomGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
-                & LGPO.exe /p "$CustomGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
+                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$($env:COMPUTERNAME)_LGPO.log"
             }
         }
         Applocker {
