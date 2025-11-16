@@ -169,8 +169,10 @@ function Invoke-LocalGPO {
         Write-Error "No parameter was specified." -ErrorAction Stop
     }
 
-    if (!(Get-Command lgpo.exe -ErrorAction SilentlyContinue)) {
-        Write-Error "Unable to find 'LGPO.exe'. Ensure it has been downloaded and added to 'PATH'." -ErrorAction Stop
+    if (-not $WhatIfPreference) {
+        if (!(Get-Command lgpo.exe -ErrorAction SilentlyContinue)) {
+            Write-Error "Unable to find 'LGPO.exe'. Ensure it has been downloaded and added to 'PATH'." -ErrorAction Stop
+        }
     }
 
     $GPOLogFile = "DHHardenSystem_$($env:COMPUTERNAME)_$(Get-Date -Format yyyyMMdd)_LGPO.log"
