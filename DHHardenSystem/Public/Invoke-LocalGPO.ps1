@@ -17,10 +17,10 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.8
+    Version      - 1.9
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2025-02-15
+    Date Updated - 2025-11-16
 
     .LINK
     https://public.cyber.mil/stigs/gpo/
@@ -183,12 +183,13 @@ function Invoke-LocalGPO {
     $DoDGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\DoD"
     $ModuleGPOPath = Join-Path -Path $ModulePath -ChildPath "GPO\Module"
 
+    $Results = @()
     switch ($PSBoundParameters.Keys) {
         AcrobatProDC {
             if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee "Applying GPO: Adobe Acrobat Pro DC"
-                & LGPO.exe /p "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$GPOFullLogPath"
-                & LGPO.exe /p "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (User)" -PolicyRulesPath "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Applocker {
@@ -197,11 +198,11 @@ function Invoke-LocalGPO {
                 switch ($AppLocker) {
                     Audit {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerAudit"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - AppLocker - Audit.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "AppLocker (Audit)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - AppLocker - Audit.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Enforce {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: AppLockerEnforce"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - AppLocker - Enforce.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "AppLocker (Enforce)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - AppLocker - Enforce.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
@@ -209,44 +210,44 @@ function Invoke-LocalGPO {
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Chrome"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r10.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Chrome (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r10.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Defender {
             if ($PSCmdlet.ShouldProcess("Defender: $Defender", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Defender"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r4.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Defender (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r4.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         DisplayLogonInfo {
             if ($PSCmdlet.ShouldProcess("DisplayLogonInfo: $DisplayLogonInfo", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Disable Logon Info"
-                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Display Previous Logon Info.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Display Previous Logon Info (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - SYS - Display Previous Logon Info.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Edge {
             if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Edge"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v2r2.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Edge (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Firefox {
             if ($PSCmdlet.ShouldProcess("Firefox: $Firefox", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firefox"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r5.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Firefox (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: IE11"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" /v >> "$GPOFullLogPath"
-                & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "IE11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "IE11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Firewall {
             if ($PSCmdlet.ShouldProcess("Firewall: $Firewall", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Firewall"
-                & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Firewall v2r2.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Windows Firewall (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Firewall v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         NetBanner {
@@ -255,27 +256,27 @@ function Invoke-LocalGPO {
                 switch ($NetBanner) {
                     FOUO {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerFOUO"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (FOUO)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - UnclassifiedFOUO.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Secret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecret"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Secret.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (Secret)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - Secret.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     SecretNoForn {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerSecretNoForn"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (SecretNoForn)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - SecretNoForn.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Test {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTest"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Test.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (Test)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - Test.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     TopSecret {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerTopSecret"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - TopSecret.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (TopSecret)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - TopSecret.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Unclass {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NetbannerUnclass"
-                        & LGPO.exe /p "$ModuleGPOPath\Computer - App - Config - NetBanner - Unclassified.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "NetBanner (Unclass)" -PolicyRulesPath "$ModuleGPOPath\Computer - App - Config - NetBanner - Unclassified.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
@@ -283,7 +284,7 @@ function Invoke-LocalGPO {
         NoPreviousUser {
             if ($PSCmdlet.ShouldProcess("NoPreviousUser: $NoPreviousUser", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: NoPreviousUser"
-                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Do Not Display Last User Name.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Do Not Display Last User Name (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - SYS - Do Not Display Last User Name.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Office {
@@ -292,13 +293,13 @@ function Invoke-LocalGPO {
                 switch ($Office) {
                     '2016' {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Office2016"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2016 - Combined.PolicyRules" /v >> "$GPOFullLogPath"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2016 - Combined.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Office 2016 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Office 2016 - Combined.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Office 2016 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Office 2016 - Combined.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     '2019' {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Office 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v3r2.PolicyRules" /v >> "$GPOFullLogPath"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Office 2019_365 v3r2.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Office 2019/365 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Office 2019_365 v3r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Office 2019/365 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Office 2019_365 v3r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
@@ -306,14 +307,14 @@ function Invoke-LocalGPO {
         ReaderDC {
             if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
                 Write-Verbose "Applying GPO: Adobe Reader DC"
-                & LGPO.exe /p "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$GPOFullLogPath"
-                & LGPO.exe /p "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (User)" -PolicyRulesPath "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         RequireCtrlAltDel {
             if ($PSCmdlet.ShouldProcess("RequireCtrlAltDel: $RequireCtrlAltDel", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: RequireCtrlAltDel"
-                & LGPO.exe /p "$ModuleGPOPath\Computer - SYS - Require Ctrl Alt Del.PolicyRules" /v >> "$GPOFullLogPath"
+                $Results += Import-LGPOPolicyRules -Name "Require Ctrl Alt Del (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - SYS - Require Ctrl Alt Del.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         OS {
@@ -326,26 +327,26 @@ function Invoke-LocalGPO {
                 switch ($OS) {
                     Win10 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Win10"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows 10 v3r3.PolicyRules" /v >> "$GPOFullLogPath"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows 10 v3r3.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 10 v3r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 10 v3r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Win11 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Win11"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows 11 v2r2.PolicyRules" /v >> "$GPOFullLogPath"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows 11 v2r2.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 11 v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 11 v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2016 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: MS Server 2016"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" /v >> "$GPOFullLogPath"
-                        & LGPO.exe /p "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2019 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2019"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v3r2.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2019 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v3r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2022 {
                         Write-LogEntry -Tee:$Tee -LogMessage "Applying GPO: Server 2022"
-                        & LGPO.exe /p "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r3.PolicyRules" /v >> "$GPOFullLogPath"
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2022 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
@@ -361,10 +362,20 @@ function Invoke-LocalGPO {
             foreach ($GPOFile in $CustomGPOFiles) {
                 if ($PSCmdlet.ShouldProcess("CustomGPO: $($GPOFile.Name)", "Apply GPO")) {
                     Write-LogEntry -Tee:$Tee -LogMessage "Applying custom GPO: $($GPOFile.Name)"
-                    & LGPO.exe /p "$($GPOFile.FullName)" /v >> "$GPOFullLogPath"
+                    $Results += Import-LGPOPolicyRules -Name "Custom: $($GPOFile.Name)" -PolicyRulesPath "$($GPOFile.FullName)" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
             }
         }
     }
+    # Aggregated summary and return object
+    $Summary = [ordered]@{
+        Total = $Results.Count
+        Success = ($Results | Where-Object { $_.Status -eq 'Success' }).Count
+        Failed = ($Results | Where-Object { $_.Status -eq 'Failed' }).Count
+        Skipped = ($Results | Where-Object { $_.Status -eq 'Skipped' }).Count
+        NotFound = ($Results | Where-Object { $_.Status -eq 'NotFound' }).Count
+        DependencyMissing = ($Results | Where-Object { $_.Status -eq 'DependencyMissing' }).Count
+    }
+    Write-LogEntry -Tee:$Tee -LogMessage ("LGPO Summary -> Total:{0} Success:{1} Failed:{2} Skipped:{3} NotFound:{4} DependencyMissing:{5}" -f $Summary.Total,$Summary.Success,$Summary.Failed,$Summary.Skipped,$Summary.NotFound,$Summary.DependencyMissing)
     Write-LogEntry -StopLog
 }
