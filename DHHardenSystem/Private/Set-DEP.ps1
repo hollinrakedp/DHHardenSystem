@@ -36,13 +36,13 @@ Function Set-DEP {
     }
     if ($PSCmdlet.ShouldProcess("localhost", "Set-DEP $Policy")) {
         $CurrentValue = (Get-CimInstance -ClassName Win32_OperatingSystem).DataExecutionPrevention_SupportPolicy
-        Write-LogEntry -Tee:$Tee -LogMessage "DEP Current Value = $CurrentValue"
+        Write-LogEntry -Tee:$Tee -LogMessage "DEP: Current value - $CurrentValue"
 
         if ($SetValue -eq $CurrentValue) {
-            Write-Output "DEP is already set to $CurrentValue"
+            Write-LogEntry -Tee:$Tee -LogMessage "DEP: Already set - $CurrentValue"
             return
         }
-        Write-LogEntry -Tee:$Tee -LogMessage "Setting DEP to $Policy"
+        Write-LogEntry -Tee:$Tee -LogMessage "DEP: Set policy - $Policy"
         BCDEDIT /set "{current}" nx $Policy
     }
 }

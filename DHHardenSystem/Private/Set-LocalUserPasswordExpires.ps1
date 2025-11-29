@@ -25,7 +25,7 @@ function Set-LocalUserPasswordExpires {
 
     foreach ($User in $Users) {
         if ($PSCmdlet.ShouldProcess("$User")) {
-            Write-LogEntry -Tee:$Tee -LogMessage "Setting password to expire for user: $User"
+            Write-LogEntry -Tee:$Tee -LogMessage "LocalUser: Set password expiration - User: $User"
             $User | Set-LocalUser -PasswordNeverExpires:$false
         }
     }

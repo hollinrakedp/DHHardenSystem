@@ -28,24 +28,24 @@ function Remove-WinApp {
 
         if ($PackageFullName) {
             if ($PSCmdlet.ShouldProcess("$PackageFullName", "Remove-AppxPackage")) {
-                Write-LogEntry -Tee:$Tee -LogMessage "Removing Package: $AppName"
+                Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Remove package - $AppName"
                 Remove-AppxPackage -Package $PackageFullName
             }
         }
 
         else {
-            Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Package: $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Package not found - $AppName"
         }
 
         if ($ProPackageFullName) {
             if ($PSCmdlet.ShouldProcess("$ProPackageFullName", "Remove-AppxProvisionedPackage")) {
-                Write-LogEntry -Tee:$Tee -LogMessage "Removing Provisioned Package: $ProPackageFullName"
+                Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Remove provisioned package - $ProPackageFullName"
                 Remove-AppxProvisionedPackage -Online -PackageName $ProPackageFullName
             }
         }
 
         else {
-            Write-LogEntry -Tee:$Tee -LogMessage "Unable To Find Provisioned Package: $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Provisioned package not found - $AppName"
         }
     }
 }

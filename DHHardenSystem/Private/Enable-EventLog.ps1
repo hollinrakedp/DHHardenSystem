@@ -30,7 +30,7 @@
             try {
                 if ($PSCmdlet.ShouldProcess("$($Log.LogName)")) {
                     if ($Log.IsEnabled) {
-                        Write-LogEntry -Tee:$Tee -LogMessage "Event Log: Enable: Log Name: $($Log.LogName)`" - Is Already Enabled"
+                        Write-LogEntry -Tee:$Tee -LogMessage "Event Log: Enable: Log Name: $($Log.LogName) - Already Enabled, Skipping..."
                     }
                     else {
                         Write-LogEntry -Tee:$Tee -LogMessage "Event Log: Enable: Log Name: $($Log.LogName) - Enabling"

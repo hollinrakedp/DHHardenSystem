@@ -45,32 +45,30 @@
 
     process {
         # Disable Task by Name
-        Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: Count: $($TaskName.Count)"
         foreach ($Name in $TaskName) {
             if (($AllScheduledTasks.TaskName) -contains $Name) {
                 if ($PSCmdlet.ShouldProcess("$Name")) {
                     Write-Progress -Activity "Disabling Tasks (By Name)" -Status "Processing $Name" -PercentComplete (($TaskName.IndexOf($Name) + 1) / $TaskName.Count * 100)
                     Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask
-                    Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: $Name - Task Disabled"
+                    Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Disabled: $Name"
                 }
             }
             else {
-                Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Name: $Name - Does Not Exists"
+                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Does not exist: $Name"
             }
         }
 
         # Disable Task by Path
-        Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Path: Count: $($TaskPath.Count)"
         foreach ($Path in $TaskPath) {
             if (($AllScheduledTasks.TaskPath) -contains $Path) {
                 if ($PSCmdlet.ShouldProcess("$Path")) {
                     Write-Progress -Activity "Disabling Tasks (By Path)" -Status "Processing $Path" -PercentComplete (($TaskPath.IndexOf($Path) + 1) / $TaskPath.Count * 100)
                     Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask
-                    Write-LogEntry @SplatLogEntry -LogMessage "Disable Scheduled Task: Task Path: $Path - Path Disabled"
+                    Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Disabled: $Path"
                 }
             }
             else {
-                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Task Path: $Path - Does Not Exists"
+                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Does not exist: $Path"
             }
         }
     }
