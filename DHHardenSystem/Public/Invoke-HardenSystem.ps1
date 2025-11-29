@@ -8,10 +8,10 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.6
+    Version      - 1.0
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2024-01-24
+    Date Updated - 2025-11-28
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
@@ -143,10 +143,8 @@ function Invoke-HardenSystem {
             Mitigation {
                 Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: Mitigation"
                 foreach ($Mitigate in $Mitigation) {
-                    if ($PSCmdlet.ShouldProcess("$Mitigate", "Mitigate")) {
-                        Write-LogEntry @SplatLogEntry -LogMessage "Mitigation: $Mitigate"
-                        & $Mitigate
-                    }
+                    Write-LogEntry @SplatLogEntry -LogMessage "Mitigation: $Mitigate"
+                    & $Mitigate -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
             }
             RemoveWinApp {
