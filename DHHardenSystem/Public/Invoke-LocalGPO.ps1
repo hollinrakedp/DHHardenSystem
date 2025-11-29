@@ -6,7 +6,7 @@ function Invoke-LocalGPO {
     .DESCRIPTION
     The 'Invoke-LocalGPO' function applies GPO's against the local system. Many of the GPO's provided follow the DISA STIG GPO's and are labeled as 'DISA GPO' in the parameter help. The additional Non-DISA GPO's provided are to configure some common settings or applied against Multi-User Stand Alone (MUSA) system. GPO's are imported using Microsoft's LGPO tool (LGPO.exe). The GPO's have been converted to '*.policyrules' text-based files.
 
-    The DISA GPOs included are based on the January 2025 GPO package.
+    The DISA GPOs included are based on the October 2025 GPO package.
 
     Keep in mind the following:
      - For the GPOs that configure the OS, a warning will be displayed if the OS is mismatched but it will apply the selected GPO.
@@ -17,7 +17,7 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.10
+    Version      - 1.11
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2025-11-28
@@ -32,22 +32,22 @@ function Invoke-LocalGPO {
     Module Provided - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
 
     .PARAMETER Chrome
-    DISA STIG (v2r10) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r11) - Configures Google Chrome in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Defender
-    DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r6) - Configures Windows Defender AV in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER DisplayLogonInfo
     Module Provided - After a user logs in successfully, displays the previous logon information (Last Logon Date, Failed logon attempts).
 
     .PARAMETER Edge
-    DISA STIG (v2r2) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v2r3) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER Firefox
-    DISA STIG (v6r5) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
+    DISA STIG (v6r6) - Configures Firefox in alignment with the corresponding DISA STIG. This applies Computer settings.
 
     .PARAMETER IE11
-    DISA STIG (v2r5) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r6) - Configures IE11 in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER Firewall
     DISA STIG (v2r2) - Configures the Windows firewall in alignment with the corresponding DISA STIG. This applies Computer settings.
@@ -74,7 +74,7 @@ function Invoke-LocalGPO {
         User - Publisher 2016 - v1r3
         User - Visio 2016 - v1r1
         User - Word 2016 - v1r1
-    Office 2019/365 (v3r2)
+    Office 2019/365 (v3r4)
 
     .PARAMETER ReaderDC
     DISA STIG (v2r1) - Configures Reader DC (Continuous) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
@@ -84,11 +84,11 @@ function Invoke-LocalGPO {
 
     .PARAMETER OS
     DISA GPO - Configures the OS using the specified OS STIG. Valid values are 'Win10', 'Win11', 'Server2016', 'Server2019', and 'Server2022'. This applies both User and Computer settings.
-        Windows 10 - v3r3
-        Windows 11 - v2r2
-        Server 2016 - v2r9
-        Server 2019 - v3r2 (Computer Settings Only)
-        Server 2022 - v2r3 (Computer Settings Only)
+        Windows 10 - v3r5
+        Windows 11 - v2r5
+        Server 2016 - v2r10
+        Server 2019 - v3r6 (Computer Settings Only)
+        Server 2022 - v2r6 (Computer Settings Only)
 
     .PARAMETER CustomGPO
     Imports any custom Policy Analyzer .PolicyRules files located in the 'GPO\Custom' folder. These files are applied to the system in alphabetical order after all other items have been applied.
@@ -209,13 +209,13 @@ function Invoke-LocalGPO {
         Chrome {
             if ($PSCmdlet.ShouldProcess("Chrome: $Chrome", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Google Chrome"
-                $Results += Import-LGPOPolicyRules -Name "Chrome (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r10.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Chrome (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Google Chrome v2r11.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Defender {
             if ($PSCmdlet.ShouldProcess("Defender: $Defender", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows Defender Antivirus"
-                $Results += Import-LGPOPolicyRules -Name "Defender (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r4.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Defender (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Defender Antivirus v2r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         DisplayLogonInfo {
@@ -227,20 +227,20 @@ function Invoke-LocalGPO {
         Edge {
             if ($PSCmdlet.ShouldProcess("Edge: $Edge", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Microsoft Edge"
-                $Results += Import-LGPOPolicyRules -Name "Edge (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Edge (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Microsoft Edge v2r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Firefox {
             if ($PSCmdlet.ShouldProcess("Firefox: $Firefox", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Mozilla Firefox"
-                $Results += Import-LGPOPolicyRules -Name "Firefox (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Firefox (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Mozilla Firefox v6r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         IE11 {
             if ($PSCmdlet.ShouldProcess("IE11: $IE11", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Internet Explorer 11"
-                $Results += Import-LGPOPolicyRules -Name "IE11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                $Results += Import-LGPOPolicyRules -Name "IE11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "IE11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Internet Explorer 11 v2r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "IE11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Internet Explorer 11 v2r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Firewall {
@@ -324,26 +324,26 @@ function Invoke-LocalGPO {
                 switch ($OS) {
                     Win10 {
                         Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows 10"
-                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 10 v3r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 10 v3r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 10 v3r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 10 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 10 v3r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Win11 {
                         Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows 11"
-                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 11 v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 11 v2r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows 11 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows 11 v2r5.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2016 {
                         Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows Server 2016"
-                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r9.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2016 Member Server v2r10.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2016 (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Windows Server 2016 Member Server v2r10.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2019 {
                         Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows Server 2019"
-                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2019 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v3r2.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2019 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2019 Member Server v3r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                     Server2022 {
                         Write-LogEntry -Tee:$Tee -LogMessage "GPO: Apply - Windows Server 2022"
-                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2022 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r3.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2022 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r6.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
