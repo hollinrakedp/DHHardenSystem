@@ -29,31 +29,32 @@ For a Windows 11 system, you can follow the following steps:
 As described above, there are multiple ways this module hardens the system. Here is an overview into all the changes possible via this module. Additional information can be found in the help for the functions themselves.
 
 ### GPOs
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the January 2025 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the October 2025 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 - DISA
-    - Application - Adobe Reader DC - v2r1
-    - Application - Google Chrome - v2r10
-    - Application - Internet Explorer 11 - v2r5
-    - Application - Edge - v2r2
-    - Application - Firefox - v6r5
-    - Application - Office 2016 - Various
-    - Application - Office 2019/M365 - v3r2
-    - Application - Windows Defender Antivirus - v2r4
-    - Application - Windows Firewall - v2r2
-    - OS - Windows 10 - v3r3
-    - OS - Windows 11 - v2r2
-    - OS - Server 2016 - v2r9
-    - OS - Server 2019 - v3r2
-    - OS - Server 2022 - v2r3
+  - Application - Adobe Reader DC - v2r1
+  - Application - Google Chrome - v2r11
+  - Application - Internet Explorer 11 - v2r6
+  - Application - Edge - v2r3
+  - Application - Firefox - v6r6
+  - Application - Office 2016 - Various
+  - Application - Office 2019/M365 - v3r4
+  - Application - Windows Defender Antivirus - v2r6
+  - Application - Windows Firewall - v2r2
+  - OS - Windows 10 - v3r5
+  - OS - Windows 11 - v2r5
+  - OS - Server 2016 - v2r10
+  - OS - Server 2019 - v3r6
+  - OS - Server 2022 - v2r6
 - Custom
-    - AppLocker Audit
-    - AppLocker Enforce
-    - DisplayLogonInfo
-    - NetBanner
-    - NoPreviousUser
-    - RequireCtrlAltDel
+  - AppLocker Audit
+  - AppLocker Enforce
+  - DisplayLogonInfo
+  - NetBanner
+  - NoPreviousUser
+  - RequireCtrlAltDel
 
 Most of the GPOs are self-explainatory. For additional information see the help provided in 'Invoke-LocalGPO'.
 
