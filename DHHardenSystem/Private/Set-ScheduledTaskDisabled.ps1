@@ -49,8 +49,13 @@
             if (($AllScheduledTasks.TaskName) -contains $Name) {
                 if ($PSCmdlet.ShouldProcess("$Name")) {
                     Write-Progress -Activity "Disabling Tasks (By Name)" -Status "Processing $Name" -PercentComplete (($TaskName.IndexOf($Name) + 1) / $TaskName.Count * 100)
-                    Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask
-                    Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Disabled: $Name"
+                    try {
+                        Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask -ErrorAction Stop | Out-Null
+                        Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Disabled: $Name"
+                    }
+                    catch {
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "Scheduled Task: Name - Failed to disable: $Name. Error: $_"
+                    }
                 }
             }
             else {
@@ -63,8 +68,13 @@
             if (($AllScheduledTasks.TaskPath) -contains $Path) {
                 if ($PSCmdlet.ShouldProcess("$Path")) {
                     Write-Progress -Activity "Disabling Tasks (By Path)" -Status "Processing $Path" -PercentComplete (($TaskPath.IndexOf($Path) + 1) / $TaskPath.Count * 100)
-                    Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask
-                    Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Disabled: $Path"
+                    try {
+                        Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask -ErrorAction Stop | Out-Null
+                        Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Disabled: $Path"
+                    }
+                    catch {
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "Scheduled Task: Path - Failed to disable: $Path. Error: $_"
+                    }
                 }
             }
             else {
