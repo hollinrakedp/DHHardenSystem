@@ -9,9 +9,9 @@ function Remove-WinApp {
     .NOTES
     Name       : Remove-WinApp
     Author     : Darren Hollinrake
-    Version    : 0.9
+    Version    : 1.0
     DateCreated: 2018-02-20
-    DateUpdated: 2021-07-25
+    DateUpdated: 2025-11-29
 
     #>
     [CmdletBinding(SupportsShouldProcess)]
@@ -28,24 +28,24 @@ function Remove-WinApp {
 
         if ($PackageFullName) {
             if ($PSCmdlet.ShouldProcess("$PackageFullName", "Remove-AppxPackage")) {
-                Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Remove package - $AppName"
+                Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: RemoveWinApp: Remove package - $AppName"
                 Remove-AppxPackage -Package $PackageFullName
             }
         }
 
         else {
-            Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Package not found - $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: RemoveWinApp: Package not found - $AppName"
         }
 
         if ($ProPackageFullName) {
             if ($PSCmdlet.ShouldProcess("$ProPackageFullName", "Remove-AppxProvisionedPackage")) {
-                Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Remove provisioned package - $ProPackageFullName"
+                Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: RemoveWinApp: Remove provisioned package - $ProPackageFullName"
                 Remove-AppxProvisionedPackage -Online -PackageName $ProPackageFullName
             }
         }
 
         else {
-            Write-LogEntry -Tee:$Tee -LogMessage "WinApp: Provisioned package not found - $AppName"
+            Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: RemoveWinApp: Provisioned package not found - $AppName"
         }
     }
 }

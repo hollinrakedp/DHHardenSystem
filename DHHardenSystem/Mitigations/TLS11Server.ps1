@@ -5,10 +5,10 @@ function TLS11Server {
 
     .NOTES
     Name         - TLS11Server
-    Version      - 1.2
+    Version      - 1.3
     Author       - Darren Hollinrake
     Date Created - 2021-08-06
-    Date Updated - 2025-11-28
+    Date Updated - 2025-11-29
 
     .DESCRIPTION
     This function disables TLS 1.1 for the server by setting the 'Enabled' registry property to 0 and 'DisabledByDefault' to 1 in the SCHANNEL settings.
@@ -24,7 +24,7 @@ function TLS11Server {
         [switch]$Tee
     )
 
-    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TLS 1.1 Server - Begin"
+    Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: TLS 1.1 Server - Begin"
 
     $RegPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\TLS 1.1\Server'
 
@@ -50,10 +50,10 @@ function TLS11Server {
             Force = $true
         }
         if ($PSCmdlet.ShouldProcess("$RegPath::$($KeyProperty.Name)", 'Set registry value')) {
-            Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TLS 1.1 Server - Setting $($KeyProperty.Name)=$($KeyProperty.Value)"
+            Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: TLS 1.1 Server - Setting $($KeyProperty.Name)=$($KeyProperty.Value)"
             New-ItemProperty @ItemProperty | Out-Null
         }
     }
 
-    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TLS 1.1 Server - Complete"
+    Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: TLS 1.1 Server - Complete"
 }

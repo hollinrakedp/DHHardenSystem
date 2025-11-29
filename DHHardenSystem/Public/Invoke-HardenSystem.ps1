@@ -8,10 +8,10 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 1.0
+    Version      - 1.1
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2025-11-28
+    Date Updated - 2025-11-29
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
@@ -108,16 +108,16 @@ function Invoke-HardenSystem {
                 $GPO = @{}
             ($ApplyGPO | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $GPO[$_.Name] = $_.Value }
                 $GPOString = $(foreach ($kvp in $GPO.GetEnumerator()) { $kvp.Key + ':' + $kvp.Value }) -join ', '
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: ApplyGPO"
-                Write-LogEntry @SplatLogEntry -LogMessage "Passing GPOs: $GPOString"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: ApplyGPO"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: ApplyGPO: Passing GPOs: $GPOString"
                 Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DEP {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DEP"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DEP"
                 Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DisablePoShV2 {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisablePoshV2"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisablePoshV2"
                 if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
                     Disable-PoShV2 -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
@@ -125,30 +125,29 @@ function Invoke-HardenSystem {
             DisableScheduledTask {
                 $ScheduledTask = @{}
             ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisableScheduledTasks"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisableScheduledTasks"
                 Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DisableService {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisableServices"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisableServices"
                 Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             EnableLog {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: EnableLog"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: EnableLog"
                 Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             LocalUserPasswordExpires {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: LocalUserPasswordExpires"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: LocalUserPasswordExpires"
                 Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             Mitigation {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: Mitigation"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: Mitigation"
                 foreach ($Mitigate in $Mitigation) {
-                    Write-LogEntry @SplatLogEntry -LogMessage "Mitigation: $Mitigate"
                     & $Mitigate -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
             }
             RemoveWinApp {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: RemoveWinApp"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: RemoveWinApp"
                 Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }

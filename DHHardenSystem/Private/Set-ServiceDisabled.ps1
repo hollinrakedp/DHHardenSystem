@@ -10,7 +10,7 @@
     .NOTES
     Name       : Set-ServiceDisabled
     Author     : Darren Hollinrake
-    Version    : 1.2
+    Version    : 1.3
     DateCreated: 2018-02-20
     DateUpdated: 2025-11-29
 
@@ -46,26 +46,26 @@
                     if ($PSCmdlet.ShouldProcess("$NamedService", "Set-ServiceDisabled")) {
                         try {
                             $ServiceObj | Stop-Service -ErrorAction Stop
-                            Write-LogEntry @SplatLogEntry -LogLevel INFO -LogMessage "Service: Stop: $NamedService - Success"
+                            Write-LogEntry @SplatLogEntry -LogLevel INFO -LogMessage "HardenSystem: DisableServices: Stop: $NamedService - Success"
                         }
                         catch {
-                            Write-LogEntry @SplatLogEntry -LogLevel WARN -LogMessage "Service: Stop: $NamedService - Failure"
+                            Write-LogEntry @SplatLogEntry -LogLevel WARN -LogMessage "HardenSystem: DisableServices: Stop: $NamedService - Failure"
                         }
                         try {
                             $ServiceObj | Set-Service -StartupType Disabled -ErrorAction Stop
-                            Write-LogEntry @SplatLogEntry -LogMessage "Service: Disable: $NamedService - Success"
+                            Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableServices: Disable: $NamedService - Success"
                         }
                         catch {
-                            Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "Service: Disable: $NamedService - Failure: $_"
+                            Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "HardenSystem: DisableServices: Disable: $NamedService - Failure: $_"
                         }
                     }
                 }
                 else {
-                    Write-LogEntry @SplatLogEntry -LogMessage "Service: Disable: $NamedService - Already Disabled"
+                    Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableServices: Disable: $NamedService - Already Disabled"
                 }
             }
             else {
-                Write-LogEntry @SplatLogEntry -LogMessage "Service: Disable: $NamedService - Does Not Exist"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableServices: Disable: $NamedService - Does Not Exist"
             }
         }
     }

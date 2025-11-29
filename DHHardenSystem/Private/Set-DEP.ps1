@@ -9,9 +9,9 @@ Function Set-DEP {
     .NOTES
     Name       : Set-DEP
     Author     : Darren Hollinrake
-    Version    : 0.3
+    Version    : 1.0
     DateCreated: 2018-02-20
-    DateUpdated: 2021-08-06
+    DateUpdated: 2025-11-29
 
     .PARAMETER Policy
     The value used to set the Data Exploit Protection policy on the system.
@@ -36,13 +36,13 @@ Function Set-DEP {
     }
     if ($PSCmdlet.ShouldProcess("localhost", "Set-DEP $Policy")) {
         $CurrentValue = (Get-CimInstance -ClassName Win32_OperatingSystem).DataExecutionPrevention_SupportPolicy
-        Write-LogEntry -Tee:$Tee -LogMessage "DEP: Current value - $CurrentValue"
 
         if ($SetValue -eq $CurrentValue) {
-            Write-LogEntry -Tee:$Tee -LogMessage "DEP: Already set - $CurrentValue"
+            Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: DEP: Already set - $CurrentValue"
             return
         }
-        Write-LogEntry -Tee:$Tee -LogMessage "DEP: Set policy - $Policy"
+        Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: DEP: Current value - $CurrentValue"
         BCDEDIT /set "{current}" nx $Policy
+        Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: DEP: Set policy - $Policy"
     }
 }

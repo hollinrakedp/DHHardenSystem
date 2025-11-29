@@ -10,7 +10,7 @@
     .NOTES
     Name        : Set-ScheduledTaskDisabled
     Author      : Darren Hollinrake
-    Version     : 1.1
+    Version     : 1.2
     DateCreated : 2018-08-02
     DateUpdated : 2025-11-29
 
@@ -51,15 +51,15 @@
                     Write-Progress -Activity "Disabling Tasks (By Name)" -Status "Processing $Name" -PercentComplete (($TaskName.IndexOf($Name) + 1) / $TaskName.Count * 100)
                     try {
                         Get-ScheduledTask -TaskName $Name | Disable-ScheduledTask -ErrorAction Stop | Out-Null
-                        Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Disabled: $Name"
+                        Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableScheduledTasks: Name - Disabled: $Name"
                     }
                     catch {
-                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "Scheduled Task: Name - Failed to disable: $Name. Error: $_"
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "HardenSystem: DisableScheduledTasks: Name - Failed to disable: $Name. Error: $_"
                     }
                 }
             }
             else {
-                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Name - Does not exist: $Name"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableScheduledTasks: Name - Does not exist: $Name"
             }
         }
 
@@ -70,15 +70,15 @@
                     Write-Progress -Activity "Disabling Tasks (By Path)" -Status "Processing $Path" -PercentComplete (($TaskPath.IndexOf($Path) + 1) / $TaskPath.Count * 100)
                     try {
                         Get-ScheduledTask -TaskPath $Path | Disable-ScheduledTask -ErrorAction Stop | Out-Null
-                        Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Disabled: $Path"
+                        Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableScheduledTasks: Path - Disabled: $Path"
                     }
                     catch {
-                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "Scheduled Task: Path - Failed to disable: $Path. Error: $_"
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "HardenSystem: DisableScheduledTasks: Path - Failed to disable: $Path. Error: $_"
                     }
                 }
             }
             else {
-                Write-LogEntry @SplatLogEntry -LogMessage "Scheduled Task: Path - Does not exist: $Path"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: DisableScheduledTasks: Path - Does not exist: $Path"
             }
         }
     }
