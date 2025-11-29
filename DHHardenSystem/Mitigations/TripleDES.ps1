@@ -5,10 +5,10 @@ function TripleDES{
 
     .NOTES
     Name         - TripleDES
-    Version      - 1.0
+    Version      - 1.1
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2021-10-11
+    Date Updated - 2025-11-28
 
     .DESCRIPTION
     This function disables the TripleDES cipher by setting the 'Enabled' registry property to 0 in the SCHANNEL settings.
@@ -18,7 +18,13 @@ function TripleDES{
     This command disables the TripleDES cipher in the SCHANNEL settings.
 
     #>
-    Write-Verbose "TripleDES"
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
+    )
+
+    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TripleDES - Begin"
     $ItemProperty =@{
         Path = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Ciphers\Triple DES 168'
         Name = 'Enabled'
@@ -26,8 +32,13 @@ function TripleDES{
         PropertyType = 'DWORD'
         Force = $true
     }
-    if (!(Test-Path $ItemProperty['Path'])) {
-        New-Item -Path $ItemProperty['Path'] -Force | Out-Null
+    if ($PSCmdlet.ShouldProcess($ItemProperty['Path'], 'Disable TripleDES cipher')) {
+        Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TripleDES - Disabling: $($ItemProperty['Path'])"
+        if (!(Test-Path $ItemProperty['Path'])) {
+            New-Item -Path $ItemProperty['Path'] -Force | Out-Null
+        }
+        New-ItemProperty @ItemProperty | Out-Null
     }
-    New-ItemProperty @ItemProperty | Out-Null
+
+    Write-LogEntry -Tee:$Tee -LogMessage "Mitigation: TripleDES - Complete"
 }
