@@ -10,9 +10,9 @@
     .NOTES
     Name        : Set-ScheduledTaskDisabled
     Author      : Darren Hollinrake
-    Version     : 1.0
+    Version     : 1.1
     DateCreated : 2018-08-02
-    DateUpdated : 2024-01-20
+    DateUpdated : 2025-11-29
 
     .PARAMETER TaskName
     Name of the task to be disabled.
@@ -29,8 +29,8 @@
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
     Param(
         [Parameter()]
-        [string[]]$TaskName = @("Adobe Acrobat Update Task", "Consolidator", "OneDrive Standalone Update Task v2", "XblGameSaveTask"),
-        [string[]]$TaskPath = @("\Microsoft\Windows\Bluetooth\"),
+        [string[]]$TaskName,
+        [string[]]$TaskPath,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
