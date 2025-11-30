@@ -26,7 +26,10 @@ function Invoke-LocalGPO {
     https://public.cyber.mil/stigs/gpo/
 
     .PARAMETER AcrobatProDC
-    DISA STIG (v2r1) - Configured Adobe Acrobat Pro (DC) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+    DISA STIG (v2r1) - Configures Adobe Acrobat Pro (DC) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
+
+    .PARAMETER AcrobatReaderDC
+    DISA STIG (v2r1) - Configured Adobe Acrobat Reader (DC) in alignment with the corresponding DISA STIG. This applies both User and Computer settings.
 
     .PARAMETER AppLocker
     Module Provided - Configures AppLocker with a custom policy that allows users to run any Microsoft-signed programs AND any programs in the Program Files directories. Administrators can run anything. Valid values are 'Audit' and 'Enforce'.
@@ -122,6 +125,8 @@ function Invoke-LocalGPO {
     param (
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$AcrobatProDC,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$AcrobatReaderDC,
         [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('Audit', 'Enforce')]
         [string]$AppLocker,
