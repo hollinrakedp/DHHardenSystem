@@ -15,7 +15,7 @@ Quickly hardens the local Windows installation system.
 ```
 Invoke-HardenSystem [[-ApplyGPO] <Array>] [[-DEP] <String>] [-DisablePoShV2] [[-DisableScheduledTask] <Array>]
  [[-DisableService] <String[]>] [[-EnableLog] <String[]>] [-LocalUserPasswordExpires]
- [[-Mitigation] <String[]>] [[-RemoveWinApp] <String[]>] [-Tee] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Mitigation <String[]>] [[-RemoveWinApp] <String[]>] [-Tee] [-WhatIf] [-Confirm]
 ```
 
 ## DESCRIPTION
@@ -28,18 +28,11 @@ Run the function without specifying any parameters to use the default hardening 
 ```
 Invoke-HardenSystem -DEP OptOut
 ```
-
-Confirm
-Are you sure you want to perform this action?
-Performing the operation "Set-DEP OptOut" on target "localhost".
-\[Y\] Yes  \[A\] Yes to All  \[N\] No  \[L\] No to All  \[S\] Suspend  \[?\] Help (default is "Y"):
-
 This example will set DEP on the system to 'OptOut'.
-Because the impact to the system is high, confirmation is required before each action will run.
 
 ### EXAMPLE 2
 ```
-Invoke-HardenSystem -ApplyGPO @{OS = 'Win10'; IE11 = $true} -DEP OptOut -LocalUserPasswordExpires -WhatIf
+Invoke-HardenSystem -ApplyGPO @{ OS = 'Win10'; IE11 = $true } -DEP OptOut -LocalUserPasswordExpires -WhatIf
 ```
 
 What if: Performing the operation "Apply GPO" on target "OS: Win10".
@@ -50,6 +43,13 @@ What if: Performing the operation "Set-LocalUserPasswordExpires" on target "MyLo
 This example makes use of the 'WhatIf' parameter to view the changes that would occur with the selected parameters.
 
 ### EXAMPLE 3
+```
+Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true; CustomGPO = $true } -Confirm:$false
+```
+
+Applies selected built-in GPOs (Windows Defender, Windows 11 STIG) and then imports and applies any custom `.PolicyRules` files placed under `GPO\Custom` in the module. The `CustomGPO` flag is passed through to `Invoke-LocalGPO` automatically.
+
+### EXAMPLE 4
 ```
 Import-HardenSystemConfig .\Default.json | Invoke-HardenSystem -Confirm:$False
 ```
@@ -62,6 +62,12 @@ No confirmation is required before changes are made to the system.
 ### -ApplyGPO
 Applies settings against the Local Group Policy.
 See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
+
+To import custom Policy Analyzer rules, include `CustomGPO = $true` in the hashtable passed to `-ApplyGPO`. This will call `Invoke-LocalGPO -CustomGPO`.
+
+Example:
+
+`-ApplyGPO @{ OS = 'Win11'; Chrome = $true; CustomGPO = $true }`
 
 ```yaml
 Type: Array
@@ -256,9 +262,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 Name         - Invoke-HardenSystem
-Version      - 0.4.1
+Version      - 1.1
 Author       - Darren Hollinrake
 Date Created - 2021-07-24
-Date Updated - 2021-08-31
+Date Updated - 2025-11-29
 
 ## RELATED LINKS

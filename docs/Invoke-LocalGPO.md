@@ -8,7 +8,7 @@ schema: 2.0.0
 # Invoke-LocalGPO
 
 ## SYNOPSIS
-Applies GPOs against the local system.
+Applies selected DISA STIG and custom PolicyRules to the Local Group Policy.
 The settings applied can be seen with the local group policy console (gpedit.msc).
 
 ## SYNTAX
@@ -16,7 +16,7 @@ The settings applied can be seen with the local group policy console (gpedit.msc
 ```
 Invoke-LocalGPO [-AcrobatProDC] [[-AppLocker] <String>] [-Chrome] [-Defender] [-DisplayLogonInfo] [-Edge]
  [-Firefox] [-IE11] [-Firewall] [[-NetBanner] <String>] [-NoPreviousUser] [[-Office] <String>] [-ReaderDC]
- [-RequireCtrlAltDel] [[-OS] <String>] [-Tee] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-RequireCtrlAltDel] [[-OS] <String>] [-CustomGPO] [-Tee] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -26,10 +26,10 @@ The additional Non-DISA GPO's provided are to configure some common settings or 
 GPO's are imported using Microsoft's LGPO tool (LGPO.exe).
 The GPO's have been converted to '*.policyrules' text-based files.
 
-The DISA GPOs included are based on the April 2023 GPO package.
+The DISA GPOs included are based on the October 2025 GPO package.
 
 Keep in mind the following:
- - For the GPOs that configure the OS, no check is made to ensure the GPO applied matches the installed OS.
+ - For the GPOs that configure the OS, a warning is logged if the selected OS differs from the installed OS.
  - For the GPO's that configure applications, no check is make to ensure the application is installed.
  - If the GPO has admx/adml files that are not included with the base installation of Windows, they will show up as extra registry settings when viewed from gpedit.msc
  - If the system is/will be joined to a domain, these local GPO's will not be processed if the following GPO setting is enabled:
@@ -67,6 +67,13 @@ Invoke-LocalGPO -OS Win10 -IE11 -Confirm:$false
 
 Applies the Win10 and IE11 STIGs to the system without prompting for confirmation.
 
+### EXAMPLE 4
+```
+Invoke-LocalGPO -OS Win11 -CustomGPO -Confirm:$false
+```
+
+Applies the Windows 11 STIG and then imports and applies all custom `.PolicyRules` files found under `GPO\Custom`.
+
 ## PARAMETERS
 
 ### -AcrobatProDC
@@ -103,7 +110,7 @@ Accept wildcard characters: False
 ```
 
 ### -Chrome
-DISA STIG (v2r8) - Configures Google Chrome in alignment with the corresponding DISA STIG.
+DISA STIG (v2r11) - Configures Google Chrome in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -119,7 +126,7 @@ Accept wildcard characters: False
 ```
 
 ### -Defender
-DISA STIG (v2r4) - Configures Windows Defender AV in alignment with the corresponding DISA STIG.
+DISA STIG (v2r6) - Configures Windows Defender AV in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -150,7 +157,7 @@ Accept wildcard characters: False
 ```
 
 ### -Edge
-DISA STIG (v1r6) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG.
+DISA STIG (v2r3) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -166,7 +173,7 @@ Accept wildcard characters: False
 ```
 
 ### -Firefox
-DISA STIG (v6r4) - Configures Firefox in alignment with the corresponding DISA STIG.
+DISA STIG (v6r6) - Configures Firefox in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -182,7 +189,7 @@ Accept wildcard characters: False
 ```
 
 ### -IE11
-DISA STIG (v2r4) - Configures IE11 in alignment with the corresponding DISA STIG.
+DISA STIG (v2r6) - Configures IE11 in alignment with the corresponding DISA STIG.
 This applies both User and Computer settings.
 
 ```yaml
@@ -198,7 +205,7 @@ Accept wildcard characters: False
 ```
 
 ### -Firewall
-DISA STIG (v1r7) - Configures the Windows firewall in alignment with the corresponding DISA STIG.
+DISA STIG (v2r2) - Configures the Windows firewall in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -329,6 +336,22 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
+### -CustomGPO
+Imports any Policy Analyzer `.PolicyRules` files located under `GPO\\Custom` and applies them in alphabetical order after other selected GPOs.
+If no files are present, the command logs a warning and skips.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ### -Tee
 Displays the log output to the console.
 
@@ -384,10 +407,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 Name         - Invoke-LocalGPO
-Version      - 1.1
+Version      - 1.12
 Author       - Darren Hollinrake
 Date Created - 2021-07-24
-Date Updated - 2023-04-29
+Date Updated - 2025-11-29
 
 ## RELATED LINKS
 

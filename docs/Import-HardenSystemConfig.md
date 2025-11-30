@@ -23,15 +23,20 @@ This function imports configuration files that can be piped to 'Invoke-HardenSys
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+PS C:\> Import-HardenSystemConfig -FilePath 'C:\Temp\DHHardenSystem\Default.json'
 ```
+Imports the default configuration file.
 
-{{ Add example description here }}
+### Example 2
+```powershell
+PS C:\> Import-HardenSystemConfig -FilePath 'C:\Temp\Config\Baseline.json' | Invoke-HardenSystem -Confirm:$false
+```
+Imports a saved baseline and applies it.
 
 ## PARAMETERS
 
 ### -FilePath
-Provide the file path for the configuration file to import.
+Path to the JSON configuration file to import.
 
 ```yaml
 Type: String
@@ -54,9 +59,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 Name         - Import-HardenSystemConfig
-Version      - 0.1
+Version      - 0.2
 Author       - Darren Hollinrake
 Date Created - 2021-07-24
-Date Updated - 2021-08-06
+Date Updated - 2024-01-24
 
 ## RELATED LINKS

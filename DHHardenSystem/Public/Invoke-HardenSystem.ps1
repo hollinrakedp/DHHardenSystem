@@ -15,6 +15,7 @@ function Invoke-HardenSystem {
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
+    To import custom Policy Analyzer rules, include `CustomGPO = $true` in the hashtable passed to `-ApplyGPO`. This will call `Invoke-LocalGPO -CustomGPO` and import any `.PolicyRules` files in `GPO\\Custom`.
 
     .PARAMETER DEP
     Configures the Data Execution Prevention policy. Valid values are 'OptIn', 'OptOut', 'AlwaysOn', 'AlwaysOff'.
@@ -68,6 +69,11 @@ function Invoke-HardenSystem {
     Import-HardenSystemConfig .\Default.json | Invoke-HardenSystem -Confirm:$False
 
     This example imports the configuration from the file 'Default.json' located in the current directory and passes the configuration to the 'Invoke-HardenSystem' function. No confirmation is required before changes are made to the system.
+
+    .EXAMPLE
+    Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true; CustomGPO = $true } -Confirm:$false
+
+    Applies selected built-in GPOs (Windows Defender, Windows 11 STIG) and then imports and applies any custom '.PolicyRules' files placed under 'GPO\Custom' in the module. The `CustomGPO` flag is passed through to `Invoke-LocalGPO` automatically.
 
     #>
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]

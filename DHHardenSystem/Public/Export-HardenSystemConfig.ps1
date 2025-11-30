@@ -18,6 +18,8 @@ function Export-HardenSystemConfig {
 
     .PARAMETER ApplyGPO
     Specifies an array of hash tables containing GPO settings to be applied.
+    Keys map to parameters of 'Invoke-LocalGPO' (e.g., 'OS', 'IE11', 'Chrome', 'Defender', 'AppLocker', etc.).
+    To import custom Policy Analyzer rules, include 'CustomGPO = $true' within the hashtable. This will call 'Invoke-LocalGPO -CustomGPO' and apply any '.PolicyRules' files in 'GPO\Custom'.
 
     .PARAMETER DEP
     Specifies the Data Execution Prevention (DEP) setting. Valid values are 'AlwaysOff', 'AlwaysOn', 'OptIn', or 'OptOut'.
@@ -69,6 +71,12 @@ function Export-HardenSystemConfig {
 
     PS C:\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask $DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TLS11Server, TripleDES -RemoveWinApp $RemoveWinApp -FilePath .\Default.json
     This set of commands creates the 'Default.json' file included with this module.
+
+    .EXAMPLE
+    $ApplyGPO = @{ OS = 'Win11'; Defender = $true; CustomGPO = $true }
+    Export-HardenSystemConfig -ApplyGPO $ApplyGPO -FilePath .\MyHardenConfig.json
+
+    Creates a configuration that applies Windows Defender and the Windows 11 STIG, and enables importing any custom '.PolicyRules' files found under 'GPO\Custom' by including 'CustomGPO = $true' within the 'ApplyGPO' hashtable.
 
     #>
     [CmdletBinding(SupportsShouldProcess)]

@@ -61,10 +61,20 @@ PS C:\\\>$DisableScheduledTask = @{TaskName = $TaskName; TaskPath = $TaskPath}
 PS C:\\\>Export-HardenSystemConfig -ApplyGPO $ApplyGPO -DEP OptOut -DisablePoshV2 -DisableScheduledTask $DisableScheduledTask -DisableService $DisableService -EnableLog $EnableLog -LocalUserPasswordExpires -Mitigation RC4, SpeculativeExecution, SSL3Server, TLS1Server, TLS11Server, TripleDES -RemoveWinApp $RemoveWinApp -FilePath .\Default.json
 This set of commands creates the 'Default.json' file included with this module.
 
+### EXAMPLE 3
+```
+$ApplyGPO = @{ OS = 'Win11'; Defender = $true; CustomGPO = $true }
+Export-HardenSystemConfig -ApplyGPO $ApplyGPO -FilePath .\MyHardenConfig.json
+```
+
+Creates a configuration that applies Windows Defender and the Windows 11 STIG, and enables importing any custom `.PolicyRules` files found under `GPO\Custom` by including `CustomGPO = $true` within the `ApplyGPO` hashtable.
+
 ## PARAMETERS
 
 ### -ApplyGPO
-{{ Fill ApplyGPO Description }}
+Specifies one or more hashtables containing GPO selections to apply via `Invoke-LocalGPO`.
+Keys map to parameters of `Invoke-LocalGPO` (for example: `OS`, `IE11`, `Chrome`, `Defender`, `AppLocker`, etc.).
+To import custom Policy Analyzer rules, include `CustomGPO = $true` in the hashtable. This will call `Invoke-LocalGPO -CustomGPO`.
 
 ```yaml
 Type: Hashtable[]
@@ -79,7 +89,7 @@ Accept wildcard characters: False
 ```
 
 ### -DEP
-{{ Fill DEP Description }}
+Specifies the Data Execution Prevention policy. Valid values: `OptOut`, `OptIn`, `AlwaysOn`, `AlwaysOff`.
 
 ```yaml
 Type: String
@@ -93,8 +103,8 @@ Accept pipeline input: True (ByPropertyName)
 Accept wildcard characters: False
 ```
 
-### -DisablePoshV2
-{{ Fill DisablePoshV2 Description }}
+### -DisablePoShV2
+Disables Windows PowerShell 2.0 feature.
 
 ```yaml
 Type: SwitchParameter
@@ -109,7 +119,7 @@ Accept wildcard characters: False
 ```
 
 ### -DisableScheduledTask
-{{ Fill DisableScheduledTask Description }}
+Provides a hashtable with `TaskName` and `TaskPath` to disable scheduled tasks.
 
 ```yaml
 Type: Hashtable[]
@@ -124,7 +134,7 @@ Accept wildcard characters: False
 ```
 
 ### -DisableService
-{{ Fill DisableService Description }}
+Array of service names to stop and disable.
 
 ```yaml
 Type: String[]
@@ -139,7 +149,7 @@ Accept wildcard characters: False
 ```
 
 ### -EnableLog
-{{ Fill EnableLog Description }}
+Array of event log channel names to enable (e.g., `Microsoft-Windows-TaskScheduler/Operational`).
 
 ```yaml
 Type: String[]
@@ -154,7 +164,7 @@ Accept wildcard characters: False
 ```
 
 ### -LocalUserPasswordExpires
-{{ Fill LocalUserPasswordExpires Description }}
+Sets local enabled accounts with “Password never expires” to expire.
 
 ```yaml
 Type: SwitchParameter
@@ -169,7 +179,7 @@ Accept wildcard characters: False
 ```
 
 ### -Mitigation
-{{ Fill Mitigation Description }}
+Array of mitigation function names to apply (e.g., `RC4`, `TLS1Server`, `TripleDES`).
 
 ```yaml
 Type: String[]
@@ -184,7 +194,7 @@ Accept wildcard characters: False
 ```
 
 ### -RemoveWinApp
-{{ Fill RemoveWinApp Description }}
+Array of UWP app package names to remove from the system.
 
 ```yaml
 Type: String[]
