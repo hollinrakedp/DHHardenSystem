@@ -9,9 +9,9 @@ function Set-LocalUserPasswordExpires {
     .NOTES
     Name       : Set-LocalUserPasswordExpires
     Author     : Darren Hollinrake
-    Version    : 1.0
+    Version    : 1.2
     DateCreated: 2021-08-05
-    DateUpdated:
+    DateUpdated: 2025-11-29
 
     #>
     [CmdletBinding(
@@ -23,10 +23,15 @@ function Set-LocalUserPasswordExpires {
     )
     $Users = Get-LocalUser | Where-Object { ($_.Enabled -eq $true) -and ($null -eq $_.PasswordExpires) }
 
-    foreach ($User in $Users) {
-        if ($PSCmdlet.ShouldProcess("$User")) {
-            Write-LogEntry -Tee:$Tee -LogMessage "Setting password to expire for user: $User"
-            $User | Set-LocalUser -PasswordNeverExpires:$false
+    if ($Users.Count -eq 0) {
+        Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: LocalUserPasswordExpires: No users require password expiration update"
+    }
+    else {
+        foreach ($User in $Users) {
+            if ($PSCmdlet.ShouldProcess("$User")) {
+                Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: LocalUserPasswordExpires: User: $User"
+                $User | Set-LocalUser -PasswordNeverExpires:$false
+            }
         }
     }
 }

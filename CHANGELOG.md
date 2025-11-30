@@ -1,13 +1,39 @@
 # Change Log - DHHardenSystem
-## v2.1.1 (2025-04-13)
+
+## v2.2.0 (2025-11-30)
+
 ### Added
 
-## Changed
-* License updated to reflect current year
+* Custom PolicyRules files can now be imported
+  * Place the files in the 'GPO\Custom' subdirectory of the module
+  * GPOs are applied in alphanumeric order
+* Added parameter '-ExportConfig' to Invoke-HardenSystem
+  * Allows for the export of the configuration being applied.
+
+### Changed
+
+* Updated GPO STIGs to the October 2025 release
+  * Google Chrome v2r11
+  * Internet Explorer 11 v2r6
+  * Microsoft Edge v2r3
+  * Mozilla Firefox v6r6
+  * Office 2019/365 v3r4
+  * Server 2016 v2r10
+  * Server 2019 v3r6
+  * Server 2022 v2r6
+  * Windows 10 v3r5
+  * Windows 11 v2r5
+  * Windows Defender AV v2r6
+* Module provided GPOs moved from 'Custom' to 'Module' directory
+  * Allows users to place their own custom GPOs in the 'Custom' directory
+* Enhanced logging for the lgpo execution
+* Standardized logging message output for various functions
+* Enhanced error handling for various functions
+* Updated various documention
 
 ### Fixed
-* The parameter for applying the DoD Adobe Acrobat Reader DC GPO was missing. Added the parameter and corresponding help.
-* The paths used for the DoD Adobe Acrobat Reader DC GPO were pointed to the Custom GPO directory. Corrected the paths to point to the DoD directory.
+
+* Various formatting cleanup
 
 ## v2.1.0 (2025-02-15)
 ### Added

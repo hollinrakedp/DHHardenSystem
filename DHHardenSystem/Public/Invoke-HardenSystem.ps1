@@ -8,13 +8,14 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 0.6
+    Version      - 1.2
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2024-01-24
+    Date Updated - 2025-11-30
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
+    To import custom Policy Analyzer rules, include `CustomGPO = $true` in the hashtable passed to `-ApplyGPO`. This will call `Invoke-LocalGPO -CustomGPO` and import any `.PolicyRules` files in `GPO\\Custom`.
 
     .PARAMETER DEP
     Configures the Data Execution Prevention policy. Valid values are 'OptIn', 'OptOut', 'AlwaysOn', 'AlwaysOff'.
@@ -43,6 +44,11 @@ function Invoke-HardenSystem {
     .PARAMETER RemoveWinApp
     Removes the supplied list of UWP Applications from the system.
 
+    .PARAMETER ExportConfig
+    When specified, exports the configuration (the parameters supplied) to a JSON file using 'Export-HardenSystemConfig'.
+    Provide a file path or directory. If a directory is provided, an automatic filename is used (HardenSystemConfig-yyyyMMdd.json).
+    Respects -WhatIf (no file created when -WhatIf is used). If only -ExportConfig is supplied with no other configuration parameters, a warning is issued and no file is created.
+
     .PARAMETER Tee
     Switch parameter that, when specified, enables logging to both the console and a log file.
 
@@ -69,6 +75,16 @@ function Invoke-HardenSystem {
 
     This example imports the configuration from the file 'Default.json' located in the current directory and passes the configuration to the 'Invoke-HardenSystem' function. No confirmation is required before changes are made to the system.
 
+    .EXAMPLE
+    Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true; CustomGPO = $true } -Confirm:$false
+
+    Applies selected built-in GPOs (Windows Defender, Windows 11 STIG) and then imports and applies any custom '.PolicyRules' files placed under 'GPO\Custom' in the module. The `CustomGPO` flag is passed through to `Invoke-LocalGPO` automatically.
+
+    .EXAMPLE
+    Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true } -DEP OptOut -DisablePoShV2 -ExportConfig .\AppliedConfig.json -Confirm:$false
+
+    Hardens the system with the provided parameters and exports the configuration used to 'AppliedConfig.json' for reuse.
+
     #>
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
     param (
@@ -92,6 +108,9 @@ function Invoke-HardenSystem {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$RemoveWinApp,
         [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('ExportConfigPath')]
+        [string]$ExportConfig,
+        [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
     begin {
@@ -108,16 +127,16 @@ function Invoke-HardenSystem {
                 $GPO = @{}
             ($ApplyGPO | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $GPO[$_.Name] = $_.Value }
                 $GPOString = $(foreach ($kvp in $GPO.GetEnumerator()) { $kvp.Key + ':' + $kvp.Value }) -join ', '
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: ApplyGPO"
-                Write-LogEntry @SplatLogEntry -LogMessage "Passing GPOs: $GPOString"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: ApplyGPO"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: ApplyGPO: Passing GPOs: $GPOString"
                 Invoke-LocalGPO @GPO -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DEP {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DEP"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DEP"
                 Set-DEP -Policy $DEP -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DisablePoShV2 {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisablePoshV2"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisablePoshV2"
                 if ($PSCmdlet.ShouldProcess("localhost", "Disable-PoShV2")) {
                     Disable-PoShV2 -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
@@ -125,33 +144,57 @@ function Invoke-HardenSystem {
             DisableScheduledTask {
                 $ScheduledTask = @{}
             ($DisableScheduledTask | ConvertTo-Json | ConvertFrom-Json).psobject.properties | ForEach-Object { $ScheduledTask[$_.Name] = $_.Value }
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisableScheduledTasks"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisableScheduledTasks"
                 Set-ScheduledTaskDisabled @ScheduledTask -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             DisableService {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: DisableServices"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: DisableServices"
                 Set-ServiceDisabled -Name $DisableService -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             EnableLog {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: EnableLog"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: EnableLog"
                 Enable-EventLog -LogName $EnableLog -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             LocalUserPasswordExpires {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: LocalUserPasswordExpires"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: LocalUserPasswordExpires"
                 Set-LocalUserPasswordExpires -WhatIf:$WhatIfPreference -Tee:$Tee
             }
             Mitigation {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: Mitigation"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: Mitigation"
                 foreach ($Mitigate in $Mitigation) {
-                    if ($PSCmdlet.ShouldProcess("$Mitigate", "Mitigate")) {
-                        Write-LogEntry @SplatLogEntry -LogMessage "Mitigation: $Mitigate"
-                        & $Mitigate
-                    }
+                    & $Mitigate -WhatIf:$WhatIfPreference -Tee:$Tee
                 }
             }
             RemoveWinApp {
-                Write-LogEntry @SplatLogEntry -LogMessage "Option Selected: RemoveWinApp"
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: RemoveWinApp"
                 Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            ExportConfig {
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: ExportConfig"
+                # Build hashtable of configuration parameters (exclude meta / control params)
+                $ExcludeParams = 'ExportConfig','Tee','Confirm','WhatIf','Verbose','Debug','ErrorAction','WarningAction','OutVariable','OutBuffer','PipelineVariable'
+                $ExportParams = @{}
+                foreach ($Key in $PSBoundParameters.Keys) {
+                    if ($ExcludeParams -notcontains $Key) {
+                        switch ($Key) {
+                            'DisablePoShV2' { $ExportParams[$Key] = $PSBoundParameters[$Key].IsPresent }
+                            'LocalUserPasswordExpires' { $ExportParams[$Key] = $PSBoundParameters[$Key].IsPresent }
+                            default { $ExportParams[$Key] = $PSBoundParameters[$Key] }
+                        }
+                    }
+                }
+                if ($ExportParams.Count -eq 0) {
+                    Write-LogEntry @SplatLogEntry -LogLevel WARN -LogMessage "HardenSystem: ExportConfig: No configuration parameters supplied - skipping file creation."
+                }
+                else {
+                    try {
+                        Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: ExportConfig: Exporting configuration to: $ExportConfig"
+                        Export-HardenSystemConfig @ExportParams -FilePath $ExportConfig -Confirm:$false -Verbose:$false -WhatIf:$WhatIfPreference | Out-Null
+                    }
+                    catch {
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "HardenSystem: ExportConfig: Error exporting configuration - $($_.Exception.Message)"
+                    }
+                }
             }
         }
     }

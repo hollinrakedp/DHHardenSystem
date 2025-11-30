@@ -8,10 +8,10 @@ function Get-LGPO {
 
     .NOTES
     Name         - Get-LGPO
-    Version      - 1.0
+    Version      - 1.1
     Author       - Darren Hollinrake
     Date Created - 2024-09-28
-    Date Updated - 
+    Date Updated - 2025-
 
     .PARAMETER LGPOPath
     Defines the location where the LGPO executable will be placed. By default, it will go into the module's 'LGPO' folder.
@@ -45,7 +45,7 @@ function Get-LGPO {
 
         if ( ! (Test-Path -Path $LGPOExe)) {
             try {
-                Write-LogEntry -Tee:$Tee -LogMessage "Downloading LGPO executable"
+                Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Download - LGPO"
                 Invoke-WebRequest -Uri $LGPOUrl -OutFile "$env:TEMP\LGPO.zip"
             }
             catch {
@@ -53,23 +53,23 @@ function Get-LGPO {
             }
 
             try {
-                Write-LogEntry -Tee:$Tee -LogMessage "Extracting files..."
+                Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Extract - Begin"
                 Expand-Archive -Path "$env:TEMP\LGPO.zip" -DestinationPath $env:TEMP
                 Move-Item -Path "$env:TEMP\LGPO_30\LGPO.exe" -Destination $LGPOPath
             }
             catch {
-                Write-LogEntry -LogLevel ERROR -Tee:$Tee -LogMessage "Failed to extract LGPO.zip. Error: $_" -ErrorAction
+                Write-LogEntry -LogLevel ERROR -Tee:$Tee -LogMessage "LGPO: Extract - Failed: $_" -ErrorAction
             }
             finally {
-                Write-LogEntry -Tee:$Tee -LogMessage "Cleaning up..."
+                Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Extract - Cleanup"
                 Remove-Item -Path "$env:TEMP\LGPO.zip"
                 Remove-Item -Path "$env:TEMP\LGPO_30" -Recurse
             }
         }
         else {
-            Write-LogEntry -Tee:$Tee -LogMessage "The LGPO executable already exists. Nothing to do."
+            Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Download - LGPO already exists"
         }
-        Write-LogEntry -Tee:$Tee -LogMessage "The executable is located here: $LGPOExe"
+        Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Path - $LGPOExe"
     }
 
     end { Write-LogEntry -StopLog -Tee:$Tee }

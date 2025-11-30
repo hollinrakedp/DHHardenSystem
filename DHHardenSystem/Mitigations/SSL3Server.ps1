@@ -5,10 +5,10 @@ function SSL3Server {
 
     .NOTES
     Name         - SSL3Server
-    Version      - 1.1
+    Version      - 1.3
     Author       - Darren Hollinrake
     Date Created - 2021-08-06
-    Date Updated - 2024-10-22
+    Date Updated - 2025-11-29
 
     .DESCRIPTION
     This function disables SSL 3.0 for the server by setting the 'Enabled' registry property to 0 and 'DisabledByDefault' to 1 in the SCHANNEL settings.
@@ -18,13 +18,17 @@ function SSL3Server {
     This command disables SSL 3.0 for the server in the SCHANNEL settings.
 
     #>
-    Write-Verbose "SSL3Server"
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [switch]$Tee
+    )
+
+    Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: SSL 3.0 Server - Begin"
 
     $RegPath = 'HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols\SSL 3.0\Server'
 
-    if (!(Test-Path $RegPath)) {
-        New-Item -Path $RegPath -Force | Out-Null
-    }
+    if (!(Test-Path $RegPath)) { New-Item -Path $RegPath -Force | Out-Null }
 
     $KeyProperties = @(
         @{
@@ -45,7 +49,11 @@ function SSL3Server {
             PropertyType = 'DWORD'
             Force = $true
         }
-        
-        New-ItemProperty @ItemProperty | Out-Null
+        if ($PSCmdlet.ShouldProcess("$RegPath::$($KeyProperty.Name)", 'Set registry value')) {
+            Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: SSL 3.0 Server - Setting $($KeyProperty.Name)=$($KeyProperty.Value)"
+            New-ItemProperty @ItemProperty | Out-Null
+        }
     }
+
+    Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: Mitigation: SSL 3.0 Server - Complete"
 }

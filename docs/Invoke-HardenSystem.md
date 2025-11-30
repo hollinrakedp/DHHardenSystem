@@ -15,7 +15,7 @@ Quickly hardens the local Windows installation system.
 ```
 Invoke-HardenSystem [[-ApplyGPO] <Array>] [[-DEP] <String>] [-DisablePoShV2] [[-DisableScheduledTask] <Array>]
  [[-DisableService] <String[]>] [[-EnableLog] <String[]>] [-LocalUserPasswordExpires]
- [[-Mitigation] <String[]>] [[-RemoveWinApp] <String[]>] [-Tee] [-WhatIf] [-Confirm] [<CommonParameters>]
+ [-Mitigation <String[]>] [[-RemoveWinApp] <String[]>] [[-ExportConfig] <String>] [-Tee] [-WhatIf] [-Confirm]
 ```
 
 ## DESCRIPTION
@@ -28,18 +28,11 @@ Run the function without specifying any parameters to use the default hardening 
 ```
 Invoke-HardenSystem -DEP OptOut
 ```
-
-Confirm
-Are you sure you want to perform this action?
-Performing the operation "Set-DEP OptOut" on target "localhost".
-\[Y\] Yes  \[A\] Yes to All  \[N\] No  \[L\] No to All  \[S\] Suspend  \[?\] Help (default is "Y"):
-
 This example will set DEP on the system to 'OptOut'.
-Because the impact to the system is high, confirmation is required before each action will run.
 
 ### EXAMPLE 2
 ```
-Invoke-HardenSystem -ApplyGPO @{OS = 'Win10'; IE11 = $true} -DEP OptOut -LocalUserPasswordExpires -WhatIf
+Invoke-HardenSystem -ApplyGPO @{ OS = 'Win10'; IE11 = $true } -DEP OptOut -LocalUserPasswordExpires -WhatIf
 ```
 
 What if: Performing the operation "Apply GPO" on target "OS: Win10".
@@ -51,17 +44,44 @@ This example makes use of the 'WhatIf' parameter to view the changes that would 
 
 ### EXAMPLE 3
 ```
+Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true; CustomGPO = $true } -Confirm:$false
+```
+
+Applies selected built-in GPOs (Windows Defender, Windows 11 STIG) and then imports and applies any custom `.PolicyRules` files placed under `GPO\Custom` in the module. The `CustomGPO` flag is passed through to `Invoke-LocalGPO` automatically.
+
+### EXAMPLE 4
+```
 Import-HardenSystemConfig .\Default.json | Invoke-HardenSystem -Confirm:$False
 ```
 
 This example imports the configuration from the file 'Default.json' located in the current directory and passes the configuration to the 'Invoke-HardenSystem' function.
 No confirmation is required before changes are made to the system.
 
+### EXAMPLE 5
+```
+Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true } -DEP OptOut -DisablePoShV2 -ExportConfig .\AppliedConfig.json -Confirm:$false
+```
+
+Hardens the system with the supplied parameters and exports a JSON configuration file (`AppliedConfig.json`) representing the parameters used. This file can be imported later via `Import-HardenSystemConfig` and reused on additional systems.
+
+### EXAMPLE 6
+```
+Invoke-HardenSystem -ExportConfig .\OnlyExport.json -Confirm:$false
+```
+
+Because no configuration parameters were supplied besides `-ExportConfig`, a warning is emitted and no file is created.
+
 ## PARAMETERS
 
 ### -ApplyGPO
 Applies settings against the Local Group Policy.
 See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
+
+To import custom Policy Analyzer rules, include `CustomGPO = $true` in the hashtable passed to `-ApplyGPO`. This will call `Invoke-LocalGPO -CustomGPO`.
+
+Example:
+
+`-ApplyGPO @{ OS = 'Win11'; Chrome = $true; CustomGPO = $true }`
 
 ```yaml
 Type: Array
@@ -204,6 +224,21 @@ Accept wildcard characters: False
 ### -Tee
 Displays the log output to the console.
 
+### -ExportConfig
+Exports the configuration (parameters supplied to the function) to a JSON file using `Export-HardenSystemConfig`. Provide either a file path or a directory. If a directory is provided, an automatic filename is generated: `HardenSystemConfig-yyyyMMdd.json`. Respects `-WhatIf` (no file is written when `-WhatIf` is used). If `-ExportConfig` is the only parameter provided (no hardening inputs like `-ApplyGPO`, `-DEP`, `-Mitigation`, etc.), a warning is issued and no file is created.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases: ExportConfigPath
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
 ```yaml
 Type: SwitchParameter
 Parameter Sets: (All)
@@ -256,9 +291,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## NOTES
 Name         - Invoke-HardenSystem
-Version      - 0.4.1
+Version      - 1.2
 Author       - Darren Hollinrake
 Date Created - 2021-07-24
-Date Updated - 2021-08-31
+Date Updated - 2025-11-30
 
 ## RELATED LINKS
