@@ -8,10 +8,10 @@ function Invoke-HardenSystem {
 
     .NOTES
     Name         - Invoke-HardenSystem
-    Version      - 1.1
+    Version      - 1.2
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
-    Date Updated - 2025-11-29
+    Date Updated - 2025-11-30
 
     .PARAMETER ApplyGPO
     Applies settings against the Local Group Policy. See 'Invoke-LocalGPO' for additional information on the parameters that can be called.
@@ -44,6 +44,11 @@ function Invoke-HardenSystem {
     .PARAMETER RemoveWinApp
     Removes the supplied list of UWP Applications from the system.
 
+    .PARAMETER ExportConfig
+    When specified, exports the configuration (the parameters supplied) to a JSON file using 'Export-HardenSystemConfig'.
+    Provide a file path or directory. If a directory is provided, an automatic filename is used (HardenSystemConfig-yyyyMMdd.json).
+    Respects -WhatIf (no file created when -WhatIf is used). If only -ExportConfig is supplied with no other configuration parameters, a warning is issued and no file is created.
+
     .PARAMETER Tee
     Switch parameter that, when specified, enables logging to both the console and a log file.
 
@@ -75,6 +80,11 @@ function Invoke-HardenSystem {
 
     Applies selected built-in GPOs (Windows Defender, Windows 11 STIG) and then imports and applies any custom '.PolicyRules' files placed under 'GPO\Custom' in the module. The `CustomGPO` flag is passed through to `Invoke-LocalGPO` automatically.
 
+    .EXAMPLE
+    Invoke-HardenSystem -ApplyGPO @{ OS = 'Win11'; Defender = $true } -DEP OptOut -DisablePoShV2 -ExportConfig .\AppliedConfig.json -Confirm:$false
+
+    Hardens the system with the provided parameters and exports the configuration used to 'AppliedConfig.json' for reuse.
+
     #>
     [CmdletBinding(ConfirmImpact = 'High', SupportsShouldProcess)]
     param (
@@ -97,6 +107,9 @@ function Invoke-HardenSystem {
         [string[]]$Mitigation,
         [Parameter(ValueFromPipelineByPropertyName)]
         [string[]]$RemoveWinApp,
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('ExportConfigPath')]
+        [string]$ExportConfig,
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$Tee
     )
@@ -155,6 +168,33 @@ function Invoke-HardenSystem {
             RemoveWinApp {
                 Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: RemoveWinApp"
                 Remove-WinApp -App $RemoveWinApp -WhatIf:$WhatIfPreference -Tee:$Tee
+            }
+            ExportConfig {
+                Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: Option Selected: ExportConfig"
+                # Build hashtable of configuration parameters (exclude meta / control params)
+                $ExcludeParams = 'ExportConfig','Tee','Confirm','WhatIf','Verbose','Debug','ErrorAction','WarningAction','OutVariable','OutBuffer','PipelineVariable'
+                $ExportParams = @{}
+                foreach ($Key in $PSBoundParameters.Keys) {
+                    if ($ExcludeParams -notcontains $Key) {
+                        switch ($Key) {
+                            'DisablePoShV2' { $ExportParams[$Key] = $PSBoundParameters[$Key].IsPresent }
+                            'LocalUserPasswordExpires' { $ExportParams[$Key] = $PSBoundParameters[$Key].IsPresent }
+                            default { $ExportParams[$Key] = $PSBoundParameters[$Key] }
+                        }
+                    }
+                }
+                if ($ExportParams.Count -eq 0) {
+                    Write-LogEntry @SplatLogEntry -LogLevel WARN -LogMessage "HardenSystem: ExportConfig: No configuration parameters supplied - skipping file creation."
+                }
+                else {
+                    try {
+                        Write-LogEntry @SplatLogEntry -LogMessage "HardenSystem: ExportConfig: Exporting configuration to: $ExportConfig"
+                        Export-HardenSystemConfig @ExportParams -FilePath $ExportConfig -Confirm:$false -Verbose:$false -WhatIf:$WhatIfPreference | Out-Null
+                    }
+                    catch {
+                        Write-LogEntry @SplatLogEntry -LogLevel ERROR -LogMessage "HardenSystem: ExportConfig: Error exporting configuration - $($_.Exception.Message)"
+                    }
+                }
             }
         }
     }

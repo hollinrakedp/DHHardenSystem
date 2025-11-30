@@ -9,19 +9,20 @@ This module uses a few different methods for hardening a system. The primary met
 This module has a single outside dependency.
 
 - LGPO.exe
-  - This is provided by Microsoft as part of the Secuirty Compliance Toolkit (SCT). See the 'Resources' section for a link to the download.
+  - This is provided by Microsoft as part of the Security Compliance Toolkit (SCT). See the 'Resources' section for a link to the download.
   - It is expected that 'LGPO.exe' is available from your system's PATH. The module will automatically add the 'LGPO' folder within the module to this location when it is loaded. So long as you add the file to this location, no additional configuration is needed.
+  - You can use the `Get-LGPO` function to automatically download and extract LGPO.exe to the module's LGPO folder (requires Internet access).
 
 
 ## Quick Start
 
 For a Windows 11 system, you can follow the following steps:
 1. Download this module
+1. Download LGPO.exe
+  - Using this module (on an Internet-connected system): Get-LGPO
+  - Manually: https://www.microsoft.com/en-us/download/details.aspx?id=55319, extract and place it within the LGPO folder
 1. Copy the module to the system to be hardened
   - Module Location: C:\Temp\DHHardenSystem
-1. Download LGPO.zip (https://www.microsoft.com/en-us/download/details.aspx?id=55319)
-1. Extract 'LGPO.exe' from LGPO.zip and place it within the LGPO folder
-  - DHHardenSystem/LGPO
 1. Run PowerShell as Administrator
 1. Import the module
   - Import-Module C:\Temp\DHHardenSystem\DHHardenSystem.psd1
@@ -61,7 +62,11 @@ The list of currently available GPO's in this module:
   - NoPreviousUser
   - RequireCtrlAltDel
 
-Most of the GPOs are self-explainatory. For additional information see the help provided in 'Invoke-LocalGPO'.
+Most of the GPOs are self-explanatory. For additional information see the help provided in 'Invoke-LocalGPO'.
+
+### Custom GPO Import
+
+You can import your own custom PolicyRules files by placing them in the `GPO\Custom` folder within the module directory. To apply them, include `CustomGPO = $true` in the hashtable passed to `-ApplyGPO` when using `Invoke-HardenSystem`, or use the `-CustomGPO` switch directly with `Invoke-LocalGPO`. Custom GPOs are applied in alphabetical order after all other selected GPOs.
 
 ### Mitigations
 
@@ -105,17 +110,19 @@ This category includes additional settings that aren't set via GPO. These includ
 - Set Local User Passwords to Expire
   - Checks the local accounts on the system for users that are enabled and have a password that is set to never expire. For those that match the criteria, they will be reconfigured to expire.
 
+**Note:** Most hardening operations require administrative privileges.
+
 ## Functions
 
 Below is a brief overview of the primary functions in this module.
 
 ### Invoke-HardenSystem
 
-This is the main function providing control of the hardening process. It performs all the calls to the public and private functions to apply the configurations requested to the system. 
+This is the main function providing control of the hardening process. It performs all the calls to the public and private functions to apply the configurations requested to the system. Supports `-Tee` for logging output to both console and log file.
 
 ### Invoke-LocalGPO
 
-This applies the GPOs against the local system. Even though the tool is capable of importing GPO backups directly, they've been flattened into '*.POLICYRULES' files for ease of use.
+This applies the GPOs against the local system. Even though the tool is capable of importing GPO backups directly, they've been flattened into '*.POLICYRULES' files for ease of use. Supports the use of custom PolicyRules from the `GPO\Custom` folder.
 
 ### Export-HardenSystemConfig
 
@@ -123,19 +130,23 @@ This is used to create a configuration file that can then be imported and passed
 
 ### Import-HardenSystemConfig
 
-This is useds to import a configuration file created with the 'Export-HardenSystemConfig' command. It can be piped directly to 'Invoke-HardenSystem'.
+This is used to import a configuration file created with the 'Export-HardenSystemConfig' command. It can be piped directly to 'Invoke-HardenSystem'.
 
 ### Export-LocalGPO
 
 This is used to export the system's current Local Group Policy configuration.
 
+### Get-LGPO
+
+Downloads and extracts the LGPO.exe tool from Microsoft to the module's LGPO folder. Requires Internet access. Run this once to automatically obtain the dependency.
+
+### Clear-LocalGroupPolicy
+
+Removes local Group Policy settings (user and/or computer) from the system. Useful for reverting GPO configurations or starting fresh.
+
 ## To-Do
 
-There are a few items I'm looking to possibly add to this module. This list is mainly to remind myself and there's no guarantees it'll be added at any point.
-
-- Invoke-LocalGPO: Allow import of custom PolicyFiles
-- Invoke-HardenSystem: Add parameter to export the configuration being applied
-- Export of the current system configuration
+- Nothing currently
 
 ## Resources
 
