@@ -1,6 +1,6 @@
 # DHHardenSystem
 
-The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, and Server 2022. Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
+The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, Server 2022, and Server 2025. Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
 
 This module uses a few different methods for hardening a system. The primary method is the application of GPOs against the local group policy. The GPO's provided include DISA STIG GPOs and custom GPOs. There are also additional configuration items that can be set which are not controlled via GPO. Finally, there are mitigations that can be applied for items such as disabling old and insecure ciphers and protocols.
 
@@ -13,21 +13,21 @@ This module has a single outside dependency.
   - It is expected that 'LGPO.exe' is available from your system's PATH. The module will automatically add the 'LGPO' folder within the module to this location when it is loaded. So long as you add the file to this location, no additional configuration is needed.
   - You can use the `Get-LGPO` function to automatically download and extract LGPO.exe to the module's LGPO folder (requires Internet access).
 
-
 ## Quick Start
 
 For a Windows 11 system, you can follow the following steps:
+
 1. Download this module
 1. Download LGPO.exe
-  - Using this module (on an Internet-connected system): Get-LGPO
-  - Manually: https://www.microsoft.com/en-us/download/details.aspx?id=55319, extract and place it within the LGPO folder
+   - Using this module (on an Internet-connected system): Get-LGPO
+   - Manually: https://www.microsoft.com/en-us/download/details.aspx?id=55319, extract and place it within the LGPO folder
 1. Copy the module to the system to be hardened
-  - Module Location: C:\Temp\DHHardenSystem
+   - Module Location: C:\Temp\DHHardenSystem
 1. Run PowerShell as Administrator
 1. Import the module
-  - Import-Module C:\Temp\DHHardenSystem\DHHardenSystem.psd1
+   - Import-Module C:\Temp\DHHardenSystem\DHHardenSystem.psd1
 1. Harden the system with the default configuration file
-  - Import-HardenSystemConfig -FilePath "C:\Temp\DHHardenSystem\Default.json" | Invoke-HardenSystem -Confirm:$false
+   - Import-HardenSystemConfig -FilePath "C:\Temp\DHHardenSystem\Default.json" | Invoke-HardenSystem -Confirm:$false
 
 ## Available Hardening/Configuration Items
 
@@ -42,18 +42,19 @@ The list of currently available GPO's in this module:
 - DISA
   - Application - Adobe Reader DC - v2r1
   - Application - Google Chrome - v2r11
-  - Application - Internet Explorer 11 - v2r6
-  - Application - Edge - v2r3
-  - Application - Firefox - v6r6
+  - Application - Internet Explorer 11 - v2r7
+  - Application - Edge - v2r5
+  - Application - Firefox - v6r7
   - Application - Office 2016 - Various
   - Application - Office 2019/M365 - v3r4
-  - Application - Windows Defender Antivirus - v2r6
+  - Application - Windows Defender Antivirus - v2r8
   - Application - Windows Firewall - v2r2
-  - OS - Windows 10 - v3r5
-  - OS - Windows 11 - v2r5
+  - OS - Windows 10 - v3r6
+  - OS - Windows 11 - v2r7
   - OS - Server 2016 - v2r10
-  - OS - Server 2019 - v3r6
-  - OS - Server 2022 - v2r6
+  - OS - Server 2019 - v3r8
+  - OS - Server 2022 - v2r8
+  - OS - Server 2025 - v1r1
 - Custom
   - AppLocker Audit
   - AppLocker Enforce
