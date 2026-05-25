@@ -1,5 +1,21 @@
 # Change Log - DHHardenSystem
 
+## v2.3.0 (2026-05-25)
+
+### Added
+
+###
+
+* Updated GPO STIG to the April 2026 release
+  * Internet Explorer 11 v2r7
+  * Microsoft Edge v2r5
+  * Mozilla Firefox v6r7
+  * Server 2019 v3r8
+  * Server 2022 v2r8
+  * Windows 10 v3r7
+  * Windows 11 v2r7
+  * Windows Defender AV v2r8
+
 ## v2.2.0 (2025-11-30)
 
 ### Added
