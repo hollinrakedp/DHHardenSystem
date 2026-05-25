@@ -1,6 +1,6 @@
 # DHHardenSystem
 
-The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, and Server 2022. Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
+The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, Server 2022, and Server 2025. Hardening is based primarily on DISA Security Technical Implementation Guides (STIGs). It's designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems. There is significant flexibility in how much or how little hardening is applied to the system based on the parameters provided.
 
 This module uses a few different methods for hardening a system. The primary method is the application of GPOs against the local group policy. The GPO's provided include DISA STIG GPOs and custom GPOs. There are also additional configuration items that can be set which are not controlled via GPO. Finally, there are mitigations that can be applied for items such as disabling old and insecure ciphers and protocols.
 
@@ -54,6 +54,7 @@ The list of currently available GPO's in this module:
   - OS - Server 2016 - v2r10
   - OS - Server 2019 - v3r8
   - OS - Server 2022 - v2r8
+  - OS - Server 2025 - v1r1
 - Custom
   - AppLocker Audit
   - AppLocker Enforce

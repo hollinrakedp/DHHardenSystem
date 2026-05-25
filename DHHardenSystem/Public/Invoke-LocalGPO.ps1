@@ -17,7 +17,7 @@ function Invoke-LocalGPO {
 
     .NOTES
     Name         - Invoke-LocalGPO
-    Version      - 1.13
+    Version      - 1.14
     Author       - Darren Hollinrake
     Date Created - 2021-07-24
     Date Updated - 2026-05-25
@@ -92,6 +92,7 @@ function Invoke-LocalGPO {
         Server 2016 - v2r10
         Server 2019 - v3r8 (Computer Settings Only)
         Server 2022 - v2r8 (Computer Settings Only)
+        Server 2025 - v1r1
 
     .PARAMETER CustomGPO
     Imports any custom Policy Analyzer .PolicyRules files located in the 'GPO\Custom' folder. These files are applied to the system in alphabetical order after all other items have been applied.
@@ -349,6 +350,10 @@ function Invoke-LocalGPO {
                     Server2022 {
                         Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: GPO: Apply - Windows Server 2022"
                         $Results += Import-LGPOPolicyRules -Name "Windows Server 2022 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2022 Member Server v2r8.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                    }
+                    Server2025 {
+                        Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: GPO: Apply - Windows Server 2025"
+                        $Results += Import-LGPOPolicyRules -Name "Windows Server 2025 (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Windows Server 2025 Member Server v1r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
                     }
                 }
             }
