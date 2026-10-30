@@ -12,7 +12,7 @@
 RootModule = 'DHHardenSystem.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.2.0'
+ModuleVersion = '2.4.0'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -27,7 +27,7 @@ Author = 'Darren Hollinrake'
 CompanyName = 'Darren Hollinrake'
 
 # Copyright statement for this module
-Copyright = '(c) 2021-2025 Darren Hollinrake. All rights reserved.'
+Copyright = '(c) 2021-2026 Darren Hollinrake. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'The purpose of this module is to allow for the quick hardening of a basic installation of Windows 10, Windows 11, Server 2016, Server 2019, and Server 2022. It''s designed to be portable, work completely offline, and for use on stand-alone/isolated/air-gapped systems.'
