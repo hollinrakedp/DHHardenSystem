@@ -127,8 +127,6 @@ function Invoke-LocalGPO {
         [Parameter(ValueFromPipelineByPropertyName)]
         [switch]$AcrobatProDC,
         [Parameter(ValueFromPipelineByPropertyName)]
-        [switch]$AcrobatReaderDC,
-        [Parameter(ValueFromPipelineByPropertyName)]
         [ValidateSet('Audit', 'Enforce')]
         [string]$AppLocker,
         [Parameter(ValueFromPipelineByPropertyName)]
