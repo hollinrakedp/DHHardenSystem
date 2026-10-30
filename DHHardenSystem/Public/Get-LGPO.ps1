@@ -58,7 +58,7 @@ function Get-LGPO {
                 Move-Item -Path "$env:TEMP\LGPO_30\LGPO.exe" -Destination $LGPOPath
             }
             catch {
-                Write-LogEntry -LogLevel ERROR -Tee:$Tee -LogMessage "LGPO: Extract - Failed: $_" -ErrorAction
+                Write-LogEntry -LogLevel ERROR -Tee:$Tee -LogMessage "LGPO: Extract - Failed: $_" -ErrorAction Stop
             }
             finally {
                 Write-LogEntry -Tee:$Tee -LogMessage "LGPO: Extract - Cleanup"
