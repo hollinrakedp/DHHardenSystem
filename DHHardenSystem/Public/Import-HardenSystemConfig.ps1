@@ -34,8 +34,8 @@ function Import-HardenSystemConfig {
         [string]$FilePath
     )
     try {
-        if ((Test-Path $FilePath) -and ($FilePath -match '^*\.json')) {
-            $HardenSystemConfigObj = Get-Content "$FilePath" -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
+        if ((Test-Path -Path $FilePath -PathType Leaf) -and ($FilePath -match '(?i)\.json$')) {
+            $HardenSystemConfigObj = Get-Content -Path $FilePath -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
         }
         else {
             Write-Warning "The specified path is not valid. Please provide a valid config file path to import."

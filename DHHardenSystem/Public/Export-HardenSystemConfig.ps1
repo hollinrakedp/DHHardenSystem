@@ -145,7 +145,7 @@ function Export-HardenSystemConfig {
         Write-Verbose "Only a directory was provided. Using automatic filename."
         $FullPath = Join-Path -Path $FilePath -ChildPath "HardenSystemConfig-$(Get-Date -Format yyyyMMdd).json"
     }
-    elseif ((Test-Path -Path $FilePath -IsValid) -and ($FilePath -match '^*\.json')) {
+    elseif ((Test-Path -Path $FilePath -IsValid) -and ($FilePath -match '(?i)\.json$')) {
         Write-Verbose "A full path was provided."
         $FullPath = $FilePath
         $ParentPath = Split-Path $FilePath
