@@ -35,7 +35,7 @@ As described above, there are multiple ways this module hardens the system. Here
 
 ### GPOs
 
-There are two type of GPOs available: DISA and Custom. The DISA GPO's are based off the October 2025 GPO Package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
+There are two type of GPOs available: DISA and Custom. The DISA GPO's are based on the October 2026 GPO package. The custom GPOs configure additional items configurable via GPO but not contained within existing STIGs.
 
 The list of currently available GPO's in this module:
 
@@ -44,17 +44,17 @@ The list of currently available GPO's in this module:
   - Application - Google Chrome - v2r11
   - Application - Internet Explorer 11 - v2r7
   - Application - Edge - v2r5
-  - Application - Firefox - v6r7
+  - Application - Firefox - v6r9
   - Application - Office 2016 - Various
   - Application - Office 2019/M365 - v3r4
-  - Application - Windows Defender Antivirus - v2r8
+  - Application - Windows Defender Antivirus - v2r10
   - Application - Windows Firewall - v2r2
   - OS - Windows 10 - v3r6
-  - OS - Windows 11 - v2r7
+  - OS - Windows 11 - v2r11
   - OS - Server 2016 - v2r10
-  - OS - Server 2019 - v3r8
-  - OS - Server 2022 - v2r8
-  - OS - Server 2025 - v1r1
+  - OS - Server 2019 - v3r9
+  - OS - Server 2022 - v2r11
+  - OS - Server 2025 - v1r4
 - Custom
   - AppLocker Audit
   - AppLocker Enforce

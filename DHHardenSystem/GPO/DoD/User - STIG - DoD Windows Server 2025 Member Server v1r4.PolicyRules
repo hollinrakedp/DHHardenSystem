@@ -1,0 +1,4 @@
+﻿<PolicyRules>
+<UserConfig><Key>Software\Microsoft\Windows\CurrentVersion\Policies\Attachments</Key><Value>SaveZoneInformation</Value><RegType>REG_DWORD</RegType><RegData>2</RegData><SourceFile>C:\Export\GPO\DoD\DoD WinSvr 2025 MS and DC v1r4\GPOs\{D0A4ADDA-E9CA-457D-83C1-ECC1DF4F2750}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD WinSvr 2025 MS STIG User v1r4</PolicyName></UserConfig>
+<UserConfig><Key>Software\Policies\Microsoft\Windows\Installer</Key><Value>AlwaysInstallElevated</Value><RegType>REG_DWORD</RegType><RegData>0</RegData><SourceFile>C:\Export\GPO\DoD\DoD WinSvr 2025 MS and DC v1r4\GPOs\{D0A4ADDA-E9CA-457D-83C1-ECC1DF4F2750}\DomainSysvol\GPO\User\registry.pol</SourceFile><PolicyName>DoD WinSvr 2025 MS STIG User v1r4</PolicyName></UserConfig>
+</PolicyRules>

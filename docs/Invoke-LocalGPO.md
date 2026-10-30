@@ -26,7 +26,7 @@ The additional Non-DISA GPO's provided are to configure some common settings or 
 GPO's are imported using Microsoft's LGPO tool (LGPO.exe).
 The GPO's have been converted to '*.policyrules' text-based files.
 
-The DISA GPOs included are based on the October 2025 GPO package.
+The DISA GPOs included are based on the October 2026 GPO package.
 
 Keep in mind the following:
  - For the GPOs that configure the OS, a warning is logged if the selected OS differs from the installed OS.
@@ -126,7 +126,7 @@ Accept wildcard characters: False
 ```
 
 ### -Defender
-DISA STIG (v2r6) - Configures Windows Defender AV in alignment with the corresponding DISA STIG.
+DISA STIG (v2r10) - Configures Windows Defender AV in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -157,7 +157,7 @@ Accept wildcard characters: False
 ```
 
 ### -Edge
-DISA STIG (v2r3) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG.
+DISA STIG (v2r5) - Configures Edge (Chromium-based) in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -173,7 +173,7 @@ Accept wildcard characters: False
 ```
 
 ### -Firefox
-DISA STIG (v6r6) - Configures Firefox in alignment with the corresponding DISA STIG.
+DISA STIG (v6r9) - Configures Firefox in alignment with the corresponding DISA STIG.
 This applies Computer settings.
 
 ```yaml
@@ -189,7 +189,7 @@ Accept wildcard characters: False
 ```
 
 ### -IE11
-DISA STIG (v2r6) - Configures IE11 in alignment with the corresponding DISA STIG.
+DISA STIG (v2r7) - Configures IE11 in alignment with the corresponding DISA STIG.
 This applies both User and Computer settings.
 
 ```yaml
@@ -316,13 +316,14 @@ Accept wildcard characters: False
 
 ### -OS
 DISA GPO - Configures the OS using the specified OS STIG.
-Valid values are 'Win10', 'Win11', 'Server2016', 'Server2019', and 'Server2022'.
+Valid values are 'Win10', 'Win11', 'Server2016', 'Server2019', 'Server2022', and 'Server2025'.
 This applies both User and Computer settings.
-    Windows 10 - v2r6
-    Windows 11 - v1r3
-    Server 2016 - v2r6
-    Server 2019 - v2r6
-    Server 2022 - v1r2 (Computer Settings Only)
+    Windows 10 - v3r6
+    Windows 11 - v2r11
+    Server 2016 - v2r10
+    Server 2019 - v3r9 (Computer Settings Only)
+    Server 2022 - v2r11 (Computer Settings Only)
+    Server 2025 - v1r4
 
 ```yaml
 Type: String
