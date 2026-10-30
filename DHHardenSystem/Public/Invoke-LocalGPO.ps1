@@ -192,8 +192,8 @@ function Invoke-LocalGPO {
         AcrobatProDC {
             if ($PSCmdlet.ShouldProcess("AcrobatProDC: $AcrobatProDC", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee "HardenSystem: GPO: Apply - Adobe Acrobat Pro DC"
-                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (User)" -PolicyRulesPath "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "AcrobatProDC (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Pro DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         Applocker {
@@ -309,8 +309,8 @@ function Invoke-LocalGPO {
         ReaderDC {
             if ($PSCmdlet.ShouldProcess("ReaderDC: $ReaderDC", "Apply GPO")) {
                 Write-LogEntry -Tee:$Tee -LogMessage "HardenSystem: GPO: Apply - Adobe Reader DC"
-                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (Computer)" -PolicyRulesPath "$ModuleGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
-                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (User)" -PolicyRulesPath "$ModuleGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (Computer)" -PolicyRulesPath "$DoDGPOPath\Computer - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
+                $Results += Import-LGPOPolicyRules -Name "Adobe Reader DC (User)" -PolicyRulesPath "$DoDGPOPath\User - STIG - DoD Adobe Acrobat Reader DC Continuous v2r1.PolicyRules" -LogFilePath "$GPOFullLogPath" -WhatIf:$WhatIfPreference -Tee:$Tee
             }
         }
         RequireCtrlAltDel {
