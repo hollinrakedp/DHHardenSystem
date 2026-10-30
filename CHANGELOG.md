@@ -1,5 +1,28 @@
 # Change Log - DHHardenSystem
 
+## v2.4.0 (2026-10-30)
+
+### Added
+
+### Changed
+
+* Updated GPO STIG to the October 2026 release
+  * Mozilla Firefox v6r9
+  * Server 2019 v3r9
+  * Server 2022 v2r11
+  * Server 2025 v1r4
+  * Windows 11 v2r11
+  * Windows Defender AV v2r10
+* Cleaned up the validation for configuration file paths in Import-HardenSystemConfig and Export-HardenSystemConfig
+
+### Fixed
+
+* Fixed the Adobe Reader DC and Adobe Acrobat Pro DC DoD GPO paths so they resolve to the DoD GPO folder instead of the module folder.
+* Removed duplicate Reader DC parameter in the Invoke-LocalGPO function
+* Server 2025 was not an option for the OS. It has been added so it can be applied.
+* Server 2025 did not have the User settings applied. It has been added and will now be applied.
+* Fixed an issue where Get-LGPO would not correctly stop on errors.
+
 ## v2.3.0 (2026-05-25)
 
 ### Added
